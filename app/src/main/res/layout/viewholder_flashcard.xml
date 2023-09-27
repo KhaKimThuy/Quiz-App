@@ -24,7 +24,7 @@
         <!-- Back Layout Goes Here -->
         <include
             android:id="@+id/front_card"
-            layout="@layout/flashcard_back"/>
+            layout="@layout/fc_back_learning"/>
 
         <!-- Front Layout Goes Here -->
         <include

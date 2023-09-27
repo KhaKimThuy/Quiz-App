@@ -37,11 +37,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/search_bg"
-                android:drawableRight="@drawable/cancel"
+                android:drawableRight="@drawable/small_cancel_icon"
                 android:elevation="1dp"
                 android:ems="10"
                 android:inputType="text"
-                android:paddingVertical="20dp"
+                android:paddingVertical="16dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="30dp"
                 android:text="food" />
@@ -205,7 +205,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
-                        android:src="@drawable/search" />
+                        android:src="@drawable/search_icon" />
 
                     <TextView
                         android:id="@+id/textView16"
