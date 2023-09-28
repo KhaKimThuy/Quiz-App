@@ -22,6 +22,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/login_quickly"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -33,10 +34,10 @@
         android:id="@+id/textView4"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/provisions"
+        android:layout_marginTop="16dp"
+        android:text="@string/fogot_username_password"
         android:textAlignment="center"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +45,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -56,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtUsername" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -70,11 +71,11 @@
     <EditText
         android:id="@+id/edtUsername"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="text"
         android:hint="@string/enter_email_or_username"
+        android:inputType="text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +84,7 @@
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="@string/enter_password"
@@ -91,12 +92,12 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogin"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/custom_button_blue"
         android:text="@string/login"
@@ -105,16 +106,17 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFacebook"
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/custom_button_white"
         android:drawableStart="@drawable/facebook"
+        android:paddingHorizontal="25dp"
         android:text="Facebook"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#2f3544"
@@ -126,10 +128,11 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnGoogle"
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/custom_button_white"
         android:drawableStart="@drawable/google"
+        android:paddingHorizontal="25dp"
         android:text="Google"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"

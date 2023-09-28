@@ -14,7 +14,8 @@
         tools:targetApi="31">
         <activity
             android:name=".Activity.StartActivity"
-            android:exported="false"/>
+            android:exported="false">
+        </activity>
         <activity
             android:name=".Activity.TypeVocabStudyActivity"
             android:exported="false" />
@@ -32,16 +33,17 @@
             android:exported="false" />
         <activity
             android:name=".Activity.FlashCardStudyActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
         <activity
             android:name=".Activity.AddPasswordActivity"
-            android:exported="false"/>
+            android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".Activity.AnswersActivity"
             android:exported="false"/>
@@ -56,7 +58,13 @@
             android:exported="false"/>
         <activity
             android:name=".Activity.LoginActivity"
-            android:exported="false"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Activity.ProfileActivity"
             android:exported="false"/>
@@ -65,7 +73,13 @@
             android:exported="false"/>
         <activity
             android:name=".Activity.RegisterActivity"
-            android:exported="false"/>
+            android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".Activity.SettingActivity"
             android:exported="false"/>

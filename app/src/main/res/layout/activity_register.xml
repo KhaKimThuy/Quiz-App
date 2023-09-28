@@ -10,7 +10,7 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:text="@string/register_with_email"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -22,6 +22,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/login_quickly"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -44,7 +45,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -56,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dayNow" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -82,8 +83,7 @@
     <EditText
         android:id="@+id/dayNow"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="60dp"
         android:ems="10"
         android:inputType="text"
         android:textSize="16sp"
@@ -94,33 +94,31 @@
     <EditText
         android:id="@+id/edtEmail"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="60dp"
         android:ems="10"
         android:hint="email@example.com"
         android:inputType="text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="60dp"
         android:ems="10"
         android:hint="........"
         android:inputType="text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRegister"
         android:layout_width="380dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/custom_button_gray"
         android:text="@string/register"
@@ -134,11 +132,12 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFacebook"
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/custom_button_white"
         android:drawableStart="@drawable/facebook"
+        android:paddingHorizontal="25dp"
         android:text="Facebook"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#2f3544"
@@ -150,10 +149,11 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnGoogle"
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/custom_button_white"
         android:drawableStart="@drawable/google"
+        android:paddingHorizontal="25dp"
         android:text="Google"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
