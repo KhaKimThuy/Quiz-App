@@ -13,6 +13,7 @@
     <string name="register">Đăng ký</string>
     <string name="email_invalid">NHẬP ĐỊA CHỈ EMAIL KHÔNG HỢP LỆ</string>
     <string name="day_invalid">NGÀY SINH KHÔNG HỢP LỆ</string>
+    <string name="pass_invalid">MẬT KHẨU PHẢI CÓ ĐỘ DÀI NHIỀU HƠN 8 KÝ TỰ</string>
 
     <!--    login activity-->
     <string name="login_with_email">ĐĂNG NHẬP BẰNG EMAIL CỦA BẠN</string>
@@ -49,7 +50,9 @@
     <string name="answer_expert">Lời giải chuyên gia</string>
 
     <!--    Library activity-->
-
+    <string name="module_study">Học phần</string>
+    <string name="folder">Thư mục</string>
+    <string name="_class">Lớp học</string>
     <!--    Setting activity-->
     <string name="setting">Cài đặt</string>
     <!--    Setting password-->
@@ -57,4 +60,6 @@
     <string name="add_pass">Thêm mật khẩu</string>
     <string name="enter_pass1">NHẬP MẬT KHẨU</string>
     <string name="enter_pass2">NHẬP LẠI MẬT KHẨU</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

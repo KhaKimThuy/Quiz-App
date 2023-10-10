@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/tvUsername"
+        android:id="@+id/tvBirthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -54,10 +54,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dayNow" />
+        app:layout_constraintTop_toBottomOf="@+id/edtBirthday" />
 
     <TextView
-        android:id="@+id/tvPassword"
+        android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -81,11 +81,12 @@
         app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
     <EditText
-        android:id="@+id/dayNow"
+        android:id="@+id/edtBirthday"
         android:layout_width="380dp"
         android:layout_height="60dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="datetime|date"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,39 +96,40 @@
         android:id="@+id/edtEmail"
         android:layout_width="380dp"
         android:layout_height="60dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="email@example.com"
         android:inputType="text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/tvBirthday" />
 
     <EditText
         android:id="@+id/edtPassword"
         android:layout_width="380dp"
         android:layout_height="60dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="........"
         android:inputType="text"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRegister"
         android:layout_width="380dp"
         android:layout_height="60dp"
         android:layout_marginTop="32dp"
-        android:background="@drawable/custom_button_gray"
         android:text="@string/register"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFacebook"

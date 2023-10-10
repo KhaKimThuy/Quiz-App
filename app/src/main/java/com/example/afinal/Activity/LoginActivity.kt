@@ -8,19 +8,19 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.example.afinal.R
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var btnLogin : AppCompatButton
-    lateinit var btnGoogle : AppCompatButton
-    lateinit var btnFacebook : AppCompatButton
-    lateinit var edtUsername : EditText
-    lateinit var edtPassword : EditText
-    lateinit var tvUsername : TextView
-    lateinit var tvPassword : TextView
+    private lateinit var btnLogin : AppCompatButton
+    private lateinit var btnGoogle : AppCompatButton
+    private lateinit var btnFacebook : AppCompatButton
+
+    private lateinit var edtUsername : EditText
+    private lateinit var edtPassword : EditText
+
+    private lateinit var tvUsername : TextView
+    private lateinit var tvPassword : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +29,12 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         btnGoogle = findViewById(R.id.btnGoogle)
         btnFacebook = findViewById(R.id.btnFacebook)
+
         edtUsername = findViewById(R.id.edtUsername)
         edtPassword = findViewById(R.id.edtPassword)
-        tvUsername = findViewById(R.id.tvUsername)
-        tvPassword = findViewById(R.id.tvPassword)
+
+        tvUsername = findViewById(R.id.tvBirthday)
+        tvPassword = findViewById(R.id.tvEmail)
 
         btnLogin.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {

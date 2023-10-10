@@ -41,18 +41,13 @@
             app:layout_constraintStart_toEndOf="@+id/layoutAdd"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="15dp"
-                app:srcCompat="@drawable/folder" />
-
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingVertical="10dp"
+                android:drawableTop="@drawable/baseline_folder_open_24"
                 android:text="@string/title_library"
                 android:textAlignment="center"
                 android:textSize="12sp" />
@@ -69,18 +64,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="15dp"
-                app:srcCompat="@drawable/books_stack_of_three" />
-
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingVertical="10dp"
                 android:layout_weight="1"
+                android:drawableTop="@drawable/baseline_menu_book_24"
                 android:text="@string/title_answer"
                 android:textAlignment="center"
                 android:textSize="12sp" />
@@ -95,17 +85,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="15dp"
-                app:srcCompat="@drawable/search" />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="match_parent"
+                android:paddingVertical="10dp"
                 android:layout_height="match_parent"
+                android:drawableTop="@drawable/baseline_search_24"
                 android:text="@string/title_home"
                 android:textAlignment="center"
                 android:textSize="12sp" />
@@ -120,18 +106,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="15dp"
-                app:srcCompat="@drawable/user" />
-
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingVertical="10dp"
+                android:drawableTop="@drawable/baseline_supervised_user_circle_24"
                 android:text="@string/title_profile"
                 android:textAlignment="center"
                 android:textSize="12sp" />
@@ -147,13 +128,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="35dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                app:srcCompat="@drawable/baseline_add_circle_outline_24" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="18dp"
+                android:drawableTop="@drawable/add" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
