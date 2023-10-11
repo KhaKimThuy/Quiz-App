@@ -4,34 +4,34 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Adapter.TopicListAdapter
+import com.example.afinal.Adapter.VPAdapter
 import com.example.afinal.R
+import com.example.afinal.databinding.ActivityRegisterBinding
+import com.example.afinal.databinding.ActivitySearchResultBinding
+import com.google.android.material.tabs.TabLayout
 
 class SearchResultActivity : AppCompatActivity() {
+    private lateinit var binding : ActivitySearchResultBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_result)
+        binding = ActivitySearchResultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initRecyclerView()
+        //initRecyclerView()
+        setUpTabs()
     }
-    private fun initRecyclerView(){
-        val topicList = ArrayList<TopicDomain>()
 
-        topicList.add(TopicDomain("Food and drink", "James", "cat", 35))
-        topicList.add(TopicDomain("Water", "John", "cat", 15))
-        topicList.add(TopicDomain("Fast food", "Mary", "cat", 50))
-        topicList.add(TopicDomain("Machine", "Josh", "cat", 11))
-        topicList.add(TopicDomain("Engineer", "Mat", "cat", 90))
-        topicList.add(TopicDomain("Science", "Anh Vo", "cat", 150))
-        topicList.add(TopicDomain("Environment", "Watson", "cat", 75))
-        topicList.add(TopicDomain("Politic", "Emma", "cat", 58))
-        topicList.add(TopicDomain("Vehicle", "William", "cat", 87))
-
-        val recyclerViewTopic = findViewById<RecyclerView>(R.id.recyclerview_topic)
-        recyclerViewTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        val adapterTopicList = TopicListAdapter(topicList)
-        recyclerViewTopic.adapter = adapterTopicList
+    private fun setUpTabs() {
+        val adapter = VPAdapter(supportFragmentManager);
+        adapter.addFragment(FragmentAllResult(), "Tất cả kết quả");
+        adapter.addFragment(FragmentCourse(), "Học phần");
+        binding.viewPager.adapter = adapter;
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
+
+
 }

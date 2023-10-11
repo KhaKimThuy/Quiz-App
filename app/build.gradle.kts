@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -33,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -49,6 +53,7 @@ dependencies {
     // Adapter
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.google.code.gson:gson:2.8.5")
+    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
 
 
     testImplementation("junit:junit:4.13.2")

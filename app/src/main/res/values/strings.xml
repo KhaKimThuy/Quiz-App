@@ -20,7 +20,8 @@
     <string name="enter_email_or_username">Nhập email hoặc tên người dùng của bạn</string>
     <string name="email_or_username">EMAIL HOẶC TÊN NGƯỜI DÙNG</string>
     <string name="enter_password">Nhập mật khẩu của bạn</string>
-    <string name="fogot_username_password">Quên người dùng hoặc mật khẩu?</string>
+    <string name="forgot_username_password">Quên người dùng hoặc mật khẩu?</string>
+    <string name="user_isnot_exist">Người dùng không tồn tại</string>
     <string name="login">Đăng nhập</string>
     <string name="username_empty">VUI LÒNG NHẬP EMAIL HOẶC TÊN NGƯỜI DÙNG</string>
     <string name="password_empty">VUI LÒNG NHẬP MẬT KHẨU</string>
