@@ -1,40 +1,27 @@
 package com.example.afinal.Activity
 
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.renderscript.Sampler.Value
 import android.view.View
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
-import java.util.Date
+import androidx.appcompat.app.AppCompatActivity
+import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityRegisterBinding
-import com.google.firebase.auth.FirebaseAuth
-import java.util.Calendar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.childEvents
+import java.util.Objects
 
 class RegisterActivity : AppCompatActivity() {
-//
-//    private lateinit var btnRegister : AppCompatButton
-//    private lateinit var btnGoogle : AppCompatButton
-//    private lateinit var btnFacebook : AppCompatButton
-//
-//    private lateinit var edtBirthday: EditText
-//    private lateinit var edtPassword : EditText
-//    private lateinit var edtEmail : EditText
-//
-//    private lateinit var tvBirthday : TextView
-//    private lateinit var tvPassword : TextView
-//    private lateinit var tvEmail : TextView
 
     private lateinit var binding : ActivityRegisterBinding
-    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var database : FirebaseDatabase
+    private lateinit var reference: DatabaseReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,30 +30,25 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseAuth = FirebaseAuth.getInstance()
+        binding.btnRegister.setOnClickListener(View.OnClickListener {
+            database = FirebaseDatabase.getInstance()
+            reference = database.getReference("users")
 
-        binding.btnRegister.setOnClickListener {
             val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
             val confirm = binding.edtPassword.text.toString()
 
             if (email.isNotEmpty() && pass.isNotEmpty() && confirm.isNotEmpty()){
                 if (pass == confirm){
-                    firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
-                        if (it.isSuccessful){
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
-                        }else{
-                            Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    writeNewUser(email, pass)
                 }else{
                     Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
                 }
             }else{
                 Toast.makeText(this, "Empty field is not allowed", Toast.LENGTH_SHORT).show()
             }
-        }
+        })
+
 
 //        btnGoogle = findViewById(R.id.btnGoogle)
 //        btnFacebook = findViewById(R.id.btnFacebook)
@@ -140,6 +122,34 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+
+    }
+
+    private fun writeNewUser(email: String, pass: String) {
+        val user = UserDomain()
+        user.email = email
+        user.password = pass
+        var pk = email.replace("@", "")
+        pk = pk.replace(".", "")
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+                if (snapshot.hasChild(pk)){
+                    Toast.makeText(applicationContext,"Email is already registered",Toast.LENGTH_SHORT).show()
+                }else{
+                    reference.child(pk).setValue(user)
+                    Toast.makeText(applicationContext, "Register successfully", Toast.LENGTH_SHORT).show()
+                    var intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
     }
 //    private fun showDatePickerDialog() {
