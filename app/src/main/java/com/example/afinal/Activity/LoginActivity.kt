@@ -174,7 +174,7 @@ class LoginActivity : AppCompatActivity() {
                     val passwordFromDB = snapshot.child(pk).child("password").value.toString()
                     if(passwordFromDB == pass){
                         Toast.makeText(applicationContext, "Login successfully", Toast.LENGTH_LONG).show()
-                        val intent = Intent(applicationContext, SearchResultActivity::class.java)
+                        val intent = Intent(applicationContext, MainActivity::class.java)
                         startActivity(intent)
                     }else{
                         binding.edtUsername.error = "Invalid Credentials"
