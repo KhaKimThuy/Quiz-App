@@ -3,39 +3,49 @@ package com.example.afinal.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.afinal.Adapter.FlashCardListAdapter
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.R
 import android.annotation.SuppressLint
+import com.example.afinal.Adapter.FlashCardAdapter
+import com.example.afinal.Common.CommonUser
+import com.example.afinal.DB.MyDB
+import com.example.afinal.databinding.ActivityDetailTopicBinding
 
 class DetailTopicActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityDetailTopicBinding
+    private lateinit var db: MyDB
+    private lateinit var adapter : FlashCardAdapter
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_topic)
+        binding = ActivityDetailTopicBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initRecyclerView()
+        // Init Firebase
+        db = MyDB("Item")
+
+        // Set user info
+        binding.textViewUname.text = CommonUser.currentUser?.email ?: "NoEmail"
+
+        // Load items
+        binding.recyclerviewFlashcard.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        loadItem()
 
     }
-    private fun initRecyclerView(){
-        val cardList = ArrayList<FlashCardDomain>()
+    private fun loadItem(){
+        val options = db.RecyclerFlashCard()
+        adapter = FlashCardAdapter(options)
+        binding.recyclerviewFlashcard.adapter = adapter
+    }
 
-        cardList.add(FlashCardDomain("Apple", "Trái táo", "apple", false))
-        cardList.add(FlashCardDomain("Banana", "Trái chuối", "banana", false))
-        cardList.add(FlashCardDomain("Strawberry", "Trái dâu", "strawberry", false))
-        cardList.add(FlashCardDomain("Persimmon", "Trái hồng", "persimmon", false))
-        cardList.add(FlashCardDomain("Guava", "Trái ổi", "guava", false))
-        cardList.add(FlashCardDomain("Rambutant", "Trái chôm chôm", "rambutant", false))
-        cardList.add(FlashCardDomain("Passionfruit", "Trái chanh dây", "passfruit", false))
-        cardList.add(FlashCardDomain("Lychee", "Trái vải", "lychee", false))
-        cardList.add(FlashCardDomain("Plum", "Trái mận", "plum", false))
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
 
-        val recyclerViewTopic = findViewById<RecyclerView>(R.id.recyclerview_flashcard)
-        recyclerViewTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        val adapterTopicList = FlashCardListAdapter(cardList)
-        recyclerViewTopic.adapter = adapterTopicList
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
     }
 }

@@ -62,28 +62,28 @@ class FlashCardStudyActivity : AppCompatActivity() {
         viewPager2.setPageTransformer(transformer)
     }
     private fun init(){
-        viewPager2 = findViewById(R.id.viewPaper2)
-        handler = Handler(Looper.myLooper()!!)
-        cardList = ArrayList()
-
-        cardList.add(FlashCardDomain("Apple", "Trái táo", "apple", false))
-        cardList.add(FlashCardDomain("Banana", "Trái chuối", "banana", false))
-        cardList.add(FlashCardDomain("Strawberry", "Trái dâu", "strawberry", false))
-        cardList.add(FlashCardDomain("Persimmon", "Trái hồng", "persimmon", false))
-        cardList.add(FlashCardDomain("Guava", "Trái ổi", "guava", false))
-        cardList.add(FlashCardDomain("Rambutant", "Trái chôm chôm", "rambutant", false))
-        cardList.add(FlashCardDomain("Passionfruit", "Trái chanh dây", "passfruit", false))
-        cardList.add(FlashCardDomain("Lychee", "Trái vải", "lychee", false))
-        cardList.add(FlashCardDomain("Plum", "Trái mận", "plum", false))
-
-        adapter = FCLearningAdapter(cardList, viewPager2)
-
-        viewPager2.adapter = adapter
-
-        viewPager2.offscreenPageLimit = 3
-        viewPager2.clipChildren = false
-        viewPager2.clipToPadding = false
-
-        viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+//        viewPager2 = findViewById(R.id.viewPaper2)
+//        handler = Handler(Looper.myLooper()!!)
+//        cardList = ArrayList()
+//
+//        cardList.add(FlashCardDomain("Apple", "Trái táo", "apple", false))
+//        cardList.add(FlashCardDomain("Banana", "Trái chuối", "banana", false))
+//        cardList.add(FlashCardDomain("Strawberry", "Trái dâu", "strawberry", false))
+//        cardList.add(FlashCardDomain("Persimmon", "Trái hồng", "persimmon", false))
+//        cardList.add(FlashCardDomain("Guava", "Trái ổi", "guava", false))
+//        cardList.add(FlashCardDomain("Rambutant", "Trái chôm chôm", "rambutant", false))
+//        cardList.add(FlashCardDomain("Passionfruit", "Trái chanh dây", "passfruit", false))
+//        cardList.add(FlashCardDomain("Lychee", "Trái vải", "lychee", false))
+//        cardList.add(FlashCardDomain("Plum", "Trái mận", "plum", false))
+//
+//        adapter = FCLearningAdapter(cardList, viewPager2)
+//
+//        viewPager2.adapter = adapter
+//
+//        viewPager2.offscreenPageLimit = 3
+//        viewPager2.clipChildren = false
+//        viewPager2.clipToPadding = false
+//
+//        viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
     }
 }

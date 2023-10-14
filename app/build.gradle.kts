@@ -53,8 +53,11 @@ dependencies {
     // Adapter
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.google.code.gson:gson:2.8.5")
+
+    // Firebase
     implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
     implementation("com.google.firebase:firebase-database-ktx:20.2.2")
+    implementation ("com.firebaseui:firebase-ui-database:8.0.2")
 
 
     testImplementation("junit:junit:4.13.2")

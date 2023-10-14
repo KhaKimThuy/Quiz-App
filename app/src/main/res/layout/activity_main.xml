@@ -40,14 +40,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <EditText
         android:id="@+id/btnFind"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="64dp"
         android:background="@drawable/custom_button_find"
         android:drawableStart="@drawable/baseline_search_24"
-        android:text="@string/title_find"
+        android:hint="@string/title_find"
         android:textAlignment="center"
         android:paddingStart="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
