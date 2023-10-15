@@ -6,10 +6,30 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
+import com.google.firebase.storage.FirebaseStorage
 
-class MyDB(ref : String){
+class MyDB(){
     var database : FirebaseDatabase = FirebaseDatabase.getInstance()
-    var reference: DatabaseReference = database.getReference(ref)
+    var storage: FirebaseStorage = FirebaseStorage.getInstance()
+    var reference: DatabaseReference = database.reference
+
+    fun GetUser(): DatabaseReference {
+        return database.getReference("User")
+    }
+
+    fun GetUserByID(): DatabaseReference? {
+        var email = CommonUser.currentUser?.email
+        var pk = email?.replace("@", "")
+        if (pk != null) {
+            pk = pk.replace(".","")
+        }
+        return pk?.let { database.getReference("User").child(it) }
+    }
+
+    fun GetItem(): DatabaseReference {
+        return database.getReference("Item")
+    }
+
     fun GetFlashCard(): Query {
         // Extract pk
         var email = CommonUser.currentUser?.email
@@ -24,5 +44,11 @@ class MyDB(ref : String){
         return FirebaseRecyclerOptions.Builder<FlashCardDomain>()
             .setQuery(GetFlashCard(), FlashCardDomain::class.java)
             .build()
+    }
+
+    fun extractPK(email : String) : String{
+        var pk = email.replace("@", "")
+        pk = pk.replace(".", "")
+        return pk
     }
 }

@@ -72,7 +72,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/layoutPtofile"
+            app:layout_constraintEnd_toStartOf="@+id/layoutProfile"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/layoutAdd"
             app:layout_constraintTop_toTopOf="parent">
@@ -148,7 +148,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layoutPtofile"
+            android:id="@+id/layoutProfile"
             android:layout_width="82dp"
             android:layout_height="match_parent"
             android:orientation="vertical"

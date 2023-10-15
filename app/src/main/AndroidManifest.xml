@@ -4,7 +4,6 @@
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Final"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.StartActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.TypeVocabStudyActivity"
             android:exported="false" />
@@ -30,10 +33,10 @@
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activity.FlashCardStudyActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.AddPasswordActivity"
             android:exported="false">
@@ -56,7 +59,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.LibraryActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.LoginActivity"
             android:exported="true">
@@ -74,7 +77,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.RegisterActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.SettingActivity"
             android:exported="false" />

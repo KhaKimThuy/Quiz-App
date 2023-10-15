@@ -7,6 +7,7 @@ import android.os.StrictMode.VmPolicy
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.afinal.Common.CommonUser
+import com.example.afinal.DB.MyDB
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityLoginBinding
@@ -23,8 +24,7 @@ import java.util.Objects
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var database : FirebaseDatabase
-    private lateinit var reference: DatabaseReference
+    private lateinit var db : MyDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +33,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Setup database
-        database = FirebaseDatabase.getInstance()
-        reference = database.getReference("users")
+        db = MyDB()
 
         // To register activity
         binding.textView2Register.setOnClickListener {
@@ -100,16 +99,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login() {
-//        val email = binding.edtUsername.text.toString()
-//        val pass = binding.edtPassword.text.toString()
-        val email = "khathuy243@gmail.com"
-        val pass = "123123"
+        val email = binding.edtUsername.text.toString()
+        val pass = binding.edtPassword.text.toString()
+//        val email = "khathuy243@gmail.com"
+//        val pass = "123123"
 
         // Extract pk from email
-        var pk = email.replace("@", "")
-        pk = pk.replace(".", "")
-
-        var reference = FirebaseDatabase.getInstance().getReference("User")
+        var pk = db.extractPK(email)
+        var reference = db.GetUser()
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -124,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
                             CommonUser.currentUser = user
 
                             Toast.makeText(applicationContext, "Login successfully", Toast.LENGTH_LONG).show()
-                            val intent = Intent(applicationContext, DetailTopicActivity::class.java)
+                            val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
                         }else{
                             binding.edtUsername.error = "Invalid Credentials"
@@ -138,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                Toast.makeText(applicationContext, "System error", Toast.LENGTH_LONG).show()
             }
 
         })

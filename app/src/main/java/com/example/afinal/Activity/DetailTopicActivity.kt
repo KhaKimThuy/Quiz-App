@@ -22,7 +22,7 @@ class DetailTopicActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Init Firebase
-        db = MyDB("Item")
+        db = MyDB()
 
         // Set user info
         binding.textViewUname.text = CommonUser.currentUser?.email ?: "NoEmail"
