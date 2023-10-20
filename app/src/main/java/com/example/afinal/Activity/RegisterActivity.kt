@@ -2,27 +2,24 @@ package com.example.afinal.Activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.renderscript.Sampler.Value
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.afinal.DB.MyDB
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityRegisterBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.childEvents
-import java.util.Objects
+
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityRegisterBinding
-    private lateinit var database : FirebaseDatabase
-    private lateinit var reference: DatabaseReference
-
+    private lateinit var db: MyDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,22 +27,29 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnRegister.setOnClickListener(View.OnClickListener {
-            database = FirebaseDatabase.getInstance()
-            reference = database.getReference("users")
+        db = MyDB()
 
+        binding.btnRegister.setOnClickListener(View.OnClickListener {
             val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
-            val confirm = binding.edtPassword.text.toString()
+            val confirm = binding.edtPasswordConfirm.text.toString()
 
-            if (email.isNotEmpty() && pass.isNotEmpty() && confirm.isNotEmpty()){
-                if (pass == confirm){
-                    writeNewUser(email, pass)
-                }else{
-                    Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
-                }
+            if (email.isNullOrEmpty() || pass.isNullOrEmpty() && confirm.isNullOrEmpty()){
+                if (email.isEmpty())  binding.edtEmail.error = "Email is empty";
+                if (pass.isEmpty())  binding.edtPassword.error = "Password is empty";
+                if (confirm.isEmpty())  binding.edtPasswordConfirm.error = "Please, confirm password";
             }else{
-                Toast.makeText(this, "Empty field is not allowed", Toast.LENGTH_SHORT).show()
+                if (!isValidEmail(email)){
+                    binding.edtEmail.error = "Email form is invalid";
+                }else{
+                    if (pass == confirm){
+                        writeNewUser(email, pass)
+                    }else{
+                        binding.edtPasswordConfirm.error = "Password is not matching";
+//                    Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
             }
         })
 
@@ -124,17 +128,19 @@ class RegisterActivity : AppCompatActivity() {
         }
 
     }
-
+    fun isValidEmail(target: String): Boolean {
+        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
+    }
     private fun writeNewUser(email: String, pass: String) {
         val user = UserDomain()
         user.email = email
         user.password = pass
-        var pk = email.replace("@", "")
-        pk = pk.replace(".", "")
+        var pk = user.GetPK()
+
+        val reference = db.GetUser()
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
                 if (snapshot.hasChild(pk)){
                     Toast.makeText(applicationContext,"Email is already registered",Toast.LENGTH_SHORT).show()
                 }else{
@@ -147,6 +153,7 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
+                Toast.makeText(applicationContext,"Fail to register, error system!",Toast.LENGTH_LONG).show()
             }
 
         })

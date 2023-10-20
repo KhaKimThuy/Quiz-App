@@ -10,6 +10,7 @@
     <string name="birthday">NGÀY SINH</string>
     <string name="email_of_parents">EMAIL CỦA BỐ MẸ</string>
     <string name="password">MẬT KHẨU</string>
+    <string name="confirm_password">XÁC NHẬN MẬT KHẨU</string>
     <string name="register">Đăng ký</string>
     <string name="email_invalid">NHẬP ĐỊA CHỈ EMAIL KHÔNG HỢP LỆ</string>
     <string name="day_invalid">NGÀY SINH KHÔNG HỢP LỆ</string>

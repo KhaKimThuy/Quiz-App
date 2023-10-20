@@ -105,6 +105,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
+    <TextView
+        android:id="@+id/tvConfirmPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm_password"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/edtPasswordConfirm"
+        app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirm" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnRegister"
         android:layout_width="380dp"
@@ -115,7 +124,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirm" />
+        app:layout_constraintTop_toBottomOf="@+id/tvConfirmPassword" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnFacebook"

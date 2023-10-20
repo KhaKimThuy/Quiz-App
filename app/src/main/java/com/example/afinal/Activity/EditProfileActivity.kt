@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.DB.MyDB
+import com.example.afinal.Domain.UserDomain
 import com.example.afinal.databinding.ActivityEditProfileBinding
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
@@ -32,7 +33,7 @@ open class EditProfileActivity : AppCompatActivity() {
     lateinit var db : MyDB
     private lateinit var storageRef: StorageReference
     private lateinit var bitmap: Bitmap
-
+    private lateinit var pk : String
     private lateinit var binding : ActivityEditProfileBinding
     private var CAMERAREQUEST = 100
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,7 @@ open class EditProfileActivity : AppCompatActivity() {
 
         // Init database
         db = MyDB()
+        pk = CommonUser.currentUser?.GetPK() ?: ""
         storageRef = FirebaseStorage.getInstance().reference.child("UserImages")
 
         // Load user information
@@ -74,30 +76,40 @@ open class EditProfileActivity : AppCompatActivity() {
         binding.edPass.setText(CommonUser.currentUser?.password)
 
         // Load avatar
-        val pk = CommonUser.currentUser?.pk
         val databaseRef = db.GetUser()
-        if (pk != null) {
-            databaseRef.child(pk).child("avatarUrl").addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val imageUrl = dataSnapshot.getValue(String::class.java)
-                    Picasso.get().load(imageUrl).into(binding.ava)
-                }
-                override fun onCancelled(databaseError: DatabaseError) {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.child(pk).getValue(UserDomain::class.java)
+                if (user != null) {
+                    if (user.avatarUrl==""){
+                        binding.ava.setImageResource(com.example.afinal.R.drawable.person)
+                    }else{
+                        databaseRef.child(pk).child("avatarUrl").addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                val imageUrl = dataSnapshot.getValue(String::class.java)
+                                Picasso.get().load(imageUrl).into(binding.ava)
+                            }
 
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                Toast.makeText(applicationContext,"Profile display error",Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
                 }
-            })
-        }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
     }
 
     private fun uploadToFirebase() {
 
         // Extract pk
         var email = CommonUser.currentUser?.email
-        var pk = email?.replace("@", "")
-        if (pk != null) {
-            pk = pk.replace(".","")
-        }
 
         // Convert image -> byte[]
         val drawable = binding.ava.drawable as BitmapDrawable
