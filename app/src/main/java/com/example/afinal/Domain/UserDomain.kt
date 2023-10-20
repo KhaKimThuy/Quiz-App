@@ -9,8 +9,7 @@ class UserDomain {
     var username : String = RandomName()
     var avatarUrl : String = ""
 
-
-    public fun GetPK() : String{
+    fun GetPK() : String{
         var pk = email.replace("@", "")
         pk = pk.replace(".", "")
         return pk

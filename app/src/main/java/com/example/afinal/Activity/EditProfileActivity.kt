@@ -1,14 +1,11 @@
 package com.example.afinal.Activity
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.MediaStore.PickerMediaColumns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,14 +29,13 @@ open class EditProfileActivity : AppCompatActivity() {
     private lateinit var storageRef: StorageReference
     private lateinit var pk : String
     private lateinit var binding : ActivityEditProfileBinding
-    private var CAMERAREQUEST = 100
 
     private lateinit var emailUser : String
     private lateinit var usernameUser : String
     private lateinit var passwordUser : String
-    private lateinit var avatar : Bitmap
 
     private var avatarChange = false
+    private var newAvatarUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +69,13 @@ open class EditProfileActivity : AppCompatActivity() {
                 if (avatarChange) {
                     uploadAvatar()
                 }
+                CommonUser.UpdateInfo(binding.edEmail.text.toString(), binding.edPass.text.toString(), binding.edName.text.toString(), newAvatarUrl)
+
                 Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show();
+
+                val intent = Intent()
+                setResult(RESULT_OK, intent)
+
             } else {
                 Toast.makeText(applicationContext, "No Changes Found", Toast.LENGTH_SHORT).show();
             }
@@ -93,10 +95,6 @@ open class EditProfileActivity : AppCompatActivity() {
 //        }
     }
 
-
-    fun openImagePicker() {
-
-    }
 
     fun loadUserInfo(){
         binding.edName.setText(CommonUser.currentUser?.username)
@@ -154,10 +152,10 @@ open class EditProfileActivity : AppCompatActivity() {
                         val root = pk?.let { it1 -> db.GetUser().child(it1) }
 
                         // Extract image url
-                        val avaUrl = uri.toString()
+                        newAvatarUrl = uri.toString()
 
                         // Save image url in realtime database
-                        root?.child("avatarUrl")?.setValue(avaUrl)
+                        root?.child("avatarUrl")?.setValue(newAvatarUrl)
 //                        Toast.makeText(applicationContext, "Upload successfully", Toast.LENGTH_LONG).show()
                     }
                 }?.addOnFailureListener {

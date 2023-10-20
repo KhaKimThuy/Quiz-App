@@ -108,8 +108,6 @@ class LoginActivity : AppCompatActivity() {
         var pk = db.extractPK(email)
         var reference = db.GetUser()
 
-
-
         reference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -139,8 +137,6 @@ class LoginActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(applicationContext, "System error", Toast.LENGTH_LONG).show()
             }
-
         })
-
     }
 }
