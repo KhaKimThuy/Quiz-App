@@ -67,8 +67,10 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828")
 
     // Progress Dialog Library
-    implementation("com.jpardogo.googleprogressbar:library:1.2.0")
+    implementation ("com.jpardogo.googleprogressbar:library:1.2.0")
 
+    // Image Picker
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

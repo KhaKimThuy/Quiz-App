@@ -122,7 +122,7 @@ class LoginActivity : AppCompatActivity() {
                             // Save current user
                             CommonUser.currentUser = user
 
-                            Toast.makeText(applicationContext, "Login successfully", Toast.LENGTH_LONG).show()
+                            Toast.makeText(applicationContext, "Login successfully", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, MainActivity::class.java)
                             startActivity(intent)
                         }else{

@@ -18,11 +18,7 @@ class MyDB(){
     }
 
     fun GetUserByID(): DatabaseReference? {
-        var email = CommonUser.currentUser?.email
-        var pk = email?.replace("@", "")
-        if (pk != null) {
-            pk = pk.replace(".","")
-        }
+        var pk = CommonUser.currentUser?.GetPK()
         return pk?.let { database.getReference("User").child(it) }
     }
 
