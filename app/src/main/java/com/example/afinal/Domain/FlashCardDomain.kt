@@ -5,6 +5,7 @@ import android.os.Parcelable
 import java.io.Serializable
 
 public class FlashCardDomain(
-    val engLanguage: String? = "",
-    val vnLanguage: String? = "",
+    var engLanguage: String? = "",
+    var vnLanguage: String? = "",
+    var topicPK : String = ""
 )

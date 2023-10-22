@@ -2,6 +2,7 @@ package com.example.afinal.DB
 
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.Domain.TopicDomain
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -15,6 +16,10 @@ class MyDB(){
 
     fun GetUser(): DatabaseReference {
         return database.getReference("User")
+    }
+
+    fun GetTopic(): DatabaseReference {
+        return database.getReference("Topic")
     }
 
     fun GetUserByID(): DatabaseReference? {
@@ -39,6 +44,12 @@ class MyDB(){
     fun RecyclerFlashCard(): FirebaseRecyclerOptions<FlashCardDomain> {
         return FirebaseRecyclerOptions.Builder<FlashCardDomain>()
             .setQuery(GetFlashCard(), FlashCardDomain::class.java)
+            .build()
+    }
+    fun RecyclerTopic(): FirebaseRecyclerOptions<TopicDomain> {
+        val query = GetTopic().orderByChild("userPK").equalTo(CommonUser.currentUser?.GetPK())
+        return FirebaseRecyclerOptions.Builder<TopicDomain>()
+            .setQuery(query, TopicDomain::class.java)
             .build()
     }
 

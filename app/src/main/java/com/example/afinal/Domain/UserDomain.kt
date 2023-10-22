@@ -1,6 +1,8 @@
 package com.example.afinal.Domain
 
 import com.example.afinal.Common.CommonUser
+import java.math.BigInteger
+import java.security.MessageDigest
 import kotlin.random.Random
 
 class UserDomain {
@@ -14,6 +16,11 @@ class UserDomain {
         pk = pk.replace(".", "")
         return pk
     }
+
+//    fun HashMD5(input:String): String{
+//        val md = MessageDigest.getInstance("MD5")
+//        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+//    }
 
     private fun RandomName() : String {
         val random = Random(System.currentTimeMillis())

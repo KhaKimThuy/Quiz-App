@@ -20,5 +20,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, SettingActivity::class.java)
             startActivity(intent)
         })
+
+        binding.layoutLibrary.setOnClickListener(View.OnClickListener{
+            val intent = Intent(applicationContext, LibraryActivity::class.java)
+            startActivity(intent)
+        })
+
+        binding.imageViewAdd.setOnClickListener(View.OnClickListener {
+            val intent = Intent(applicationContext, CreateStudyModuleActivity::class.java)
+            startActivity(intent)
+        })
     }
 }

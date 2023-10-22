@@ -1,10 +1,19 @@
 package com.example.afinal.Domain
 
+import android.text.Editable
+import com.example.afinal.Common.CommonUser
 import java.io.Serializable
+import java.math.BigInteger
+import java.security.MessageDigest
 
-class TopicDomain(
-    val topicName : String,
-    val name : String,
-    val avatarUrl : String,
-    val numWords : Int,
-) : Serializable{}
+class TopicDomain{
+    var topicName = ""
+    var userPK = CommonUser.currentUser?.GetPK()
+    var folderPK = ""
+    fun HashMD5(): String{
+        val md = MessageDigest.getInstance("MD5")
+        val pk = userPK+topicName
+        return BigInteger(1, md.digest(pk.toByteArray())).toString(16).padStart(32, '0')
+    }
+
+}

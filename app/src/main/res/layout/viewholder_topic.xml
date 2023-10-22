@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         android:elevation="2dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,45 +34,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/textView_topicname"
-                tools:layout_editor_absoluteX="24dp">
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/linearLayout2"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_marginTop="8dp"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/textView_topicname"-->
+            <!--                tools:layout_editor_absoluteX="24dp">-->
 
-                <TextView
-                    android:id="@+id/textView_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/text_bg"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="3dp"
-                    android:text="6 thuật ngữ" />
+            <!--                <TextView-->
+            <!--                    android:id="@+id/textView_num"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:background="@drawable/text_bg"-->
+            <!--                    android:paddingHorizontal="10dp"-->
+            <!--                    android:paddingVertical="3dp"-->
+            <!--                    android:text="6 thuật ngữ" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:background="@drawable/text_bg"
-                    android:drawableStart="@drawable/image_icon"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="3dp"
-                    android:text="Hình ảnh" />
-            </LinearLayout>
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginStart="16dp"-->
+            <!--                    android:background="@drawable/text_bg"-->
+            <!--                    android:drawableStart="@drawable/image_icon"-->
+            <!--                    android:paddingHorizontal="10dp"-->
+            <!--                    android:paddingVertical="3dp"-->
+            <!--                    android:text="Hình ảnh" />-->
+            <!--            </LinearLayout>-->
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="48dp"
                 android:id="@+id/circleImageView_avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="20dp"
                 android:src="@drawable/cat"
                 app:civ_border_color="#FFFFFF"
                 app:civ_border_width="2dp"
-                app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+                app:layout_constraintStart_toStartOf="@+id/textView_topicname"
+                app:layout_constraintTop_toBottomOf="@+id/textView_topicname" />
 
             <TextView
                 android:id="@+id/textView_name"
