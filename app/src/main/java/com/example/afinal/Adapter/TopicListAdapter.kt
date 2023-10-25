@@ -28,7 +28,6 @@ class TopicListAdapter(options: FirebaseRecyclerOptions<TopicDomain>) :
     }
 
     override fun onBindViewHolder(holder: TopicViewHolder, position: Int, model: TopicDomain) {
-        holder.topic_name.text = model.topicName
+        holder.bind(model)
     }
-
 }

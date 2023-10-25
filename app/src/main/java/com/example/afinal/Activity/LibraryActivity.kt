@@ -40,15 +40,16 @@ class LibraryActivity : AppCompatActivity() {
 
 
 
-        val adapterPP = ViewLibraryAdapter(supportFragmentManager, lifecycle)
-        viewPaper.adapter = adapterPP
-        TabLayoutMediator(binding.tabLayout, binding.paperTab) {tab, pos ->
-            when(pos) {
-                0 -> {tab.text = resources.getText(R.string.module_study)}
-                1 -> {tab.text = resources.getText(R.string.folder)}
-                2 -> {tab.text = resources.getText(R.string._class)}
-            }
-        }.attach()
+//        val adapterPP = ViewLibraryAdapter(supportFragmentManager, lifecycle)
+//        viewPaper.adapter = adapterPP
+
+//        TabLayoutMediator(binding.tabLayout, binding.paperTab) {tab, pos ->
+//            when(pos) {
+//                0 -> {tab.text = resources.getText(R.string.module_study)}
+//                1 -> {tab.text = resources.getText(R.string.folder)}
+//                2 -> {tab.text = resources.getText(R.string._class)}
+//            }
+//        }.attach()
     }
 //    private fun setUpTabs() {
 //        val adapter = VPAdapter(supportFragmentManager);
@@ -63,6 +64,7 @@ class LibraryActivity : AppCompatActivity() {
         adapter = TopicListAdapter(options)
         binding.recyclerViewTopicList.adapter = adapter
     }
+
     override fun onStart() {
         super.onStart()
         adapter.startListening()

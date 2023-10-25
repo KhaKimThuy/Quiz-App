@@ -31,21 +31,13 @@ class MyDB(){
         return database.getReference("Item")
     }
 
-    fun GetFlashCard(): Query {
-        // Extract pk
-        var email = CommonUser.currentUser?.email
-        var pk = email?.replace("@", "")
-        if (pk != null) {
-            pk = pk.replace(".", "")
-        }
-        return reference.orderByChild("userID").equalTo(pk)
-    }
-
-    fun RecyclerFlashCard(): FirebaseRecyclerOptions<FlashCardDomain> {
+    fun RecyclerItem(topicPK : String): FirebaseRecyclerOptions<FlashCardDomain> {
+        val query = GetItem().orderByChild("topicPK").equalTo(topicPK)
         return FirebaseRecyclerOptions.Builder<FlashCardDomain>()
-            .setQuery(GetFlashCard(), FlashCardDomain::class.java)
+            .setQuery(query, FlashCardDomain::class.java)
             .build()
     }
+
     fun RecyclerTopic(): FirebaseRecyclerOptions<TopicDomain> {
         val query = GetTopic().orderByChild("userPK").equalTo(CommonUser.currentUser?.GetPK())
         return FirebaseRecyclerOptions.Builder<TopicDomain>()

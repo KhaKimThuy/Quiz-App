@@ -34,14 +34,15 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         // Init data
         itemList.add(FlashCardDomain("", ""))
         itemList.add(FlashCardDomain("", ""))
-        adapter = AddItemTopicAdapter(itemList)
 
+        adapter = AddItemTopicAdapter(itemList)
         binding.recyclerViewAddTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewAddTopic.adapter = adapter
 
         binding.imageViewAddItem.setOnClickListener(View.OnClickListener {
             itemList.add(FlashCardDomain("", ""))
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemInserted(itemList.size - 1)
+//            adapter.notifyDataSetChanged()
         })
 
         binding.checkOk.setOnClickListener(View.OnClickListener {
@@ -55,9 +56,13 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         // Add topic
         val topicRef = db.GetTopic()
         val topic = TopicDomain()
-        topic.topicName = binding.edtTopicName.text.toString()
-
         val topicPK = topicRef.push().key
+
+        topic.topicName = binding.edtTopicName.text.toString()
+        if (topicPK != null) {
+            topic.topicPK = topicPK
+        }
+
         topicRef.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (topicPK?.let { snapshot.hasChild(it) } == true){
