@@ -23,4 +23,8 @@ class VPAdapter(supportFragmentManager: FragmentManager) :
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
+
+    override fun getPageTitle(position: Int): CharSequence {
+        return mFragmentTitleList[position];
+    }
 }

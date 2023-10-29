@@ -23,8 +23,8 @@ class MainActivity2 : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.homeE -> replaceFragment(FragmentHome())
-                R.id.answers -> replaceFragment(FragmentFolder())
-                R.id.library -> replaceFragment(FragmentFolder())
+                R.id.answers -> replaceFragment(FragmentLibrary())
+                R.id.library -> replaceFragment(FragmentLibrary())
                 R.id.profile -> replaceFragment(FragmentSettings())
             }
             true

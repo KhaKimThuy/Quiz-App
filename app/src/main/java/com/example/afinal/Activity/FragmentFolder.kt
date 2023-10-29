@@ -5,47 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import androidx.viewpager2.widget.ViewPager2
 import com.example.afinal.Adapter.TopicListAdapter
+import com.example.afinal.Adapter.VPAdapter
 import com.example.afinal.DB.MyDB
 import com.example.afinal.R
-import com.google.android.material.tabs.TabLayout
+import com.example.afinal.databinding.FragmentFolderBinding
+import com.example.afinal.databinding.FragmentLibraryBinding
 
 class FragmentFolder : Fragment() {
     private lateinit var adapter: TopicListAdapter
     private lateinit var db: MyDB
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var tabLayout: TabLayout
+    private lateinit var vpAdapter: VPAdapter
+    private lateinit var binding : FragmentFolderBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_folder, container, false)
-        recyclerView = rootView.findViewById(R.id.recyclerView_topicList)
-        tabLayout = rootView.findViewById(R.id.tabLayout)
-
-        db = MyDB()
-        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        loadTopic()
         // Inflate the layout for this fragment
-        return rootView
-    }
-    private fun loadTopic(){
-        val options = db.RecyclerTopic()
-        adapter = TopicListAdapter(options)
-        recyclerView.adapter = adapter
+        return inflater.inflate(R.layout.fragment_folder, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        adapter.startListening()
-    }
 
-    override fun onStop() {
-        super.onStop()
-        adapter.stopListening()
-    }
+//    private fun loadTopic(){
+//        val options = db.RecyclerTopic()
+//        adapter = TopicListAdapter(options)
+//        recyclerView.adapter = adapter
+//    }
+//
+//    override fun onStart() {
+//        super.onStart()
+//        adapter.startListening()
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        adapter.stopListening()
+//    }
 }
