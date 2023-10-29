@@ -42,7 +42,6 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         binding.imageViewAddItem.setOnClickListener(View.OnClickListener {
             itemList.add(FlashCardDomain("", ""))
             adapter.notifyItemInserted(itemList.size - 1)
-//            adapter.notifyDataSetChanged()
         })
 
         binding.checkOk.setOnClickListener(View.OnClickListener {
