@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_No"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp">
@@ -9,9 +10,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="10dp"
-        android:elevation="2dp"
         android:background="@color/white"
+        android:elevation="2dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,6 +25,15 @@
             android:paddingHorizontal="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/textView_numberItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="20 thuật ngữ"
+                app:layout_constraintStart_toStartOf="@+id/textView_topicname"
+                app:layout_constraintTop_toBottomOf="@+id/textView_topicname" />
 
             <TextView
                 android:id="@+id/textView_topicname"
@@ -64,10 +75,10 @@
             <!--            </LinearLayout>-->
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginTop="48dp"
                 android:id="@+id/circleImageView_avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="48dp"
                 android:src="@drawable/cat"
                 app:civ_border_color="#FFFFFF"
                 app:civ_border_width="2dp"
@@ -86,7 +97,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

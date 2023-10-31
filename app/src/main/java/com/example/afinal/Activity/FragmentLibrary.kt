@@ -18,7 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class FragmentLibrary : Fragment() {
     private lateinit var adapter: TopicListAdapter
     private lateinit var db: MyDB
-    private lateinit var vpAdapter: VPAdapter
+    private lateinit var vpAdapter: VPAdapter2
     private lateinit var binding : FragmentLibraryBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +31,8 @@ class FragmentLibrary : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter= activity?.let { VPAdapter2(it.supportFragmentManager,lifecycle) }
-        binding.viewPager.adapter = adapter
+        vpAdapter = activity?.let { VPAdapter2(it.supportFragmentManager, lifecycle) }!!
+        binding.viewPager.adapter = vpAdapter
 
         TabLayoutMediator(binding.tabLayout,binding.viewPager){tab,position->
             when(position){
@@ -49,6 +49,15 @@ class FragmentLibrary : Fragment() {
         }.attach()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.viewPager.adapter = vpAdapter
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.viewPager.adapter = vpAdapter
+    }
 
 //        vpAdapter = VPAdapter(a)
 //        vpAdapter.addFragment(FragmentStudyModule(), "Học phần")

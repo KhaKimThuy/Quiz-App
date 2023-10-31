@@ -2,6 +2,7 @@ package com.example.afinal.Activity
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.View
@@ -59,7 +60,21 @@ class ProfileActivity : AppCompatActivity() {
         intent.putExtra("password", passwordFromDB)
 
         val drawable = binding.ava.drawable
-        val bitmap = (drawable as BitmapDrawable).bitmap
+//        val bitmap = (drawable as BitmapDrawable).bitmap
+        var bitmap: Bitmap? = null
+        if (drawable is BitmapDrawable) {
+            bitmap = drawable.bitmap
+        } else {
+            // If the drawable is not a BitmapDrawable, create a new Bitmap and draw the drawable on it
+            bitmap = Bitmap.createBitmap(
+                drawable.intrinsicWidth,
+                drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+        }
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         val byteArray = stream.toByteArray()
@@ -76,5 +91,10 @@ class ProfileActivity : AppCompatActivity() {
                 loadUserInfo()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadUserInfo()
     }
 }

@@ -13,7 +13,6 @@ import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityLibraryBinding
-import com.example.afinal.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

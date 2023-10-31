@@ -2,8 +2,6 @@ package com.example.afinal.Activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.StrictMode
-import android.os.StrictMode.VmPolicy
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.afinal.Common.CommonUser
@@ -11,14 +9,9 @@ import com.example.afinal.DB.MyDB
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityLoginBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.getValue
-import java.util.Objects
 
 
 class LoginActivity : AppCompatActivity() {
@@ -102,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
 //        val email = binding.edtUsername.text.toString()
 //        val pass = binding.edtPassword.text.toString()
         val email = "khathuy243@gmail.com"
-        val pass = "123123"
+        val pass = "12345"
 
         // Extract pk from email
         var pk = db.extractPK(email)

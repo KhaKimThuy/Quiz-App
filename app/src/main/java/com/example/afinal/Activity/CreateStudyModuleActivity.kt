@@ -70,7 +70,7 @@ class CreateStudyModuleActivity : AppCompatActivity() {
                     if (topicPK != null) {
                         topicRef.child(topicPK).setValue(topic)
                     }
-                    var intent = Intent(applicationContext, MainActivity::class.java)
+                    var intent = Intent(applicationContext, MainActivity2::class.java)
                     startActivity(intent)
                 }
             }
