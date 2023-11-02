@@ -48,6 +48,10 @@ class CreateStudyModuleActivity : AppCompatActivity() {
             addTopic()
         })
 
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            onBackPressed();
+        })
+
     }
 
     private fun addTopic(){

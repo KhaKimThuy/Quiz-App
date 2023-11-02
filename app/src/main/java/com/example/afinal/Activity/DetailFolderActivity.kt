@@ -3,6 +3,7 @@ package com.example.afinal.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.FlashCardAdapter
@@ -53,6 +54,10 @@ class DetailFolderActivity : AppCompatActivity() {
         // Load topic in selected folder
         binding.recyclerViewTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         loadTopic()
+
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            onBackPressed();
+        })
     }
     private fun loadTopic(){
         val options = db.RecyclerTopic()
@@ -69,4 +74,5 @@ class DetailFolderActivity : AppCompatActivity() {
         super.onStop()
         adapter.stopListening()
     }
+
 }

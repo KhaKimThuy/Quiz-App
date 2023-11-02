@@ -49,4 +49,5 @@ class FragmentFolder : Fragment() {
         super.onStop()
         adapter.stopListening()
     }
+
 }
