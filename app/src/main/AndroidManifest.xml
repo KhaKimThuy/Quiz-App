@@ -92,6 +92,11 @@
         <activity
             android:name=".Activity.SettingActivity"
             android:exported="false" />
+        <activity android:name=".Activity.ActivityRanking"
+            android:exported="false">
+        </activity>
+        <activity android:name=".Activity.ActivityChangePassword"
+            android:exported="false"/>
     </application>
 
 </manifest>
