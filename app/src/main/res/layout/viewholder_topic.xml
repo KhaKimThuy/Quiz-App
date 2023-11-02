@@ -32,11 +32,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="20 thuật ngữ"
-                app:layout_constraintStart_toStartOf="@+id/textView_topicname"
-                app:layout_constraintTop_toBottomOf="@+id/textView_topicname" />
+                app:layout_constraintStart_toStartOf="@+id/tv_folderName"
+                app:layout_constraintTop_toBottomOf="@+id/tv_folderName" />
 
             <TextView
-                android:id="@+id/textView_topicname"
+                android:id="@+id/tv_folderName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Food and drink"
@@ -82,8 +82,8 @@
                 android:src="@drawable/cat"
                 app:civ_border_color="#FFFFFF"
                 app:civ_border_width="2dp"
-                app:layout_constraintStart_toStartOf="@+id/textView_topicname"
-                app:layout_constraintTop_toBottomOf="@+id/textView_topicname" />
+                app:layout_constraintStart_toStartOf="@+id/tv_folderName"
+                app:layout_constraintTop_toBottomOf="@+id/tv_folderName" />
 
             <TextView
                 android:id="@+id/textView_name"

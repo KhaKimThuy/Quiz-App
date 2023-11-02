@@ -41,9 +41,6 @@ class FragmentStudyModule : Fragment() {
         db = MyDB()
         binding.recyclerViewTopicList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         loadTopic()
-
-        //loadTopic()
-        // Inflate the layout for this fragment
     }
     private fun loadTopic(){
         val options = db.RecyclerTopic()
