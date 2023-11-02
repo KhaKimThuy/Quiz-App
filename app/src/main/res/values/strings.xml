@@ -17,15 +17,16 @@
     <string name="pass_invalid">MẬT KHẨU PHẢI CÓ ĐỘ DÀI NHIỀU HƠN 8 KÝ TỰ</string>
 
     <!--    login activity-->
-    <string name="login_with_email">ĐĂNG NHẬP BẰNG EMAIL CỦA BẠN</string>
-    <string name="enter_email_or_username">Nhập email hoặc tên người dùng của bạn</string>
-    <string name="email_or_username">EMAIL HOẶC TÊN NGƯỜI DÙNG</string>
+    <string name="enter_email_or_username">Nhập email hoặc tên người dùng</string>
     <string name="enter_password">Nhập mật khẩu của bạn</string>
     <string name="forgot_username_password">Quên người dùng hoặc mật khẩu?</string>
     <string name="user_isnot_exist">Người dùng không tồn tại</string>
     <string name="login">Đăng nhập</string>
-    <string name="username_empty">VUI LÒNG NHẬP EMAIL HOẶC TÊN NGƯỜI DÙNG</string>
-    <string name="password_empty">VUI LÒNG NHẬP MẬT KHẨU</string>
+    <string name="username_empty">Vui lòng nhập email hoặc tên người dùng</string>
+    <string name="password_empty">Vui lòng nhập mật khẩu</string>
+    <string name="or_login_with">\u2501 Hoặc đăng nhập bằng \u2501</string>
+
+
 
     <!--    main activity-->
     <string name="title_find">Học phần, sách giáo khoa, câu hỏi</string>
@@ -64,4 +65,16 @@
     <string name="enter_pass2">NHẬP LẠI MẬT KHẨU</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Change password activity-->
+    <string name="change_pass">Đổi mật khẩu</string>
+    <string name="pass_now">Nhập mật khẩu hiện tại</string>
+    <string name="pass_ch1">Nhập mật khẩu mới</string>
+    <string name="pass_ch2">Nhập lại mật khẩu mới</string>
+    <string name="pass_ch_invalid"><font color="#ff0000">Mật khẩu phải ít nhất 8 ký tự</font></string>
+    <string name="pass_not_match"><font color="#ff0000">Không khớp mật khẩu</font></string>
+    <string name="pass_now_false"><font color="#ff0000">Mật khẩu hiện tại không đúng</font></string>
+    <string name="pass_change_confim">Xác nhận</string>
+    <!--Forgot password-->
+    <string name="forgot_pass">Quên mật khẩu</string>
+    <string name="email_to_recover">Nhập email để khôi phục mật khẩu</string>
 </resources>

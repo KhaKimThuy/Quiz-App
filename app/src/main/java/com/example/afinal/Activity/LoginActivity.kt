@@ -29,10 +29,10 @@ class LoginActivity : AppCompatActivity() {
         db = MyDB()
 
         // To register activity
-        binding.textView2Register.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+//        binding.textView2Register.setOnClickListener {
+//            val intent = Intent(this, RegisterActivity::class.java)
+//            startActivity(intent)
+//        }
 
         // To login
         binding.btnLogin.setOnClickListener{
