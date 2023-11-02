@@ -1,5 +1,6 @@
 package com.example.afinal.ViewHolder
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import android.widget.ImageView
@@ -8,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.DB.MyDB
-import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Interface.ValueEventListenerCallback
 import com.example.afinal.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 
 class TopicViewHolder(view : View): RecyclerView.ViewHolder(view){
@@ -25,9 +29,19 @@ class TopicViewHolder(view : View): RecyclerView.ViewHolder(view){
         Picasso.get().load(CommonUser.currentUser?.avatarUrl).into(avatar)
     }
 
+    @SuppressLint("SetTextI18n")
     fun bind(topic: TopicDomain) {
         topicName.text = topic.topicName
-        numberItems.text = db.GetNumberOfItemInTopic(topic.topicPK) + " Thuật ngữ";
+        db.getDataFromQuery(topic.topicPK, object : ValueEventListenerCallback{
+            override fun onDataChange(dataSnapshot: Long) {
+                numberItems.text = "$dataSnapshot Thuật ngữ"
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                numberItems.text = "0 Thuật ngữ"
+            }
+
+        }).toString()
 
         itemView.setOnClickListener{
             val intent = Intent(itemView.context, DetailTopicActivity::class.java)
