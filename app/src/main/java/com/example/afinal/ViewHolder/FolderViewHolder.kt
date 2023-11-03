@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.DB.MyDB
@@ -16,9 +17,8 @@ import com.example.afinal.R
 import com.google.firebase.database.DatabaseError
 import com.squareup.picasso.Picasso
 
-class TopicViewHolder(view : View): RecyclerView.ViewHolder(view){
-    val topicName = view.findViewById<TextView>(R.id.tv_folderName)
-    val numberItems = view.findViewById<TextView>(R.id.textView_numberItems)
+class FolderViewHolder(view : View): RecyclerView.ViewHolder(view){
+    val folderName = view.findViewById<TextView>(R.id.tv_folderName)
     val owner = view.findViewById<TextView>(R.id.textView_name)
     val avatar = view.findViewById<ImageView>(R.id.circleImageView_avatar)
     val db = MyDB()
@@ -28,27 +28,22 @@ class TopicViewHolder(view : View): RecyclerView.ViewHolder(view){
         Picasso.get().load(CommonUser.currentUser?.avatarUrl).into(avatar)
     }
 
-    @SuppressLint("SetTextI18n")
-    fun bind(topic: TopicDomain) {
-        topicName.text = topic.topicName
-        db.GetTheNumberOfItemsInTopic(topic.topicPK, object : ValueEventListenerCallback{
-            override fun onDataChange(dataSnapshot: Long) {
-                numberItems.text = "$dataSnapshot Thuật ngữ"
-            }
-
-            override fun onDataChange(dataSnapshot: FolderDomain) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                numberItems.text = "0 Thuật ngữ"
-            }
-
-        }).toString()
-
+    fun bind(folder: FolderDomain) {
+//        topicName.text = topic.topicName
+//        db.GetTheNumberOfItemsInTopic(topic.topicPK, object : ValueEventListenerCallback {
+//            override fun onDataChange(dataSnapshot: Long) {
+//                numberItems.text = "$dataSnapshot Thuật ngữ"
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                numberItems.text = "0 Thuật ngữ"
+//            }
+//
+//        }).toString()
+        folderName.text = folder.folderName
         itemView.setOnClickListener{
-            val intent = Intent(itemView.context, DetailTopicActivity::class.java)
-            intent.putExtra("topic", topic.topicPK)
+            val intent = Intent(itemView.context, DetailFolderActivity::class.java)
+            intent.putExtra("folderPK", folder.folderPK)
             itemView.context.startActivity(intent)
         }
     }
