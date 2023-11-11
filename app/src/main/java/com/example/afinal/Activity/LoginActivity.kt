@@ -92,10 +92,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login() {
-//        val email = binding.edtUsername.text.toString()
-//        val pass = binding.edtPassword.text.toString()
-        val email = "khathuy243@gmail.com"
-        val pass = "12345"
+        val email = binding.edtUsername.text.toString()
+        val pass = binding.edtPassword.text.toString()
+//        val email = "khathuy243@gmail.com"
+//        val pass = "12345"
 
         // Extract pk from email
         var pk = db.extractPK(email)
