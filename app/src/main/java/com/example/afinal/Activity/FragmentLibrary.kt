@@ -16,8 +16,6 @@ import com.example.afinal.databinding.FragmentLibraryBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 class FragmentLibrary : Fragment() {
-    private lateinit var adapter: TopicListAdapter
-    private lateinit var db: MyDB
     private lateinit var vpAdapter: VPAdapter2
     private lateinit var binding : FragmentLibraryBinding
     override fun onCreateView(
@@ -34,30 +32,34 @@ class FragmentLibrary : Fragment() {
         vpAdapter = activity?.let { VPAdapter2(it.supportFragmentManager, lifecycle) }!!
         binding.viewPager.adapter = vpAdapter
 
-        TabLayoutMediator(binding.tabLayout,binding.viewPager){tab,position->
+        TabLayoutMediator(binding.tabLayout, binding.viewPager){tab,position->
             when(position){
-                0->{
+                0 -> {
                     tab.text="Học phần"
                 }
-                1->{
+                1 -> {
                     tab.text="Thư mục"
                 }
-                2->{
+                2 -> {
                     tab.text="Lớp học"
                 }
             }
         }.attach()
+
+
+//        val mPagerAdapter = VPAdapter2(childFragmentManager);
+//        mPager.setAdapter(mPagerAdapter);
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.viewPager.adapter = vpAdapter
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        binding.viewPager.adapter = vpAdapter
+//    }
 
-    override fun onPause() {
-        super.onPause()
-        binding.viewPager.adapter = vpAdapter
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        binding.viewPager.adapter = vpAdapter
+//    }
 
 //        vpAdapter = VPAdapter(a)
 //        vpAdapter.addFragment(FragmentStudyModule(), "Học phần")
@@ -72,5 +74,8 @@ class FragmentLibrary : Fragment() {
 //        //loadTopic()
 //        // Inflate the layout for this fragment
 //    }
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
 }

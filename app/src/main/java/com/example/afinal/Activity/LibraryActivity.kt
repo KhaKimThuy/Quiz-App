@@ -21,7 +21,6 @@ class LibraryActivity : AppCompatActivity() {
     private lateinit var adapter: TopicListAdapter
     private lateinit var db: MyDB
 
-
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPaper: ViewPager2
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,13 +30,8 @@ class LibraryActivity : AppCompatActivity() {
 
         // Setup db
         db = MyDB()
-
         binding.recyclerViewTopicList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-
         loadTopic()
-
-
 
 //        val adapterPP = ViewLibraryAdapter(supportFragmentManager, lifecycle)
 //        viewPaper.adapter = adapterPP

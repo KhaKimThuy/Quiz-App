@@ -1,16 +1,17 @@
 package com.example.afinal.DB
 
+import android.util.Log
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Domain.UserDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
@@ -82,16 +83,39 @@ class MyDB() {
         query.addValueEventListener(valueEventListener)
     }
 
+    fun GetTheNumberOfTopicsInFolder(folderPK: String, callback: ValueEventListenerCallback) {
+        val query = GetTopic().orderByChild("folderPK").equalTo(folderPK)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Khi dữ liệu thay đổi, hoặc được tải về lần đầu tiên
+                callback.onDataChange(dataSnapshot.childrenCount)
+                query.removeEventListener(this) // Hủy đăng ký listener
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Xử lý lỗi nếu có
+                callback.onCancelled(databaseError)
+                query.removeEventListener(this) // Hủy đăng ký listener
+            }
+        }
+        query.addValueEventListener(valueEventListener)
+    }
 
-
-
-
-
-    fun RecyclerTopic(): FirebaseRecyclerOptions<TopicDomain> {
-        val query = GetTopic().orderByChild("userPK").equalTo(CommonUser.currentUser?.GetPK())
+    fun RecyclerTopic(folderPK : String = ""): FirebaseRecyclerOptions<TopicDomain> {
+        val query : Query
+        if (folderPK == "") {
+            query = GetTopic().orderByChild("userPK")
+                .equalTo(CommonUser.currentUser?.GetPK())
+        } else {
+            query = GetTopic()
+                .orderByChild("folderPK").equalTo(folderPK)
+        }
         return FirebaseRecyclerOptions.Builder<TopicDomain>()
             .setQuery(query, TopicDomain::class.java)
             .build()
+    }
+
+    fun GetTopicByID(topicPK: String) : DatabaseReference {
+        return GetTopic().child(topicPK)
     }
 
     fun extractPK(email : String) : String{

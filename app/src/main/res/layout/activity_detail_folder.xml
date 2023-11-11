@@ -63,7 +63,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/textView_numTopic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
@@ -78,9 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="học phần"
-            app:layout_constraintBottom_toBottomOf="@+id/textView24"
-            app:layout_constraintStart_toEndOf="@+id/textView24"
-            app:layout_constraintTop_toTopOf="@+id/textView24" />
+            app:layout_constraintBottom_toBottomOf="@+id/textView_numTopic"
+            app:layout_constraintStart_toEndOf="@+id/textView_numTopic"
+            app:layout_constraintTop_toTopOf="@+id/textView_numTopic" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -103,7 +103,6 @@
         android:src="@drawable/add_circle"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_gravity="right"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </LinearLayout>

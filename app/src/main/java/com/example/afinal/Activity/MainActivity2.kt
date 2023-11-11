@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +21,21 @@ import com.example.afinal.databinding.ActivityMain2Binding
 
 class MainActivity2 : AppCompatActivity() {
     private lateinit var binding : ActivityMain2Binding
+    private lateinit var fragmentManager: FragmentManager
+    private lateinit var fragmentTransaction: FragmentTransaction
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         //setContentView(R.layout.activity_main2)
+        fragmentManager = supportFragmentManager
 
-        replaceFragment(FragmentHome())
+        fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, FragmentHome())
+        //fragmentTransaction.addToBackStack(FragmentHome().tag)
+        fragmentTransaction.commitNow()
+
+
         binding.bottomNavigationView.background = null
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -74,9 +83,23 @@ class MainActivity2 : AppCompatActivity() {
         //https://www.youtube.com/watch?v=ahNruIZX130
     }
     private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager: FragmentManager = supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, fragment)
-        fragmentTransaction.commit()
+        if (fragmentManager != null) {
+            fragmentManager.popBackStack()
+            //fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            if (fragment != null) {
+                fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, fragment)
+            }
+            if (fragment != null) {
+                fragmentTransaction.addToBackStack(fragment.tag)
+            }
+            fragmentTransaction.commit()
+        }
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 }

@@ -29,18 +29,10 @@ class FolderViewHolder(view : View): RecyclerView.ViewHolder(view){
     }
 
     fun bind(folder: FolderDomain) {
-//        topicName.text = topic.topicName
-//        db.GetTheNumberOfItemsInTopic(topic.topicPK, object : ValueEventListenerCallback {
-//            override fun onDataChange(dataSnapshot: Long) {
-//                numberItems.text = "$dataSnapshot Thuật ngữ"
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                numberItems.text = "0 Thuật ngữ"
-//            }
-//
-//        }).toString()
         folderName.text = folder.folderName
+
+
+
         itemView.setOnClickListener{
             val intent = Intent(itemView.context, DetailFolderActivity::class.java)
             intent.putExtra("folderPK", folder.folderPK)

@@ -103,9 +103,10 @@ class LoginActivity : AppCompatActivity() {
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 // Check if pk in database
                 if (snapshot.hasChild(pk)){
+                    Toast.makeText(applicationContext, "Hello guys", Toast.LENGTH_SHORT).show()
+
                     val user = snapshot.child(pk).getValue(UserDomain::class.java)
                     if (user != null) {
                         if(user.password == pass){

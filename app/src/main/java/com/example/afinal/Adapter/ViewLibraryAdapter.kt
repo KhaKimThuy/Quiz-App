@@ -12,7 +12,7 @@ class ViewLibraryAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> {FragmentStudyModule()}
+            0 -> {FragmentTopic()}
             1 -> {FragmentLibrary()}
             else -> {FragmentClass()}
         }

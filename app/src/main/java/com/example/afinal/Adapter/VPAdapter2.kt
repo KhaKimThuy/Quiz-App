@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.afinal.Activity.FragmentClass
 import com.example.afinal.Activity.FragmentFolder
-import com.example.afinal.Activity.FragmentStudyModule
+import com.example.afinal.Activity.FragmentTopic
 
 class VPAdapter2(fragmentManager: FragmentManager,lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
@@ -16,7 +16,7 @@ class VPAdapter2(fragmentManager: FragmentManager,lifecycle: Lifecycle): Fragmen
     override fun createFragment(position: Int): Fragment {
         return   when(position){
             0->{
-                FragmentStudyModule()
+                FragmentTopic()
             }
             1->{
                 FragmentFolder()
