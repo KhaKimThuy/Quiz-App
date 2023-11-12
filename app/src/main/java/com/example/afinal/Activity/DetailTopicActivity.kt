@@ -7,7 +7,6 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +23,8 @@ class DetailTopicActivity : AppCompatActivity() {
     private lateinit var adapter : FlashCardAdapter
     private lateinit var topic : TopicDomain
     private lateinit var numItems : String
+    private lateinit var itemList: ArrayList<FlashCardDomain>
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,8 @@ class DetailTopicActivity : AppCompatActivity() {
 
         // Init Firebase
         db = MyDB()
+        itemList = ArrayList<FlashCardDomain>()
+
 
         // Load topic
         topic = intent.getParcelableExtra("topic")!!
@@ -43,23 +46,19 @@ class DetailTopicActivity : AppCompatActivity() {
         loadInfoTopic()
 
         binding.itemViewFlashCard.setOnClickListener(View.OnClickListener {
-            val itemList: ArrayList<FlashCardDomain> = ArrayList<FlashCardDomain>()
-            for (i in 0 until adapter.itemCount) {
-                val item = adapter.getItem(i)
-                itemList.add(item)
-            }
-
             val intent = Intent(this, FlashCardStudyActivity::class.java)
             val bundle = Bundle()
             bundle.putParcelableArrayList("itemList", itemList)
             intent.putExtras(bundle)
-            this.startActivity(intent)
-
             startActivity(intent)
         })
 
         binding.imgMore.setOnClickListener(View.OnClickListener {
             showOptionsMenu(it);
+        })
+
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            onBackPressed()
         })
     }
 
@@ -107,28 +106,38 @@ class DetailTopicActivity : AppCompatActivity() {
         val options = db.RecyclerItem(topic.topicPK)
         adapter = FlashCardAdapter(options)
         binding.recyclerviewFlashcard.adapter = adapter
+
+        // Add item to arraylist
+        for (i in 0 until adapter.itemCount) {
+            val item = adapter.getItem(i)
+            itemList.add(item)
+        }
     }
 
     @Throws(Resources.NotFoundException::class)
     private fun deleteDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Confirm Delete")
-            .setMessage("Are you sure you want to delete this item?")
-            .setPositiveButton("Delete") { dialog, which ->
-                Toast.makeText(this, "Delete handle", Toast.LENGTH_SHORT).show()
+            .setMessage("Bạn chắc chắn muốn xóa học phần này vĩnh viễn?")
+            .setPositiveButton("Xóa") { dialog, which ->
+//                 Delete topic and items in it
+                for (it in itemList) {
+                    db.DeleteItem(it)
+                }
+                itemList.clear()
+                db.DeleteTopic(topic)
+
+//                 Return to library fragment
+                val intent = Intent(this, FragmentLibrary::class.java)
+                startActivity(intent)
+
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton("Hủy", null)
             .show()
     }
 
     override fun onPause() {
         super.onPause()
-
-
-
     }
-
-
 
     override fun onStart() {
         super.onStart()

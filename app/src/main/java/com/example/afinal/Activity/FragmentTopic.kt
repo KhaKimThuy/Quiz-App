@@ -46,4 +46,14 @@ class FragmentTopic : Fragment() {
         super.onStop()
         adapter.stopListening()
     }
+
+    override fun onPause() {
+        super.onPause()
+        adapter.stopListening()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.startListening()
+    }
 }

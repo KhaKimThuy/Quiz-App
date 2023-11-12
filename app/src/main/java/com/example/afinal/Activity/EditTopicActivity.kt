@@ -36,7 +36,6 @@ class EditTopicActivity : AppCompatActivity() {
         // Load current topic information
         loadCurrentTopic()
 
-
         // Create new item
         binding.imageViewAddItem.setOnClickListener(View.OnClickListener {
             itemList.add(FlashCardDomain())

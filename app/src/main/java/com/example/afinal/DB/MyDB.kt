@@ -126,6 +126,30 @@ class MyDB() {
         }
     }
 
+    fun DeleteItem(item : FlashCardDomain){
+        GetItem().child(item.itemPK).removeValue()
+            .addOnSuccessListener {
+                // Object deleted successfully
+                Log.d("Delete item", "Delete item success")
+            }
+            .addOnFailureListener { error ->
+                // Handle the error
+                Log.d("Delete item", "Delete item success")
+            }
+    }
+
+    fun DeleteTopic(topic : TopicDomain) {
+        GetTopic().child(topic.topicPK).removeValue()
+            .addOnSuccessListener {
+                // Object deleted successfully
+                Log.d("Delete topic", "Delete topic success")
+            }
+            .addOnFailureListener { error ->
+                // Handle the error
+                Log.d("Delete topic", "Delete topic success")
+            }
+    }
+
     fun GetTheNumberOfItemsInTopic(topicPK: String, callback: ValueEventListenerCallback) {
         val query = GetItem().orderByChild("topicPK").equalTo(topicPK)
         val valueEventListener = object : ValueEventListener {
