@@ -15,14 +15,6 @@ class FlashCardAdapter(options: FirebaseRecyclerOptions<FlashCardDomain>) :
     override fun onBindViewHolder(holder: myviewholder, position: Int, model: FlashCardDomain) {
         holder.eng_lang.text = model.engLanguage
         holder.vn_lang.text = model.vnLanguage
-//        Glide.with(holder.img1.context).load(model.getPurl()).into(holder.img1)
-//        holder.img1.setOnClickListener { view ->
-//            val activity = view.context as AppCompatActivity
-//            activity.supportFragmentManager.beginTransaction().replace(
-//                R.id.wrapper,
-//                descfragment(model.getName(), model.getCourse(), model.getEmail(), model.getPurl())
-//            ).addToBackStack(null).commit()
-//        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myviewholder {
         val layoutInflater = LayoutInflater.from(parent.context)

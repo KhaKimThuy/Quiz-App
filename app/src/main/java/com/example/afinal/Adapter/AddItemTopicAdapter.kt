@@ -15,7 +15,6 @@ import com.example.afinal.ViewHolder.AddItemTopicHolder
 class AddItemTopicAdapter (
     private val itemList:ArrayList<FlashCardDomain>
 ) : RecyclerView.Adapter<AddItemTopicHolder>(){
-    private var cur_position : Int = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddItemTopicHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.viewholder_addtopic, parent, false)
@@ -24,6 +23,14 @@ class AddItemTopicAdapter (
 
     override fun onBindViewHolder(holder: AddItemTopicHolder, @SuppressLint("RecyclerView") position: Int) {
 
+        // Edit topic activity
+        if (!itemList[position].engLanguage.isNullOrEmpty() &&
+            !itemList[position].vnLanguage.isNullOrEmpty()) {
+            holder.eng_lang.text = itemList[position].engLanguage
+            holder.vn_lang.text = itemList[position].vnLanguage
+        }
+
+        // Create new item
         holder.eng_lang.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 itemList[position].engLanguage = p0.toString()
@@ -52,18 +59,6 @@ class AddItemTopicAdapter (
             }
         })
 
-//        holder.eng_lang.setOnFocusChangeListener { _, hasFocus ->
-//            if (hasFocus) {
-//            } else {
-//                itemList[position].engLanguage = holder.eng_lang.text.toString()
-//            }
-//        }
-//        holder.vn_lang.setOnFocusChangeListener { _, hasFocus ->
-//            if (hasFocus) {
-//            } else {
-//                itemList[position].vnLanguage = holder.vn_lang.text.toString()
-//            }
-//        }
 
     }
 

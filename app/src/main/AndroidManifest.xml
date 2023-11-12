@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.EditTopicActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.AddTopicToFolderActivity"
             android:exported="false" />
         <activity
@@ -53,8 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.AddPasswordActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Activity.AnswersActivity"
             android:exported="false" />
@@ -72,6 +74,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -95,7 +98,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.ActivityRanking"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".Activity.ActivityChangePassword"
             android:exported="false" />

@@ -92,10 +92,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun login() {
-        val email = binding.edtUsername.text.toString()
-        val pass = binding.edtPassword.text.toString()
-//        val email = "khathuy243@gmail.com"
-//        val pass = "12345"
+//        val email = binding.edtUsername.text.toString()
+//        val pass = binding.edtPassword.text.toString()
+        val email = "khathuy243@gmail.com"
+        val pass = "12345"
 
         // Extract pk from email
         var pk = db.extractPK(email)
@@ -105,8 +105,6 @@ class LoginActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Check if pk in database
                 if (snapshot.hasChild(pk)){
-                    Toast.makeText(applicationContext, "Hello guys", Toast.LENGTH_SHORT).show()
-
                     val user = snapshot.child(pk).getValue(UserDomain::class.java)
                     if (user != null) {
                         if(user.password == pass){

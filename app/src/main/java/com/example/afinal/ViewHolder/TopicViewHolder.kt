@@ -26,7 +26,7 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
     val numberItems = view.findViewById<TextView>(R.id.textView_numberItems)
     val owner = view.findViewById<TextView>(R.id.textView_name)
     val avatar = view.findViewById<ImageView>(R.id.circleImageView_avatar)
-    var mainView = view.findViewById<ConstraintLayout>(R.id.itemView)
+    var mainView = view.findViewById<ConstraintLayout>(R.id.itemView_flashCard)
 
 
     val db = MyDB()
@@ -44,7 +44,7 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
         topicName.text = topic.topicName
         db.GetTheNumberOfItemsInTopic(topic.topicPK, object : ValueEventListenerCallback{
             override fun onDataChange(dataSnapshot: Long) {
-                numberItems.text = "$dataSnapshot Thuật ngữ"
+                numberItems.text = "$dataSnapshot"
             }
 
             override fun onDataChange(dataSnapshot: FolderDomain) {
@@ -56,7 +56,7 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                numberItems.text = "0 Thuật ngữ"
+                numberItems.text = "0"
             }
 
         }).toString()
@@ -75,7 +75,8 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
                 Log.d("TAG", "Items = " + selectedTopic.size)
             }else{
                 val intent = Intent(itemView.context, DetailTopicActivity::class.java)
-                intent.putExtra("topic", topic.topicPK)
+                intent.putExtra("numItems", numberItems.text)
+                intent.putExtra("topic", topic)
                 itemView.context.startActivity(intent)
             }
         }

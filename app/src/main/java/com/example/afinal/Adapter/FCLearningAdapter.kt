@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.R
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class FCLearningAdapter (
-    private val cardList:ArrayList<FlashCardDomain>,
+class FCLearningAdapter(
+    private val cardList: ArrayList<FlashCardDomain>,
     private val viewPaper: ViewPager2
 ) : RecyclerView.Adapter<FCLearningAdapter.FCViewHolder>(){
 
