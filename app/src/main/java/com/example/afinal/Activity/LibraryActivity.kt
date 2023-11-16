@@ -4,17 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.afinal.Adapter.AddItemTopicAdapter
-import com.example.afinal.Adapter.FlashCardAdapter
 import com.example.afinal.Adapter.TopicListAdapter
-import com.example.afinal.Adapter.VPAdapter
 import com.example.afinal.DB.MyDB
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.R
 import com.example.afinal.databinding.ActivityLibraryBinding
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
 class LibraryActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLibraryBinding

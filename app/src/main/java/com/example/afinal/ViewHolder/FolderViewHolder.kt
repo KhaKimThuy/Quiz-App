@@ -30,12 +30,9 @@ class FolderViewHolder(view : View): RecyclerView.ViewHolder(view){
 
     fun bind(folder: FolderDomain) {
         folderName.text = folder.folderName
-
-
-
-        itemView.setOnClickListener{
+        itemView.setOnClickListener {
             val intent = Intent(itemView.context, DetailFolderActivity::class.java)
-            intent.putExtra("folderPK", folder.folderPK)
+            intent.putExtra("folder", folder)
             itemView.context.startActivity(intent)
         }
     }

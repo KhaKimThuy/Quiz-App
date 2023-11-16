@@ -54,11 +54,12 @@ class DetailTopicActivity : AppCompatActivity() {
         })
 
         binding.imgMore.setOnClickListener(View.OnClickListener {
-            showOptionsMenu(it);
+            showOptionsMenu(it)
         })
 
         binding.imgBack.setOnClickListener(View.OnClickListener {
-            onBackPressed()
+//            onBackPressed()
+            finish()
         })
     }
 
@@ -82,7 +83,6 @@ class DetailTopicActivity : AppCompatActivity() {
                     bundle.putParcelableArrayList("itemList", itemList)
                     intent.putExtras(bundle)
                     startActivity(intent)
-
                     true
                 }
                 com.example.afinal.R.id.delete -> {
@@ -125,11 +125,10 @@ class DetailTopicActivity : AppCompatActivity() {
                 }
                 itemList.clear()
                 db.DeleteTopic(topic)
-
 //                 Return to library fragment
-                val intent = Intent(this, FragmentLibrary::class.java)
+//                onDestroy()
+                val intent = Intent(this, MainActivity2::class.java)
                 startActivity(intent)
-
             }
             .setNegativeButton("Hủy", null)
             .show()

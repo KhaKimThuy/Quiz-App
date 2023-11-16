@@ -9,4 +9,5 @@ interface ValueEventListenerCallback {
     fun onDataChange(dataSnapshot: FolderDomain)
     fun onDataChangeTopic(dataSnapshot: TopicDomain)
     fun onCancelled(databaseError: DatabaseError)
+    fun onDataChange(topicIDs: ArrayList<String>)
 }

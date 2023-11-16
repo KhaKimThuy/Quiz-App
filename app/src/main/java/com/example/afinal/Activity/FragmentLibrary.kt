@@ -51,10 +51,10 @@ class FragmentLibrary : Fragment() {
 //        mPager.setAdapter(mPagerAdapter);
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        binding.viewPager.adapter = vpAdapter
-//    }
+    override fun onResume() {
+        super.onResume()
+        binding.viewPager.adapter = vpAdapter
+    }
 
 //    override fun onPause() {
 //        super.onPause()

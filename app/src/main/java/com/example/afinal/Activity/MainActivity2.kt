@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.afinal.Dialog.AddFolderDialog
+import com.example.afinal.Common.CommonUser
+import com.example.afinal.Dialog.FolderDialog
+import com.example.afinal.Domain.UserDomain
 import com.example.afinal.databinding.ActivityMain2Binding
 
 
@@ -23,6 +24,7 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var binding : ActivityMain2Binding
     private lateinit var fragmentManager: FragmentManager
     private lateinit var fragmentTransaction: FragmentTransaction
+    private lateinit var backupUser : UserDomain
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMain2Binding.inflate(layoutInflater)
@@ -72,7 +74,7 @@ class MainActivity2 : AppCompatActivity() {
             dialog.dismiss()
         })
         addFolderLayout.setOnClickListener(View.OnClickListener {
-            val folderDialog = AddFolderDialog()
+            val folderDialog = FolderDialog("Tọa thư mục")
             folderDialog.show(supportFragmentManager, "Folder dialog")
             dialog.dismiss()
         })
@@ -95,11 +97,17 @@ class MainActivity2 : AppCompatActivity() {
             }
             fragmentTransaction.commit()
         }
+    }
 
-
+    override fun onPause() {
+        super.onPause()
+        backupUser = CommonUser.currentUser!!
     }
 
     override fun onStart() {
         super.onStart()
+        if (CommonUser.currentUser == null) {
+            CommonUser.currentUser = backupUser
+        }
     }
 }

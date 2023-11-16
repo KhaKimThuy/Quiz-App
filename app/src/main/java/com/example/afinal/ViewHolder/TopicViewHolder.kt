@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.DB.MyDB
@@ -21,7 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.squareup.picasso.Picasso
 
 
-class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHolder(view){
+class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = false): RecyclerView.ViewHolder(view){
     val topicName = view.findViewById<TextView>(R.id.tv_folderName)
     val numberItems = view.findViewById<TextView>(R.id.textView_numberItems)
     val owner = view.findViewById<TextView>(R.id.textView_name)
@@ -31,16 +32,18 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
 
     val db = MyDB()
     var isAdd : Boolean = false
+    var isDel : Boolean = false
 
 
     init {
         owner.text = CommonUser.currentUser?.username ?: "Error"
         this.isAdd = isAdd
+        this.isDel = isDel
         Picasso.get().load(CommonUser.currentUser?.avatarUrl).into(avatar)
     }
 
     @SuppressLint("SetTextI18n")
-    fun bind(topic: TopicDomain, selectedTopic : ArrayList<TopicDomain>) {
+    fun bind(topic: TopicDomain, selectedTopic: ArrayList<TopicDomain>, activity: DetailFolderActivity?) {
         topicName.text = topic.topicName
         db.GetTheNumberOfItemsInTopic(topic.topicPK, object : ValueEventListenerCallback{
             override fun onDataChange(dataSnapshot: Long) {
@@ -48,6 +51,10 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
             }
 
             override fun onDataChange(dataSnapshot: FolderDomain) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(topicIDs: ArrayList<String>) {
                 TODO("Not yet implemented")
             }
 
@@ -73,11 +80,39 @@ class TopicViewHolder(view : View, isAdd: Boolean = false): RecyclerView.ViewHol
                     selectedTopic.add(topic)
                 }
                 Log.d("TAG", "Items = " + selectedTopic.size)
-            }else{
-                val intent = Intent(itemView.context, DetailTopicActivity::class.java)
-                intent.putExtra("numItems", numberItems.text)
-                intent.putExtra("topic", topic)
-                itemView.context.startActivity(intent)
+            }
+            else{
+                val backgroundDrawable = mainView.background
+                val backgroundColor = (backgroundDrawable as ColorDrawable).color
+                if (backgroundColor ==  Color.MAGENTA) {
+                    mainView.setBackgroundColor(Color.WHITE)
+                    selectedTopic.remove(topic)
+                    activity!!.checkDeleteItem()
+                } else {
+                    val intent = Intent(itemView.context, DetailTopicActivity::class.java)
+                    intent.putExtra("numItems", numberItems.text)
+                    intent.putExtra("topic", topic)
+                    itemView.context.startActivity(intent)
+                }
+            }
+        }
+
+        itemView.setOnLongClickListener{
+            if (this.isDel) {
+                val backgroundDrawable = mainView.background
+                val backgroundColor = (backgroundDrawable as ColorDrawable).color
+                if (backgroundColor ==  Color.MAGENTA) {
+                    mainView.setBackgroundColor(Color.WHITE)
+                    selectedTopic.remove(topic)
+                } else {
+                    mainView.setBackgroundColor(Color.MAGENTA)
+                    selectedTopic.add(topic)
+                }
+                activity!!.checkDeleteItem()
+                true
+            } else {
+                Log.d("Delete folder", "Fail to set on long click")
+                false
             }
         }
     }

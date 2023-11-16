@@ -1,25 +1,28 @@
 package com.example.afinal.DB
 
-import android.content.Intent
+import android.app.Activity
+import android.support.annotation.NonNull
 import android.util.Log
 import android.widget.Toast
-import com.example.afinal.Activity.CreateStudyModuleActivity
-import com.example.afinal.Activity.DetailTopicActivity
-import com.example.afinal.Activity.MainActivity2
+import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.TopicFolderDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.currentCoroutineContext
+import io.reactivex.rxjava3.internal.util.HalfSerializer.onComplete
+
 
 class MyDB() {
     var database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -38,27 +41,48 @@ class MyDB() {
         return database.getReference("Folder")
     }
 
+    fun GetTopicFolder(): DatabaseReference {
+        return database.getReference("TopicFolder")
+    }
+
     fun GetUserByID(): DatabaseReference? {
         var pk = CommonUser.currentUser?.GetPK()
         return pk?.let { database.getReference("User").child(it) }
     }
 
-    fun GetFolderByID(folderPK: String, callback: ValueEventListenerCallback) {
-        val query = GetFolder().orderByChild("folderPK").equalTo(folderPK)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val folder = dataSnapshot.child(folderPK).getValue(FolderDomain::class.java)
-                if (folder != null) {
-                    callback.onDataChange(folder)
+    fun GetFolderByID(folderPK: String) : DatabaseReference {
+        return GetFolder().child(folderPK)
+    }
+
+    fun GetTopicFolderByID(tfPK: String) : DatabaseReference {
+        return GetTopicFolder().child(tfPK)
+    }
+
+    fun CreateFolder(folderName : String, folderDesc : String) {
+        val folder = FolderDomain()
+        folder.folderName = folderName
+        folder.folderDesc = folderDesc
+        folder.folderPK = GetFolder().push().key!!
+
+        GetFolder().addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (folder.folderPK?.let { snapshot.hasChild(it) } == true){
+                    Log.d("Create folder", "Folder PK error")
+                }else{
+                    if (folder.folderPK != null) {
+                        GetFolder().child(folder.folderPK).setValue(folder)
+                    }
                 }
-                query.removeEventListener(this)
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-                callback.onCancelled(databaseError)
-                query.removeEventListener(this) // Hủy đăng ký listener
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("Create folder", "System error")
             }
-        }
-        query.addValueEventListener(valueEventListener)
+        })
+    }
+
+    fun EditFolder(folder: FolderDomain, folderName : String, folderDesc : String) {
+        GetFolderByID(folder.folderPK).child("folderName").setValue(folderName)
+        GetFolderByID(folder.folderPK).child("folderDesc").setValue(folderDesc)
     }
 
     fun GetTopicByID(topicPK: String) : DatabaseReference {
@@ -117,6 +141,62 @@ class MyDB() {
         })
     }
 
+    fun AddTopicForFolder(topic : TopicDomain, folder: FolderDomain) {
+        val topicFolder = TopicFolderDomain()
+        topicFolder.topicPK = topic.topicPK
+        topicFolder.folderPK = folder.folderPK
+        val tfPK = topicFolder.topicPK + topicFolder.folderPK
+        GetTopicFolder().addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                GetTopicFolder().child(tfPK).setValue(topicFolder)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun GetListTopicIDFromTF(activity: DetailFolderActivity, topicIDs: ArrayList<String>, folder: FolderDomain){
+        val query = GetTopicFolder().orderByChild("folderPK").equalTo(folder.folderPK)
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                topicIDs.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val yourObject = snapshot.getValue(TopicFolderDomain::class.java)
+                    if (yourObject != null) {
+                        topicIDs.add(yourObject.topicPK)
+                    }
+                }
+                GetListTopicFromTF(activity, topicIDs)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors
+            }
+        })
+    }
+
+    fun GetListTopicFromTF(activity : DetailFolderActivity, topicIDs: ArrayList<String>){
+
+        val topicList : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (key in topicIDs) {
+                    val snapshot = dataSnapshot.child(key)
+                    val yourObject = snapshot.getValue(TopicDomain::class.java)
+                    yourObject?.let { topicList.add(it) }
+                }
+                activity.loadFolder(topicList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors
+            }
+        }
+
+        GetTopic().addListenerForSingleValueEvent(valueEventListener)
+    }
+
     fun CreateItem(item : FlashCardDomain, topicPK : String = "") {
         val itemPK = GetItem().push().key
         if (itemPK != null) {
@@ -139,15 +219,46 @@ class MyDB() {
     }
 
     fun DeleteTopic(topic : TopicDomain) {
-        GetTopic().child(topic.topicPK).removeValue()
-            .addOnSuccessListener {
-                // Object deleted successfully
-                Log.d("Delete topic", "Delete topic success")
+        // Remove that topic in all folder
+        val query = GetTopicFolder().orderByChild("topicPK").equalTo(topic.topicPK)
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val tfObject = snapshot.getValue(TopicFolderDomain::class.java)
+                    val tfPK = (tfObject?.topicPK ?: "") + (tfObject?.folderPK ?: "")
+                    GetTopicFolderByID(tfPK).removeValue()
+                }
+                GetTopic().child(topic.topicPK).removeValue()
             }
-            .addOnFailureListener { error ->
-                // Handle the error
-                Log.d("Delete topic", "Delete topic success")
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors
             }
+        })
+
+    }
+
+    fun DeleteFolder(folder : FolderDomain) {
+        // Remove all topic-folder included in that folder
+        val query = GetTopicFolder().orderByChild("folderPK").equalTo(folder.folderPK)
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val tfObject = snapshot.getValue(TopicFolderDomain::class.java)
+                    val tfPK = (tfObject?.topicPK ?: "") + (tfObject?.folderPK ?: "")
+                    GetTopicFolderByID(tfPK).removeValue()
+                }
+                GetFolder().child(folder.folderPK).removeValue()
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors
+            }
+        })
+    }
+
+    // Because folderPK of topic is the folderPk of current folder, give folder as argument is enough
+    fun DeleteTopicFromFolder(topic : TopicDomain, folder : FolderDomain) {
+        val tfPK = topic.topicPK + folder.folderPK
+        GetTopicFolderByID(tfPK).removeValue()
     }
 
     fun GetTheNumberOfItemsInTopic(topicPK: String, callback: ValueEventListenerCallback) {
@@ -168,7 +279,7 @@ class MyDB() {
     }
 
     fun GetTheNumberOfTopicsInFolder(folderPK: String, callback: ValueEventListenerCallback) {
-        val query = GetTopic().orderByChild("folderPK").equalTo(folderPK)
+        val query = GetTopicFolder().orderByChild("folderPK").equalTo(folderPK)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Khi dữ liệu thay đổi, hoặc được tải về lần đầu tiên
@@ -189,15 +300,16 @@ class MyDB() {
         if (folderPK == "") {
             query = GetTopic().orderByChild("userPK")
                 .equalTo(CommonUser.currentUser?.GetPK())
+
         } else {
             query = GetTopic()
                 .orderByChild("folderPK").equalTo(folderPK)
         }
+
         return FirebaseRecyclerOptions.Builder<TopicDomain>()
             .setQuery(query, TopicDomain::class.java)
             .build()
     }
-
 
 
 
@@ -214,3 +326,4 @@ class MyDB() {
             .build()
     }
 }
+//https://www.youtube.com/watch?v=kGWN_Krbcms - Search

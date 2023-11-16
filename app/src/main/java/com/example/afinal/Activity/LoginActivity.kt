@@ -115,6 +115,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(applicationContext, "Login successfully", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, MainActivity2::class.java)
                             startActivity(intent)
+                            finish()
                         }else{
                             binding.edtUsername.error = "Invalid Credentials"
                             binding.edtPassword.requestFocus()

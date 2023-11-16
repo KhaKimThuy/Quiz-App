@@ -41,6 +41,24 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgBack"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgDel"
+            android:layout_width="25dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgMore"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/delete" />
+        <ImageView
+            android:id="@+id/imgMore"
+            android:layout_width="25dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/more" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
