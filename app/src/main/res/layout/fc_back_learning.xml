@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="20dp">
 
+
     <androidx.cardview.widget.CardView
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,21 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp">
-            <ImageView
-                android:id="@+id/imageView_mark"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/empty_star"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <ImageView
-                android:id="@+id/imageView_speaker"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/speaker"
-                app:layout_constraintEnd_toStartOf="@+id/imageView_mark"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/textView_vnLang"

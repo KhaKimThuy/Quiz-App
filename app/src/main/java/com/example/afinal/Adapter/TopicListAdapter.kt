@@ -9,6 +9,7 @@ import com.example.afinal.R
 import com.example.afinal.ViewHolder.TopicViewHolder
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.firebase.ui.database.ObservableSnapshotArray
 
 class TopicListAdapter(
     options: FirebaseRecyclerOptions<TopicDomain>,
@@ -39,4 +40,5 @@ class TopicListAdapter(
     override fun getItemCount(): Int {
         return super.getItemCount()
     }
+
 }

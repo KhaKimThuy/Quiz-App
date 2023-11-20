@@ -1,10 +1,11 @@
 package com.example.afinal.Activity
 
-import android.R
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
@@ -23,7 +24,7 @@ class DetailTopicActivity : AppCompatActivity() {
     private lateinit var adapter : FlashCardAdapter
     private lateinit var topic : TopicDomain
     private lateinit var numItems : String
-    private lateinit var itemList: ArrayList<FlashCardDomain>
+    lateinit var itemList: ArrayList<FlashCardDomain>
 
 
     @SuppressLint("MissingInflatedId")
@@ -37,19 +38,26 @@ class DetailTopicActivity : AppCompatActivity() {
         itemList = ArrayList<FlashCardDomain>()
 
 
+
         // Load topic
         topic = intent.getParcelableExtra("topic")!!
         numItems = intent.getStringExtra("numItems").toString()
+
+
 
         // Load items
         binding.recyclerviewFlashcard.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         loadInfoTopic()
 
+
+
         binding.itemViewFlashCard.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, FlashCardStudyActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("itemList", itemList)
-            intent.putExtras(bundle)
+            intent.putExtra("topicPK", topic.topicPK)
+//            Log.d("TAG", "list size in detail: " + itemList.size)
+//            val bundle = Bundle()
+//            bundle.putParcelableArrayList("itemList", itemList)
+//            intent.putExtras(bundle)
             startActivity(intent)
         })
 
@@ -62,6 +70,12 @@ class DetailTopicActivity : AppCompatActivity() {
             finish()
         })
     }
+
+
+
+
+
+
 
     private fun showOptionsMenu(anchorView: View) {
         val popupMenu = PopupMenu(this, anchorView)
@@ -104,14 +118,21 @@ class DetailTopicActivity : AppCompatActivity() {
 
         // Load items of current topic
         val options = db.RecyclerItem(topic.topicPK)
-        adapter = FlashCardAdapter(options)
+        adapter = FlashCardAdapter(this, options)
         binding.recyclerviewFlashcard.adapter = adapter
+
+
+// Iterate over the options and convert DataSnapshot to MyModel
+        // Iterate over the options and convert DataSnapshot to MyModel
+
 
         // Add item to arraylist
         for (i in 0 until adapter.itemCount) {
             val item = adapter.getItem(i)
             itemList.add(item)
         }
+//        itemList = adapter.itemList
+        Log.d("TAG", "loadInfoTopic: " + itemList.size);
     }
 
     @Throws(Resources.NotFoundException::class)

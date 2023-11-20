@@ -4,11 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/flashcard_bg"
+    android:layout_marginHorizontal="16dp"
+    android:padding="16dp"
     android:layout_marginBottom="20dp">
+
+    <ImageView
+        android:id="@+id/imageView_speaker"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/speaker"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_mark"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView_mark"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/empty_star"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.wajahatkarim3.easyflipview.EasyFlipView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:autoFlipBack="true"
         app:autoFlipBackTime="1000"
         app:flipDuration="400"
@@ -19,17 +39,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/imageView_mark">
 
         <!-- Back Layout Goes Here -->
         <include
             android:id="@+id/front_card"
-            layout="@layout/fc_back_learning"/>
+            layout="@layout/fc_back_learning" />
 
         <!-- Front Layout Goes Here -->
         <include
             android:id="@+id/back_card"
-            layout="@layout/flashcard_front"/>
+            layout="@layout/flashcard_front" />
 
     </com.wajahatkarim3.easyflipview.EasyFlipView>
 

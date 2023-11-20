@@ -3,12 +3,12 @@ package com.example.afinal.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
 import com.example.afinal.Adapter.FCLearningAdapter
 import com.example.afinal.DB.MyDB
 import com.example.afinal.Domain.FlashCardDomain
@@ -21,7 +21,7 @@ class FlashCardStudyActivity : AppCompatActivity() {
     private lateinit var adapter: FCLearningAdapter
     private lateinit var binding:ActivityFlashCardStudyBinding
     private lateinit var db : MyDB
-    private lateinit var itemList : ArrayList<FlashCardDomain>
+    lateinit var itemList : ArrayList<FlashCardDomain>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +29,30 @@ class FlashCardStudyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MyDB()
-        val bundle = intent.extras
-        if (bundle != null) {
-            itemList = bundle.getParcelableArrayList<FlashCardDomain>("itemList")!!
+        itemList = ArrayList<FlashCardDomain>()
+
+        val topicPK = intent.getStringExtra("topicPK")
+        if (topicPK != null) {
+            db.GetListItemOfTopic(this, topicPK)
         }
+//        val bundle = intent.extras
+//        if (bundle != null) {
+//            //itemList = bundle.getParcelableArrayList<FlashCardDomain>("itemList")!!
+//            //itemList = bundle.getPar("itemList")!!
+//            itemList = this.intent.extras?.getParcelableArrayList<FlashCardDomain>("itemList")!!
+//            Log.d("TAG", "list size: " + itemList.size)
+//            for (i in itemList) {
+//                if (i == null) {
+//                    Log.d("TAG", "Eng: null")
+//                }else{
+//                    Log.d("TAG", "Eng: " + i.engLanguage)
+//                }
+//            }
+//        }
+//        itemList = intent.getParcelable"itemList")!! as ArrayList<FlashCardDomain>
 
         loadFlashCards()
+
 
         binding.imageViewQuit.setOnClickListener(View.OnClickListener {
             onDestroy()

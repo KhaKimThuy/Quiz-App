@@ -5,6 +5,8 @@ import android.support.annotation.NonNull
 import android.util.Log
 import android.widget.Toast
 import com.example.afinal.Activity.DetailFolderActivity
+import com.example.afinal.Activity.DetailTopicActivity
+import com.example.afinal.Activity.FlashCardStudyActivity
 import com.example.afinal.Common.CommonUser
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.FolderDomain
@@ -24,7 +26,7 @@ import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.rxjava3.internal.util.HalfSerializer.onComplete
 
 
-class MyDB() {
+open class MyDB() {
     var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     var storage: FirebaseStorage = FirebaseStorage.getInstance()
     var reference: DatabaseReference = database.reference
@@ -176,6 +178,28 @@ class MyDB() {
         })
     }
 
+
+//    fun GetListItem(activity: DetailTopicActivity, topicIDs: ArrayList<String>, folder: FolderDomain){
+//        val query = ().orderByChild("folderPK").equalTo(folder.folderPK)
+//        query.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                topicIDs.clear()
+//                for (snapshot in dataSnapshot.children) {
+//                    val yourObject = snapshot.getValue(TopicFolderDomain::class.java)
+//                    if (yourObject != null) {
+//                        topicIDs.add(yourObject.topicPK)
+//                    }
+//                }
+//                GetListTopicFromTF(activity, topicIDs)
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Handle any errors
+//            }
+//        })
+//    }
+
+
     fun GetListTopicFromTF(activity : DetailFolderActivity, topicIDs: ArrayList<String>){
 
         val topicList : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
@@ -195,6 +219,24 @@ class MyDB() {
         }
 
         GetTopic().addListenerForSingleValueEvent(valueEventListener)
+    }
+
+    fun GetListItemOfTopic(activity : FlashCardStudyActivity, topicID: String){
+        val query = GetItem().orderByChild("topicPK").equalTo(topicID)
+        query.addValueEventListener(object : ValueEventListener  {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                activity.itemList.clear()
+                for (snapshot in dataSnapshot.children) {
+                    val yourObject = snapshot.getValue(FlashCardDomain::class.java)
+                    if (yourObject != null) {
+                        activity.itemList.add(yourObject)
+                    }
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors
+            }
+        })
     }
 
     fun CreateItem(item : FlashCardDomain, topicPK : String = "") {

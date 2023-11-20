@@ -59,6 +59,8 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         topic = TopicDomain()
         val topicPK = db.GetTopic().push().key
         topic.topicName = binding.edtTopicName.text.toString()
+        topic.isPublic = binding.switchIsPublic.isChecked
+
         if (topicPK != null) {
             topic.topicPK = topicPK
         }

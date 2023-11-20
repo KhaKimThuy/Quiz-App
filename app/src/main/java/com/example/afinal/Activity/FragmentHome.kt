@@ -1,28 +1,71 @@
 package com.example.afinal.Activity
 
+import android.R.attr
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.afinal.R
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import com.example.afinal.DB.MyDB
+import com.example.afinal.databinding.FragmentHomeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentHome.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentHome : Fragment() {
+    private lateinit var binding : FragmentHomeBinding
+    private lateinit var db: MyDB
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        binding.search.setOnKeyListener(object : View.OnKeyListener {
+//            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+//                // If the event is a key-down event on the "enter" button
+//                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+//                    // Perform action on key press
+//                    Toast.makeText(context, "ddddddd", Toast.LENGTH_SHORT).show()
+//                    return true
+//                }
+//                return false
+//            }
+//        })
+
+
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // Do your task here
+                if (fragmentManager != null) {
+                    fragmentManager!!.popBackStack()
+                    val fragment = SearchResultFragment()
+                    val arguments = Bundle()
+                    arguments.putString("search", binding.search.query.toString())
+                    fragment.arguments = arguments
+
+                    val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+                    if (fragment != null) {
+                        fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, fragment)
+                    }
+                    if (fragment != null) {
+                        fragmentTransaction.addToBackStack(fragment.tag)
+                    }
+                    fragmentTransaction.commit()
+                }
+                return false
+            }
+        })
+
     }
 }

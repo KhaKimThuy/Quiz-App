@@ -108,7 +108,6 @@ class LoginActivity : AppCompatActivity() {
                     val user = snapshot.child(pk).getValue(UserDomain::class.java)
                     if (user != null) {
                         if(user.password == pass){
-
                             // Save current user
                             CommonUser.currentUser = user
 

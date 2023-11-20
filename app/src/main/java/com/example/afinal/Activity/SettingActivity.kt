@@ -15,7 +15,7 @@ class SettingActivity : AppCompatActivity() {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.cardViewProfile.setOnClickListener(View.OnClickListener{
+        binding.cardViewFlashCard.setOnClickListener(View.OnClickListener{
             val intent = Intent(applicationContext, ProfileActivity::class.java)
             startActivity(intent)
         })

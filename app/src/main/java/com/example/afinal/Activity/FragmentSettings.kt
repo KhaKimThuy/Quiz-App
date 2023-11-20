@@ -6,11 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.example.afinal.R
-import com.example.afinal.databinding.ActivitySettingBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +27,7 @@ class FragmentSettings : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        btn = rootView.findViewById(R.id.cardView_profile)
+        btn = rootView.findViewById(R.id.cardView_flashCard)
         btn.setOnClickListener(View.OnClickListener{
             val intent = Intent(activity, ProfileActivity::class.java)
             startActivity(intent)
