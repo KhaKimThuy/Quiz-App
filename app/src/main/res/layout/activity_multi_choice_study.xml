@@ -13,7 +13,6 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/view4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,12 +24,26 @@
             android:src="@drawable/cancel" />
 
         <TextView
-            android:id="@+id/tvEmail"
+            android:id="@+id/tvGet"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="3/38"
+            android:textAlignment="viewEnd"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAlignment="viewEnd"
+            android:text=" / "
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="textStart"
             android:textSize="24sp" />
 
         <ImageView
@@ -39,88 +52,22 @@
             android:src="@drawable/settings" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/view4"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_marginTop="24dp"
-        android:layout_weight="1"
-        android:background="@color/select_bar"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
-    <TextView
-        android:id="@+id/tvPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Apple"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/first"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="402dp"
+        android:layout_height="532dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-    <TextView
-        android:id="@+id/first"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/choice_bg"
-        android:padding="16dp"
-        android:text="Trái chuối"
-        android:textSize="24sp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/second"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/second"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/choice_bg"
-        android:padding="16dp"
-        android:text="Trái chuối"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/third"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/third"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/choice_bg"
-        android:padding="16dp"
-        android:text="Trái chuối"
-        android:textSize="24sp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/fourth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/fourth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/choice_bg"
-        android:padding="16dp"
-        android:text="Trái chuối"
-        android:textSize="24sp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

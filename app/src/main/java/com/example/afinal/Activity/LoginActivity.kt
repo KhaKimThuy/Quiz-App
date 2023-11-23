@@ -1,23 +1,40 @@
 package com.example.afinal.Activity
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.service.autofill.UserData
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DB.FolderDAL
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DB.TopicDAL
+import com.example.afinal.DB.UserDAL
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityLoginBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var db : MyDB
+    private lateinit var topicDAL: TopicDAL
+    private lateinit var folderDAL: FolderDAL
+    private lateinit var userDAL: UserDAL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +44,9 @@ class LoginActivity : AppCompatActivity() {
 
         // Setup database
         db = MyDB()
+        topicDAL = TopicDAL()
+        folderDAL = FolderDAL()
+        userDAL = UserDAL()
 
         // To register activity
 //        binding.textView2Register.setOnClickListener {
@@ -41,57 +61,37 @@ class LoginActivity : AppCompatActivity() {
 //            }
             login()
         }
-
-//        binding.edtUsername.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                binding.edtUsername.setText(R.string.email_or_username)
-//                binding.edtUsername.setTextColor(resources.getColor(R.color.black))
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//            }
-//        })
-//
-//        binding.edtPassword.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                binding.edtPassword.setText(R.string.password)
-//                binding.edtPassword.setTextColor(resources.getColor(R.color.black))
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//            }
-//        })
     }
 
 
-    fun validateUsername(): Boolean {
-        val email = binding.edtUsername.text.toString()
-        if (email.isEmpty()) {
-            binding.edtUsername.setText(R.string.username_empty)
-            binding.edtUsername.setTextColor(resources.getColor(R.color.red))
-            return false
-        }else{
-            return true
-        }
-    }
-    fun validatePassword(): Boolean {
-        val pass = binding.edtPassword.text.toString()
-        if (pass.isEmpty()) {
-            binding.edtUsername.setText(R.string.username_empty)
-            binding.edtUsername.setTextColor(resources.getColor(R.color.red))
-            return false
-        }else{
-            return true
-        }
+//    fun validateUsername(): Boolean {
+//        val email = binding.edtUsername.text.toString()
+//        if (email.isEmpty()) {
+//            binding.edtUsername.setText(R.string.username_empty)
+//            binding.edtUsername.setTextColor(resources.getColor(R.color.red))
+//            return false
+//        }else{
+//            return true
+//        }
+//    }
+//    fun validatePassword(): Boolean {
+//        val pass = binding.edtPassword.text.toString()
+//        return if (pass.isEmpty()) {
+//            binding.edtUsername.setText(R.string.username_empty)
+//            binding.edtUsername.setTextColor(resources.getColor(R.color.red))
+//            false
+//        }else{
+//            true
+//        }
+//    }
+
+    suspend fun loadUserDataFromFirebase(){
+
+        topicDAL.GetUserTopicList()
+        folderDAL.GetUserFolderList()
     }
 
-    fun login() {
+    private fun login() {
 //        val email = binding.edtUsername.text.toString()
 //        val pass = binding.edtPassword.text.toString()
         val email = "khathuy243@gmail.com"
@@ -109,7 +109,14 @@ class LoginActivity : AppCompatActivity() {
                     if (user != null) {
                         if(user.password == pass){
                             // Save current user
-                            CommonUser.currentUser = user
+                            UserDTO.currentUser = user
+
+                            // Save user's avatar to local
+                            UserDTO.currentUser?.let { userDAL.PicassoToBitmap(it.avatarUrl) }
+
+                            GlobalScope.launch {
+                                loadUserDataFromFirebase()
+                            }
 
                             Toast.makeText(applicationContext, "Login successfully", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, MainActivity2::class.java)
@@ -131,4 +138,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
     }
+
+
+
 }

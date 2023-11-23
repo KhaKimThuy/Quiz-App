@@ -1,6 +1,5 @@
-package com.example.afinal.Activity
+package com.example.afinal.Fragment
 
-import android.R.attr
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.afinal.DB.MyDB
 import com.example.afinal.databinding.FragmentHomeBinding
-
 
 class FragmentHome : Fragment() {
     private lateinit var binding : FragmentHomeBinding
@@ -25,19 +23,6 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        binding.search.setOnKeyListener(object : View.OnKeyListener {
-//            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
-//                // If the event is a key-down event on the "enter" button
-//                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-//                    // Perform action on key press
-//                    Toast.makeText(context, "ddddddd", Toast.LENGTH_SHORT).show()
-//                    return true
-//                }
-//                return false
-//            }
-//        })
-
 
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {

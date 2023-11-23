@@ -1,19 +1,14 @@
-package com.example.afinal.Activity
+package com.example.afinal.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.FolderListAdapter
-import com.example.afinal.Adapter.TopicListAdapter
-import com.example.afinal.Adapter.VPAdapter
 import com.example.afinal.DB.MyDB
-import com.example.afinal.R
 import com.example.afinal.databinding.FragmentFolderBinding
-import com.example.afinal.databinding.FragmentLibraryBinding
-import com.example.afinal.databinding.FragmentStudyModuleBinding
 
 class FragmentFolder : Fragment() {
     private lateinit var adapter: FolderListAdapter
@@ -30,7 +25,8 @@ class FragmentFolder : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = MyDB()
-        binding.recyclerViewFolder.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewFolder.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         loadFolder()
     }
 

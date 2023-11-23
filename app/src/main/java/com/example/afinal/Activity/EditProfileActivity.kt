@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.DB.MyDB
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.databinding.ActivityEditProfileBinding
@@ -22,10 +22,14 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
+import com.example.afinal.DB.UserDAL
+import com.squareup.picasso.Target
+
 
 
 open class EditProfileActivity : AppCompatActivity() {
     lateinit var db : MyDB
+    private lateinit var userDAL: UserDAL
     private lateinit var storageRef: StorageReference
     private lateinit var pk : String
     private lateinit var binding : ActivityEditProfileBinding
@@ -44,7 +48,9 @@ open class EditProfileActivity : AppCompatActivity() {
 
         // Init database
         db = MyDB()
-        pk = CommonUser.currentUser?.GetPK() ?: ""
+        userDAL = UserDAL()
+
+        pk = UserDTO.currentUser?.GetPK() ?: ""
         storageRef = FirebaseStorage.getInstance().reference.child("UserImages")
 
         // Load user information
@@ -69,7 +75,7 @@ open class EditProfileActivity : AppCompatActivity() {
                 if (avatarChange) {
                     uploadAvatar()
                 }
-                CommonUser.UpdateInfo(binding.edEmail.text.toString(), binding.edPass.text.toString(), binding.edName.text.toString(), newAvatarUrl)
+                UserDTO.UpdateInfo(binding.edEmail.text.toString(), binding.edPass.text.toString(), binding.edName.text.toString(), newAvatarUrl)
 
                 Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show();
 
@@ -97,9 +103,9 @@ open class EditProfileActivity : AppCompatActivity() {
 
 
     fun loadUserInfo(){
-        binding.edName.setText(CommonUser.currentUser?.username)
-        binding.edEmail.setText(CommonUser.currentUser?.email)
-        binding.edPass.setText(CommonUser.currentUser?.password)
+        binding.edName.setText(UserDTO.currentUser?.username)
+        binding.edEmail.setText(UserDTO.currentUser?.email)
+        binding.edPass.setText(UserDTO.currentUser?.password)
 
         // Load avatar
         val databaseRef = db.GetUser()
@@ -156,6 +162,10 @@ open class EditProfileActivity : AppCompatActivity() {
 
                         // Save image url in realtime database
                         root?.child("avatarUrl")?.setValue(newAvatarUrl)
+
+                        // Update information in local
+                        UserDTO.currentUser?.let { userDAL.PicassoToBitmap(it.avatarUrl) }
+
 //                        Toast.makeText(applicationContext, "Upload successfully", Toast.LENGTH_LONG).show()
                     }
                 }?.addOnFailureListener {

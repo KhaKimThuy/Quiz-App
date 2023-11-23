@@ -1,20 +1,36 @@
 package com.example.afinal.Adapter
 
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.afinal.Activity.DetailTopicActivity
+import com.example.afinal.Activity.FlashCardStudyActivity
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.R
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import java.util.Locale
+import java.util.UUID
 
 class FCLearningAdapter(
+    activity: FlashCardStudyActivity,
     private val cardList: ArrayList<FlashCardDomain>,
     private val viewPaper: ViewPager2
 ) : RecyclerView.Adapter<FCLearningAdapter.FCViewHolder>(){
+
+    private var textToSpeech : TextToSpeech
+    private var ready : Boolean = false
+    private var activity = activity
+
+    init {
+        textToSpeech = TextToSpeech(activity.applicationContext) { setTextToSpeechLanguage() }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FCViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -30,9 +46,15 @@ class FCLearningAdapter(
         holder.eng_lang.text = cardList[position].engLanguage
         holder.vn_lang.text = cardList[position].vnLanguage
 
-        if (position == cardList.size-1){
-            viewPaper.post(runnable)
-        }
+        holder.speaker.setOnClickListener(View.OnClickListener {
+            speakOut(holder.eng_lang.text.toString())
+        })
+
+//        activity.binding.tvGet.text = position.toString()
+
+//        if (position == cardList.size-1){
+//            viewPaper.post(runnable)
+//        }
     }
 
     private val runnable = Runnable {
@@ -40,9 +62,48 @@ class FCLearningAdapter(
         notifyDataSetChanged()
     }
 
+    private fun speakOut(engVocab : String) {
+        Log.d("TAG", "Language valid: $ready")
+        if (!ready) {
+            return
+        }
+
+        // Văn bản cần đọc.
+        val utteranceId = UUID.randomUUID().toString()
+        textToSpeech.speak(engVocab, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
+    }
+
+    private fun getUserSelectedLanguage(): Locale? {
+        return Locale.ENGLISH
+    }
+
+    private fun setTextToSpeechLanguage() {
+        val language = getUserSelectedLanguage()
+        if (language == null) {
+            ready = false
+            Log.d("TAG" , "Language error 1")
+            return
+        }
+        val result: Int = textToSpeech.setLanguage(language)
+        if (result == TextToSpeech.LANG_MISSING_DATA) {
+            ready = false
+            Log.d("TAG" , "Language error 2")
+            return
+        } else if (result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            ready = false
+            Log.d("TAG" , "Language error 3")
+            return
+        } else {
+            ready = true
+//            val currentLanguage: Locale = textToSpeech.voice.locale
+            Log.d("TAG" , "Language error 4")
+        }
+    }
+
     class FCViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val eng_lang = itemView.findViewById<TextView>(R.id.textView_engLang)
         val vn_lang = itemView.findViewById<TextView>(R.id.textView_vnLang)
+        val speaker = itemView.findViewById<ImageView>(R.id.imageView_speaker)
     }
 
 }

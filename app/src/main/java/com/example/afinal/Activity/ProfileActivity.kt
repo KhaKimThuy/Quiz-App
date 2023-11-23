@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.DB.MyDB
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityProfileBinding
@@ -26,7 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MyDB()
-        pk = CommonUser.currentUser?.GetPK() ?: ""
+        pk = UserDTO.currentUser?.GetPK() ?: ""
 
         binding.edit.setOnClickListener(View.OnClickListener{
             passUserData()
@@ -36,23 +36,24 @@ class ProfileActivity : AppCompatActivity() {
         loadUserInfo()
     }
 
-    fun loadUserInfo(){
+    private fun loadUserInfo(){
 
-        binding.textViewEmail.text = CommonUser.currentUser?.email ?: "Error"
-        binding.textViewPwd.text = CommonUser.currentUser?.password ?: "Error"
-        binding.textViewAlias.text = CommonUser.currentUser?.username ?: "Error"
+        binding.textViewEmail.text = UserDTO.currentUser?.email ?: "Error"
+        binding.textViewPwd.text = UserDTO.currentUser?.password ?: "Error"
+        binding.textViewAlias.text = UserDTO.currentUser?.username ?: "Error"
 
-        if (CommonUser.currentUser?.avatarUrl == ""){
+        if (UserDTO.currentUser?.avatarUrl == ""){
             binding.ava.setImageResource(R.drawable.person)
         }else{
-            Picasso.get().load(CommonUser.currentUser?.avatarUrl).into(binding.ava)
+//            Picasso.get().load(UserDTO.currentUser?.avatarUrl).into(binding.ava)
+            binding.ava.setImageBitmap(UserDTO.userAvatar)
         }
     }
 
     fun passUserData() {
-        val emailFromDB = CommonUser.currentUser?.email
-        val usernameFromDB = CommonUser.currentUser?.username
-        val passwordFromDB = CommonUser.currentUser?.password
+        val emailFromDB = UserDTO.currentUser?.email
+        val usernameFromDB = UserDTO.currentUser?.username
+        val passwordFromDB = UserDTO.currentUser?.password
 
         val intent = Intent(applicationContext, EditProfileActivity::class.java)
         intent.putExtra("email", emailFromDB)
@@ -87,7 +88,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1001) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(applicationContext, CommonUser.currentUser?.username ?: "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(applicationContext, UserDTO.currentUser?.username ?: "Error", Toast.LENGTH_LONG).show();
                 loadUserInfo()
             }
         }

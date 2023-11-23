@@ -1,8 +1,5 @@
 package com.example.afinal.Domain
 
-import com.example.afinal.Common.CommonUser
-import java.math.BigInteger
-import java.security.MessageDigest
 import kotlin.random.Random
 
 class UserDomain {

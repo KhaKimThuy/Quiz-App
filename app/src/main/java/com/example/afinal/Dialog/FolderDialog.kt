@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.example.afinal.Activity.DetailFolderActivity
-import com.example.afinal.Activity.FragmentLibrary
+import com.example.afinal.Fragment.FragmentLibrary
 import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.DB.MyDB
 import com.example.afinal.R

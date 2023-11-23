@@ -3,18 +3,12 @@ package com.example.afinal.Domain
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.Editable
 import androidx.annotation.RequiresApi
-import com.example.afinal.Common.CommonUser
-import java.io.Serializable
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.util.Calendar
-import java.util.Date
+import com.example.afinal.DTO.UserDTO
 
 class TopicDomain() : Parcelable{
     var topicName = ""
-    var userPK = CommonUser.currentUser?.GetPK()
+    var userPK = UserDTO.currentUser?.GetPK()
     var guestPK = ""
     var topicPK = ""
     var folderPK = ""

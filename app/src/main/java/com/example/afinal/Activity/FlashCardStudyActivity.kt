@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.afinal.Adapter.FCLearningAdapter
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.databinding.ActivityFlashCardStudyBinding
 
@@ -19,9 +20,9 @@ class FlashCardStudyActivity : AppCompatActivity() {
 
     private lateinit var handler: Handler
     private lateinit var adapter: FCLearningAdapter
-    private lateinit var binding:ActivityFlashCardStudyBinding
+    lateinit var binding:ActivityFlashCardStudyBinding
     private lateinit var db : MyDB
-    lateinit var itemList : ArrayList<FlashCardDomain>
+    private var itemList : ArrayList<FlashCardDomain> = ArrayList<FlashCardDomain>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,43 +30,14 @@ class FlashCardStudyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = MyDB()
-        itemList = ArrayList<FlashCardDomain>()
+        itemList = TopicDTO.itemList
 
-        val topicPK = intent.getStringExtra("topicPK")
-        if (topicPK != null) {
-            db.GetListItemOfTopic(this, topicPK)
-        }
-//        val bundle = intent.extras
-//        if (bundle != null) {
-//            //itemList = bundle.getParcelableArrayList<FlashCardDomain>("itemList")!!
-//            //itemList = bundle.getPar("itemList")!!
-//            itemList = this.intent.extras?.getParcelableArrayList<FlashCardDomain>("itemList")!!
-//            Log.d("TAG", "list size: " + itemList.size)
-//            for (i in itemList) {
-//                if (i == null) {
-//                    Log.d("TAG", "Eng: null")
-//                }else{
-//                    Log.d("TAG", "Eng: " + i.engLanguage)
-//                }
-//            }
-//        }
-//        itemList = intent.getParcelable"itemList")!! as ArrayList<FlashCardDomain>
-
+        binding.tvLoad.text = TopicDTO.numItems
         loadFlashCards()
-
 
         binding.imageViewQuit.setOnClickListener(View.OnClickListener {
             onDestroy()
         })
-        //setUpTransformer()
-
-//        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//                handler.removeCallbacks(runnable)
-//                handler.postDelayed(runnable , 2000)
-//            }
-//        })
     }
 
     override fun onPause() {
@@ -83,19 +55,9 @@ class FlashCardStudyActivity : AppCompatActivity() {
         binding.viewPaper2.currentItem = binding.viewPaper2.currentItem + 1
     }
 
-    private fun setUpTransformer(){
-        val transformer = CompositePageTransformer()
-        transformer.addTransformer(MarginPageTransformer(40))
-        transformer.addTransformer { page, position ->
-            val r = 1 - kotlin.math.abs(position)
-            page.scaleY = 0.85f + r * 0.14f
-        }
-
-        binding.viewPaper2.setPageTransformer(transformer)
-    }
     private fun loadFlashCards(){
         handler = Handler(Looper.myLooper()!!)
-        adapter = FCLearningAdapter(itemList, binding.viewPaper2)
+        adapter = FCLearningAdapter(this, itemList, binding.viewPaper2)
 
         binding.viewPaper2.adapter = adapter
 

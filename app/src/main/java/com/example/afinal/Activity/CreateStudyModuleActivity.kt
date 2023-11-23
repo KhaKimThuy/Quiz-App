@@ -4,18 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.AddItemTopicAdapter
-import com.example.afinal.Common.CommonUser
 import com.example.afinal.DB.MyDB
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.databinding.ActivityCreateStudyModuleBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import kotlin.properties.Delegates
 
 class CreateStudyModuleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateStudyModuleBinding

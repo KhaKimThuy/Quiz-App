@@ -30,7 +30,8 @@ class FlashCardAdapter(activity: DetailTopicActivity, options: FirebaseRecyclerO
     override fun onBindViewHolder(holder: myviewholder, position: Int, model: FlashCardDomain) {
         holder.eng_lang.text = model.engLanguage
         holder.vn_lang.text = model.vnLanguage
-        holder.speak.setOnClickListener(View.OnClickListener {
+        holder.state.text = model.state
+        holder.speaker.setOnClickListener(View.OnClickListener {
             speakOut(holder.eng_lang.text.toString())
         })
     }
@@ -81,6 +82,7 @@ class FlashCardAdapter(activity: DetailTopicActivity, options: FirebaseRecyclerO
     inner class myviewholder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val eng_lang = itemView.findViewById<TextView>(com.example.afinal.R.id.textView_engLang)
         val vn_lang = itemView.findViewById<TextView>(com.example.afinal.R.id.textView_vnLang)
-        val speak = itemView.findViewById<ImageView>(com.example.afinal.R.id.imageView_speaker)
+        val state = itemView.findViewById<TextView>(com.example.afinal.R.id.tvState)
+        val speaker = itemView.findViewById<ImageView>(com.example.afinal.R.id.imageView_speaker)
     }
 }

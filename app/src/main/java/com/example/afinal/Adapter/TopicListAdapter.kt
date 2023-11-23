@@ -29,8 +29,8 @@ class TopicListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val listItem = layoutInflater.inflate(R.layout.viewholder_topic, parent, false)
-        return TopicViewHolder(listItem, this.isAdd, this.isDel)
+        val view = layoutInflater.inflate(R.layout.viewholder_topic, parent, false)
+        return TopicViewHolder(view, this.isAdd, this.isDel)
     }
 
     override fun onBindViewHolder(holder: TopicViewHolder, position: Int, model: TopicDomain) {

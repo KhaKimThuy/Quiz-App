@@ -12,8 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.Activity.DetailTopicActivity
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
@@ -29,17 +30,15 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
     val avatar = view.findViewById<ImageView>(R.id.circleImageView_avatar)
     var mainView = view.findViewById<ConstraintLayout>(R.id.itemView_flashCard)
 
-
     val db = MyDB()
     var isAdd : Boolean = false
     var isDel : Boolean = false
 
-
     init {
-        owner.text = CommonUser.currentUser?.username ?: "Error"
+        owner.text = UserDTO.currentUser?.username ?: "Error"
         this.isAdd = isAdd
         this.isDel = isDel
-        Picasso.get().load(CommonUser.currentUser?.avatarUrl).into(avatar)
+        avatar.setImageBitmap(UserDTO.userAvatar)
     }
 
     @SuppressLint("SetTextI18n")
@@ -65,7 +64,6 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
             override fun onCancelled(databaseError: DatabaseError) {
                 numberItems.text = "0"
             }
-
         }).toString()
 
         itemView.setOnClickListener{
@@ -89,9 +87,12 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
                     selectedTopic.remove(topic)
                     activity!!.checkDeleteItem()
                 } else {
+
+                    TopicDTO.currentTopic = topic
+                    TopicDTO.numItems = numberItems.text.toString()
+                    db.GetListItemOfTopic(topic.topicPK)
+
                     val intent = Intent(itemView.context, DetailTopicActivity::class.java)
-                    intent.putExtra("numItems", numberItems.text)
-                    intent.putExtra("topic", topic)
                     itemView.context.startActivity(intent)
                 }
             }

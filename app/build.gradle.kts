@@ -58,6 +58,7 @@ dependencies {
 
     // Firebase
 //    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
     implementation("com.firebaseui:firebase-ui-database:8.0.2")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-storage-ktx")

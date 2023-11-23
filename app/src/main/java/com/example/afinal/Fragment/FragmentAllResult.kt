@@ -1,13 +1,10 @@
-package com.example.afinal.Activity
+package com.example.afinal.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-//import com.example.afinal.Adapter.TopicListAdapter
-import com.example.afinal.Domain.TopicDomain
+import androidx.fragment.app.Fragment
 import com.example.afinal.databinding.FragmentAllResultBinding
 
 class FragmentAllResult : Fragment() {
@@ -15,7 +12,7 @@ class FragmentAllResult : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = FragmentAllResultBinding.inflate(inflater,container,false)
+        binding = FragmentAllResultBinding.inflate(inflater, container, false)
         return binding.root
     }
 

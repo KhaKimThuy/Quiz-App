@@ -1,35 +1,52 @@
 package com.example.afinal.DB
 
-import android.app.Activity
-import android.support.annotation.NonNull
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
-import android.widget.Toast
 import com.example.afinal.Activity.DetailFolderActivity
-import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Activity.FlashCardStudyActivity
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Domain.TopicFolderDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
+import com.example.afinal.ViewHolder.TopicViewHolder
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import io.reactivex.rxjava3.internal.util.HalfSerializer.onComplete
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 
 
 open class MyDB() {
     var database: FirebaseDatabase = FirebaseDatabase.getInstance()
     var storage: FirebaseStorage = FirebaseStorage.getInstance()
     var reference: DatabaseReference = database.reference
+
+//    fun PicassoToBitmap(srcBitmap, imgUrl : String) {
+//        val target = object : Target {
+//            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+//                if (bitmap != null) {
+//                    srcBitmap = bitmap
+//                    return bitmap
+//                }
+//            }
+//            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+//            }
+//            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+//            }
+//        }
+//
+//        // Load the image using Picasso
+//        Picasso.get().load(imgUrl).into(target)
+//    }
 
     fun GetUser(): DatabaseReference {
         return database.getReference("User")
@@ -48,7 +65,7 @@ open class MyDB() {
     }
 
     fun GetUserByID(): DatabaseReference? {
-        var pk = CommonUser.currentUser?.GetPK()
+        var pk = UserDTO.currentUser?.GetPK()
         return pk?.let { database.getReference("User").child(it) }
     }
 
@@ -179,26 +196,6 @@ open class MyDB() {
     }
 
 
-//    fun GetListItem(activity: DetailTopicActivity, topicIDs: ArrayList<String>, folder: FolderDomain){
-//        val query = ().orderByChild("folderPK").equalTo(folder.folderPK)
-//        query.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                topicIDs.clear()
-//                for (snapshot in dataSnapshot.children) {
-//                    val yourObject = snapshot.getValue(TopicFolderDomain::class.java)
-//                    if (yourObject != null) {
-//                        topicIDs.add(yourObject.topicPK)
-//                    }
-//                }
-//                GetListTopicFromTF(activity, topicIDs)
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Handle any errors
-//            }
-//        })
-//    }
-
 
     fun GetListTopicFromTF(activity : DetailFolderActivity, topicIDs: ArrayList<String>){
 
@@ -221,15 +218,15 @@ open class MyDB() {
         GetTopic().addListenerForSingleValueEvent(valueEventListener)
     }
 
-    fun GetListItemOfTopic(activity : FlashCardStudyActivity, topicID: String){
+    fun GetListItemOfTopic(topicID: String){
         val query = GetItem().orderByChild("topicPK").equalTo(topicID)
         query.addValueEventListener(object : ValueEventListener  {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                activity.itemList.clear()
+                TopicDTO.itemList.clear()
                 for (snapshot in dataSnapshot.children) {
                     val yourObject = snapshot.getValue(FlashCardDomain::class.java)
                     if (yourObject != null) {
-                        activity.itemList.add(yourObject)
+                        TopicDTO.itemList.add(yourObject)
                     }
                 }
             }
@@ -341,7 +338,7 @@ open class MyDB() {
         val query : Query
         if (folderPK == "") {
             query = GetTopic().orderByChild("userPK")
-                .equalTo(CommonUser.currentUser?.GetPK())
+                .equalTo(UserDTO.currentUser?.GetPK())
 
         } else {
             query = GetTopic()
@@ -362,7 +359,7 @@ open class MyDB() {
     }
 
     fun RecyclerFolder(): FirebaseRecyclerOptions<FolderDomain> {
-        val query = GetFolder().orderByChild("userPK").equalTo(CommonUser.currentUser?.GetPK())
+        val query = GetFolder().orderByChild("userPK").equalTo(UserDTO.currentUser?.GetPK())
         return FirebaseRecyclerOptions.Builder<FolderDomain>()
             .setQuery(query, FolderDomain::class.java)
             .build()

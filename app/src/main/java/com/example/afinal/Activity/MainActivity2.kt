@@ -14,9 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Dialog.FolderDialog
 import com.example.afinal.Domain.UserDomain
+import com.example.afinal.Fragment.FragmentHome
+import com.example.afinal.Fragment.FragmentLibrary
+import com.example.afinal.Fragment.FragmentSettings
 import com.example.afinal.databinding.ActivityMain2Binding
 
 
@@ -58,6 +61,8 @@ class MainActivity2 : AppCompatActivity() {
         binding.imageViewAdd.setOnClickListener(View.OnClickListener {
             showBottomDialog();
         })
+
+        backupUser = UserDTO.currentUser!!
     }
 
     private fun showBottomDialog() {
@@ -101,13 +106,13 @@ class MainActivity2 : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        backupUser = CommonUser.currentUser!!
+        backupUser = UserDTO.currentUser!!
     }
 
     override fun onStart() {
         super.onStart()
-        if (CommonUser.currentUser == null) {
-            CommonUser.currentUser = backupUser
+        if (UserDTO.currentUser == null) {
+            UserDTO.currentUser = backupUser
         }
     }
 }

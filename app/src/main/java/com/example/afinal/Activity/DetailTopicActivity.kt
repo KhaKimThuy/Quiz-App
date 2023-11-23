@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.FlashCardAdapter
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.databinding.ActivityDetailTopicBinding
@@ -24,7 +25,7 @@ class DetailTopicActivity : AppCompatActivity() {
     private lateinit var adapter : FlashCardAdapter
     private lateinit var topic : TopicDomain
     private lateinit var numItems : String
-    lateinit var itemList: ArrayList<FlashCardDomain>
+    var itemList: ArrayList<FlashCardDomain> = ArrayList<FlashCardDomain>()
 
 
     @SuppressLint("MissingInflatedId")
@@ -35,29 +36,30 @@ class DetailTopicActivity : AppCompatActivity() {
 
         // Init Firebase
         db = MyDB()
-        itemList = ArrayList<FlashCardDomain>()
-
-
+        itemList = TopicDTO.itemList
 
         // Load topic
-        topic = intent.getParcelableExtra("topic")!!
-        numItems = intent.getStringExtra("numItems").toString()
-
-
+        numItems = TopicDTO.numItems
 
         // Load items
         binding.recyclerviewFlashcard.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         loadInfoTopic()
 
-
-
+        // Flashcard
         binding.itemViewFlashCard.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, FlashCardStudyActivity::class.java)
-            intent.putExtra("topicPK", topic.topicPK)
-//            Log.d("TAG", "list size in detail: " + itemList.size)
-//            val bundle = Bundle()
-//            bundle.putParcelableArrayList("itemList", itemList)
-//            intent.putExtras(bundle)
+            startActivity(intent)
+        })
+
+        // Multiple choice
+        binding.itemViewMultipleChoice.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, MultiChoiceStudyActivity::class.java)
+            startActivity(intent)
+        })
+
+        // Type vocab
+        binding.itemViewTypeWord.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, TypeVocabStudyActivity::class.java)
             startActivity(intent)
         })
 
@@ -70,11 +72,6 @@ class DetailTopicActivity : AppCompatActivity() {
             finish()
         })
     }
-
-
-
-
-
 
 
     private fun showOptionsMenu(anchorView: View) {
@@ -113,12 +110,12 @@ class DetailTopicActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun loadInfoTopic() {
         // Load name and the number of items in current topic
-        binding.tvTopicName.text = topic.topicName
+        binding.tvTopicName.text = TopicDTO.currentTopic?.topicName ?: "Null"
         binding.textViewNumItems.text = "$numItems Thuật ngữ"
 
         // Load items of current topic
-        val options = db.RecyclerItem(topic.topicPK)
-        adapter = FlashCardAdapter(this, options)
+        val options = TopicDTO.currentTopic?.let { db.RecyclerItem(it.topicPK) }
+        adapter = options?.let { FlashCardAdapter(this, it) }!!
         binding.recyclerviewFlashcard.adapter = adapter
 
 

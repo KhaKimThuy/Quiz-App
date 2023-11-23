@@ -1,17 +1,11 @@
-package com.example.afinal.Activity
+package com.example.afinal.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
-import com.example.afinal.Adapter.TopicListAdapter
-import com.example.afinal.Adapter.VPAdapter
+import androidx.fragment.app.Fragment
 import com.example.afinal.Adapter.VPAdapter2
-import com.example.afinal.DB.MyDB
 import com.example.afinal.databinding.FragmentLibraryBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -32,16 +26,18 @@ class FragmentLibrary : Fragment() {
         vpAdapter = activity?.let { VPAdapter2(it.supportFragmentManager, lifecycle) }!!
         binding.viewPager.adapter = vpAdapter
 
-        TabLayoutMediator(binding.tabLayout, binding.viewPager){tab,position->
-            when(position){
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when (position) {
                 0 -> {
-                    tab.text="Học phần"
+                    tab.text = "Học phần"
                 }
+
                 1 -> {
-                    tab.text="Thư mục"
+                    tab.text = "Thư mục"
                 }
+
                 2 -> {
-                    tab.text="Lớp học"
+                    tab.text = "Lớp học"
                 }
             }
         }.attach()

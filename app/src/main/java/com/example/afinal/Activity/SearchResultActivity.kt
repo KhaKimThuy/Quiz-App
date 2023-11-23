@@ -8,6 +8,8 @@ import androidx.viewpager.widget.ViewPager
 import com.example.afinal.Domain.TopicDomain
 //import com.example.afinal.Adapter.TopicListAdapter
 import com.example.afinal.Adapter.VPAdapter
+import com.example.afinal.Fragment.FragmentAllResult
+import com.example.afinal.Fragment.FragmentCourse
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityRegisterBinding
 import com.example.afinal.databinding.ActivitySearchResultBinding

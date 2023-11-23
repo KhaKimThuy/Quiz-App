@@ -2,12 +2,12 @@ package com.example.afinal.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.afinal.Common.CommonUser
+import com.example.afinal.DTO.UserDTO
 
 class FolderDomain() : Parcelable{
     var folderName = ""
     var folderDesc = ""
-    var userPK = CommonUser.currentUser?.GetPK()
+    var userPK = UserDTO.currentUser?.GetPK()
     var folderPK = ""
 
     constructor(parcel: Parcel) : this() {

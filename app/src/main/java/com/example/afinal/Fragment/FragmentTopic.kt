@@ -1,21 +1,23 @@
-package com.example.afinal.Activity
+package com.example.afinal.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.afinal.Adapter.TopicListAdapter
-import com.example.afinal.Common.CommonUser
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.databinding.FragmentStudyModuleBinding
 
 class FragmentTopic : Fragment() {
     private lateinit var adapter: TopicListAdapter
     private lateinit var db: MyDB
     private lateinit var binding : FragmentStudyModuleBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,11 +29,17 @@ class FragmentTopic : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = MyDB()
-        binding.recyclerViewTopicList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewTopicList.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(binding.recyclerViewTopicList)
+
+
+
         loadTopic()
     }
+
     private fun loadTopic() {
-        Toast.makeText(activity, "Fragment Topic: " + (CommonUser.currentUser?.GetPK() ?: null), Toast.LENGTH_LONG).show();
         val options = db.RecyclerTopic()
         adapter = TopicListAdapter(options)
         binding.recyclerViewTopicList.adapter = adapter
