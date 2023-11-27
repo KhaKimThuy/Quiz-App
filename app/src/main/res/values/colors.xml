@@ -7,4 +7,7 @@
     <color name="main_bg">#F6F5FD</color>
     <color name="select_bar">#eeedf2</color>
     <color name="text_bg_color">#E9E6FB</color>
+    <color name="right_color">#24AC7E</color>
+    <color name="wrong_color">#B1001F</color>
+    <color name="learning_color">#c44f14</color>
 </resources>

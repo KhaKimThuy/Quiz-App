@@ -1,7 +1,6 @@
 package com.example.afinal.ViewHolder
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -11,7 +10,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailFolderActivity
-import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.DTO.UserDTO
 import com.example.afinal.DB.MyDB
 import com.example.afinal.DTO.TopicDTO
@@ -20,7 +18,6 @@ import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
 import com.example.afinal.R
 import com.google.firebase.database.DatabaseError
-import com.squareup.picasso.Picasso
 
 
 class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = false): RecyclerView.ViewHolder(view){
@@ -42,7 +39,7 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
     }
 
     @SuppressLint("SetTextI18n")
-    fun bind(topic: TopicDomain, selectedTopic: ArrayList<TopicDomain>, activity: DetailFolderActivity?) {
+    fun bind(topic: TopicDomain, selectedTopic: ArrayList<TopicDomain>? = null, activity: DetailFolderActivity?) {
         topicName.text = topic.topicName
         db.GetTheNumberOfItemsInTopic(topic.topicPK, object : ValueEventListenerCallback{
             override fun onDataChange(dataSnapshot: Long) {
@@ -72,19 +69,27 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
                 val backgroundColor = (backgroundDrawable as ColorDrawable).color
                 if (backgroundColor ==  Color.GREEN){
                     mainView.setBackgroundColor(Color.WHITE)
-                    selectedTopic.remove(topic)
+                    if (selectedTopic != null) {
+                        selectedTopic.remove(topic)
+                    }
                 } else {
                     mainView.setBackgroundColor(Color.GREEN)
-                    selectedTopic.add(topic)
+                    if (selectedTopic != null) {
+                        selectedTopic.add(topic)
+                    }
                 }
-                Log.d("TAG", "Items = " + selectedTopic.size)
+                if (selectedTopic != null) {
+                    Log.d("TAG", "Items = " + selectedTopic.size)
+                }
             }
             else{
                 val backgroundDrawable = mainView.background
                 val backgroundColor = (backgroundDrawable as ColorDrawable).color
                 if (backgroundColor ==  Color.MAGENTA) {
                     mainView.setBackgroundColor(Color.WHITE)
-                    selectedTopic.remove(topic)
+                    if (selectedTopic != null) {
+                        selectedTopic.remove(topic)
+                    }
                     activity!!.checkDeleteItem()
                 } else {
 
@@ -92,8 +97,10 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
                     TopicDTO.numItems = numberItems.text.toString()
                     db.GetListItemOfTopic(topic.topicPK)
 
-                    val intent = Intent(itemView.context, DetailTopicActivity::class.java)
-                    itemView.context.startActivity(intent)
+                    Log.d("TAG", "search: " + TopicDTO.currentTopic!!.topicName)
+
+//                    val intent = Intent(itemView.context, DetailTopicActivity::class.java)
+//                    itemView.context.startActivity(intent)
                 }
             }
         }
@@ -104,10 +111,14 @@ class TopicViewHolder(view : View, isAdd: Boolean = false, isDel: Boolean = fals
                 val backgroundColor = (backgroundDrawable as ColorDrawable).color
                 if (backgroundColor ==  Color.MAGENTA) {
                     mainView.setBackgroundColor(Color.WHITE)
-                    selectedTopic.remove(topic)
+                    if (selectedTopic != null) {
+                        selectedTopic.remove(topic)
+                    }
                 } else {
                     mainView.setBackgroundColor(Color.MAGENTA)
-                    selectedTopic.add(topic)
+                    if (selectedTopic != null) {
+                        selectedTopic.add(topic)
+                    }
                 }
                 activity!!.checkDeleteItem()
                 true

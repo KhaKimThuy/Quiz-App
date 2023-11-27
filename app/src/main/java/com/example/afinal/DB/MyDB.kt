@@ -1,10 +1,7 @@
 package com.example.afinal.DB
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.util.Log
 import com.example.afinal.Activity.DetailFolderActivity
-import com.example.afinal.Activity.FlashCardStudyActivity
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.FlashCardDomain
@@ -12,7 +9,6 @@ import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Domain.TopicFolderDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
-import com.example.afinal.ViewHolder.TopicViewHolder
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,8 +17,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 
 
 open class MyDB() {
@@ -56,6 +50,10 @@ open class MyDB() {
         return database.getReference("Topic")
     }
 
+    fun GetTopicPublic(): DatabaseReference {
+        return database.getReference("TopicPublic")
+    }
+
     fun GetFolder(): DatabaseReference {
         return database.getReference("Folder")
     }
@@ -64,10 +62,7 @@ open class MyDB() {
         return database.getReference("TopicFolder")
     }
 
-    fun GetUserByID(): DatabaseReference? {
-        var pk = UserDTO.currentUser?.GetPK()
-        return pk?.let { database.getReference("User").child(it) }
-    }
+
 
     fun GetFolderByID(folderPK: String) : DatabaseReference {
         return GetFolder().child(folderPK)
@@ -143,7 +138,7 @@ open class MyDB() {
         })
 
         // Add items
-        GetItem().addListenerForSingleValueEvent(object : ValueEventListener{
+        GetItem().addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in itemList){
                     if(!item.engLanguage.isNullOrEmpty() && !item.vnLanguage.isNullOrEmpty()){
@@ -195,10 +190,16 @@ open class MyDB() {
         })
     }
 
-
+    fun GetUserByID(userPK: String? = null): DatabaseReference? {
+        return if (userPK == null) {
+            var userPK = UserDTO.currentUser?.GetPK()
+            userPK?.let { database.getReference("User").child(it) }
+        } else {
+            userPK?.let { database.getReference("User").child(it) }
+        }
+    }
 
     fun GetListTopicFromTF(activity : DetailFolderActivity, topicIDs: ArrayList<String>){
-
         val topicList : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

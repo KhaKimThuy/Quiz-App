@@ -33,7 +33,7 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
         val toastWrapper = findViewById<ConstraintLayout>(R.id.toastWrapper)
         rightToast = layoutInflater.inflate(R.layout.right_choice_toast, toastWrapper)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.layoutManager = object : LinearLayoutManager(this) {
@@ -44,6 +44,7 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
                 return super.canScrollHorizontally()
             }
         }
+//        binding.recyclerView.isNestedScrollingEnabled = false
         loadMultipleChoice()
     }
 
@@ -52,7 +53,7 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
     }
 
-    fun nextTest(position : Int)
+    private fun nextTest(position : Int)
     {
         Log.d("TAG", "Position: $position")
         if (position < (adapter.itemCount)) {

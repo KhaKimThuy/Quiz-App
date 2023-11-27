@@ -5,23 +5,24 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import com.example.afinal.DTO.UserDTO
+import java.time.LocalDateTime
 
 class TopicDomain() : Parcelable{
     var topicName = ""
     var userPK = UserDTO.currentUser?.GetPK()
-    var guestPK = ""
     var topicPK = ""
     var folderPK = ""
     var isPublic = false
     var highestScore = 0
     var timeStudy = 0
+    var dateTime = LocalDateTime.now().toString()
 
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this() {
         topicName = parcel.readString().toString()
         userPK = parcel.readString()
-        guestPK = parcel.readString().toString()
         topicPK = parcel.readString().toString()
+        dateTime = parcel.readString().toString()
         folderPK = parcel.readString().toString()
         isPublic = parcel.readBoolean()
         highestScore = parcel.readInt()
@@ -32,8 +33,8 @@ class TopicDomain() : Parcelable{
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(topicName)
         parcel.writeString(userPK)
-        parcel.writeString(guestPK)
         parcel.writeString(topicPK)
+        parcel.writeString(dateTime)
         parcel.writeString(folderPK)
         parcel.writeBoolean(isPublic)
         parcel.writeInt(highestScore)

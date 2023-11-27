@@ -1,5 +1,6 @@
 package com.example.afinal.Adapter
 
+import android.os.Handler
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,12 +22,19 @@ import java.util.UUID
 class FCLearningAdapter(
     activity: FlashCardStudyActivity,
     private val cardList: ArrayList<FlashCardDomain>,
-    private val viewPaper: ViewPager2
+    auto : Boolean = true,
 ) : RecyclerView.Adapter<FCLearningAdapter.FCViewHolder>(){
 
+    private var auto = auto
     private var textToSpeech : TextToSpeech
     private var ready : Boolean = false
     private var activity = activity
+
+    private val handler = Handler()
+
+    private val delayDuration = 5000L // Duration in milliseconds
+    private var eventRunnable: Runnable? = null
+
 
     init {
         textToSpeech = TextToSpeech(activity.applicationContext) { setTextToSpeechLanguage() }
@@ -46,21 +54,30 @@ class FCLearningAdapter(
         holder.eng_lang.text = cardList[position].engLanguage
         holder.vn_lang.text = cardList[position].vnLanguage
 
+        // Auto
+        speakOut(holder.eng_lang.text.toString())
         holder.speaker.setOnClickListener(View.OnClickListener {
             speakOut(holder.eng_lang.text.toString())
         })
 
-//        activity.binding.tvGet.text = position.toString()
-
-//        if (position == cardList.size-1){
-//            viewPaper.post(runnable)
-//        }
+        // Cancel any existing event runnable
+        eventRunnable?.let { handler.removeCallbacks(it) }
+        // Schedule a new event runnable
+        eventRunnable = Runnable {
+            // Perform the desired event after the duration
+            var nextIdx = position
+            if (position < itemCount) {
+                nextIdx = position + 1
+            }
+            activity.moveToNext(nextIdx)
+        }
+        handler.postDelayed(eventRunnable!!, delayDuration)
     }
 
-    private val runnable = Runnable {
-        cardList.addAll(cardList)
-        notifyDataSetChanged()
-    }
+//    private val runnable = Runnable {
+//        cardList.addAll(cardList)
+//        notifyDataSetChanged()
+//    }
 
     private fun speakOut(engVocab : String) {
         Log.d("TAG", "Language valid: $ready")

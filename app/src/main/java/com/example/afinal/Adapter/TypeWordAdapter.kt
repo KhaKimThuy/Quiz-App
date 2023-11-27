@@ -38,12 +38,15 @@ class TypeWordAdapter(
     }
 
     override fun onBindViewHolder(holder: TypeWordViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        currentItemPosition = position
         holder.question.text = cardList[position].engLanguage
+        var nextIdx = position
+        if (position < itemCount) {
+            nextIdx = position + 1
+        }
         holder.userAnswer.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                 val userAnswer = holder.userAnswer.text.toString().trim().toLowerCase()
-                checkAnswer(position, userAnswer)
+                checkAnswer(position, userAnswer, nextIdx)
                 false
             } else {
                 false
@@ -51,7 +54,7 @@ class TypeWordAdapter(
         }
     }
 
-    private fun checkAnswer(answerIdx : Int, userAnswer : String) {
+    private fun checkAnswer(answerIdx : Int, userAnswer : String, currentIdx : Int) {
 
         Log.d("TAG", "Type position: $currentItemPosition")
 
@@ -63,11 +66,11 @@ class TypeWordAdapter(
 
         val answer = cardList[answerIdx].vnLanguage?.toLowerCase()
         if (answer.equals(userAnswer)) {
-            activity.showRightToast(currentItemPosition)
+            activity.showRightToast(currentIdx)
         } else {
             activity.shoWrongDialog(cardList[answerIdx].engLanguage.toString(),
                 cardList[answerIdx].vnLanguage.toString(),
-                userAnswer, currentItemPosition)
+                userAnswer, currentIdx)
         }
     }
 

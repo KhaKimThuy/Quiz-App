@@ -28,12 +28,8 @@ class MultipleChoiceAdapter(
 ) : RecyclerView.Adapter<MultipleChoiceAdapter.MultipleViewHolder>(){
 
     private var activity = activity
-    private var currentItemPosition = 0
     private val choiceIndices : MutableList<Int> = mutableListOf()
     var rightAnswer : Int = 0
-
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultipleViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -46,16 +42,17 @@ class MultipleChoiceAdapter(
     }
 
     override fun onBindViewHolder(holder: MultipleViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        currentItemPosition = position
         Log.d("TAG", "Current position = $position")
         holder.question.text = cardList[position].engLanguage
-        generateChoice(holder.mainView, position)
 
-
+        var nextIdx = position
+        if (position < itemCount) {
+            nextIdx = position + 1
+        }
+        generateChoice(holder.mainView, position, nextIdx)
     }
 
-
-    private fun generateChoice(mainView : LinearLayout, answerIdx : Int) {
+    private fun generateChoice(mainView : LinearLayout, answerIdx : Int, currentIdx : Int) {
 
         mainView.removeAllViews()
         choiceIndices.clear()
@@ -79,7 +76,7 @@ class MultipleChoiceAdapter(
             val textView = TextView(activity.applicationContext)
 
             val layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0,0,0,8);
+            layoutParams.setMargins(0,0,0,8)
 
             textView.setBackgroundResource(R.drawable.choice_bg)
             textView.text = cardList[i].vnLanguage
@@ -89,17 +86,15 @@ class MultipleChoiceAdapter(
             mainView.addView(textView)
 
             textView.setOnClickListener(View.OnClickListener {
-                if (currentItemPosition < itemCount) {
-                    currentItemPosition += 1
-                }
+                Log.d("TAG", "dddddddd")
 //                selectAnswer = i
                 if (i == answerIdx) {
                     rightAnswer += 1
-                    activity.showRightToast(currentItemPosition)
+                    activity.showRightToast(currentIdx)
                 } else {
                     activity.shoWrongDialog(cardList[answerIdx].engLanguage.toString(),
                         cardList[answerIdx].vnLanguage.toString(),
-                        cardList[i].vnLanguage.toString(), currentItemPosition)
+                        cardList[i].vnLanguage.toString(), currentIdx)
                 }
             })
         }

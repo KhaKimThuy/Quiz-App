@@ -32,8 +32,6 @@ class ProfileActivity : AppCompatActivity() {
             passUserData()
         })
 
-        // Load user information
-        loadUserInfo()
     }
 
     private fun loadUserInfo(){
@@ -43,7 +41,7 @@ class ProfileActivity : AppCompatActivity() {
         binding.textViewAlias.text = UserDTO.currentUser?.username ?: "Error"
 
         if (UserDTO.currentUser?.avatarUrl == ""){
-            binding.ava.setImageResource(R.drawable.person)
+            binding.ava.setImageResource(R.drawable.user)
         }else{
 //            Picasso.get().load(UserDTO.currentUser?.avatarUrl).into(binding.ava)
             binding.ava.setImageBitmap(UserDTO.userAvatar)
@@ -92,6 +90,11 @@ class ProfileActivity : AppCompatActivity() {
                 loadUserInfo()
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        loadUserInfo()
     }
 
     override fun onResume() {

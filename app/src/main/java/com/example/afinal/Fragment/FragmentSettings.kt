@@ -9,29 +9,30 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.afinal.Activity.ProfileActivity
 import com.example.afinal.R
+import com.example.afinal.databinding.FragmentSettingsBinding
+import com.example.afinal.databinding.FragmentStudyModuleBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentSettings.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentSettings : Fragment() {
     private lateinit var btn : CardView
+    private lateinit var binding : FragmentSettingsBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_settings, container, false)
+        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        btn = rootView.findViewById(R.id.cardView_flashCard)
-        btn.setOnClickListener(View.OnClickListener{
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.cardViewProfile.setOnClickListener(View.OnClickListener{
             val intent = Intent(activity, ProfileActivity::class.java)
             startActivity(intent)
         })
-
-
-        // Inflate the layout for this fragment
-        return rootView
+        binding.cardViewFlashCard.setOnClickListener(View.OnClickListener{
+            val intent = Intent(activity, ProfileActivity::class.java)
+            startActivity(intent)
+        })
     }
 
 }

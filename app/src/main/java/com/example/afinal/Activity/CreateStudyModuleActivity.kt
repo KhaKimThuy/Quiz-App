@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.AddItemTopicAdapter
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.databinding.ActivityCreateStudyModuleBinding
@@ -143,10 +144,13 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         // Add topic
         db.CreateTopicWithItems(topic, itemList)
 
+        TopicDTO.currentTopic = topic
+        TopicDTO.numItems = itemList.size.toString()
+
         val intent = Intent(this, DetailTopicActivity::class.java)
-        intent.putExtra("numItems", itemList.size.toString())
-        intent.putExtra("topic", topic)
         startActivity(intent)
+
+        finish()
     }
 
     private var fileuri: Uri? = null

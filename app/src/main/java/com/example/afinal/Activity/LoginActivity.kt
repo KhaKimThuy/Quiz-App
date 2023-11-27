@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.service.autofill.UserData
@@ -49,10 +50,10 @@ class LoginActivity : AppCompatActivity() {
         userDAL = UserDAL()
 
         // To register activity
-//        binding.textView2Register.setOnClickListener {
-//            val intent = Intent(this, RegisterActivity::class.java)
-//            startActivity(intent)
-//        }
+        binding.buttonRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
         // To login
         binding.btnLogin.setOnClickListener{
@@ -92,10 +93,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-//        val email = binding.edtUsername.text.toString()
-//        val pass = binding.edtPassword.text.toString()
-        val email = "khathuy243@gmail.com"
-        val pass = "12345"
+        val email = binding.edtUsername.text.toString()
+        val pass = binding.edtPassword.text.toString()
+//        val email = "khathuy243@gmail.com"
+//        val pass = "12345"
 
         // Extract pk from email
         var pk = db.extractPK(email)
@@ -112,7 +113,9 @@ class LoginActivity : AppCompatActivity() {
                             UserDTO.currentUser = user
 
                             // Save user's avatar to local
-                            UserDTO.currentUser?.let { userDAL.PicassoToBitmap(it.avatarUrl) }
+                            if (user.avatarUrl != "") {
+                                UserDTO.currentUser?.let { userDAL.PicassoToBitmap(it.avatarUrl) }
+                            }
 
                             GlobalScope.launch {
                                 loadUserDataFromFirebase()

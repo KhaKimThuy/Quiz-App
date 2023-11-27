@@ -1,5 +1,6 @@
 package com.example.afinal.Adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -8,26 +9,60 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DB.UserDAL
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.UserDomain
 import com.example.afinal.Interface.ValueEventListenerCallback
 import com.example.afinal.R
 import com.example.afinal.ViewHolder.TopicViewHolder
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.snapshots
+import com.squareup.picasso.Picasso
 
-class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView.Adapter<TopicViewHolder>() {
+class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView.Adapter<SearchTopicAdapter.SearchTopicViewHolder>() {
+    val userDAL = UserDAL()
     val db = MyDB()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTopicViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view: View = layoutInflater.inflate(R.layout.viewholder_topic, parent, false)
-        return TopicViewHolder(view)
+        return SearchTopicViewHolder(view)
     }
-    override fun onBindViewHolder(holder: TopicViewHolder, position: Int) {
-        holder.topicName.text = dataList[position].topicName
+    override fun onBindViewHolder(holder: SearchTopicViewHolder, @SuppressLint("RecyclerView") position: Int) {
+        db.GetUserByID(dataList[position].userPK)?.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val user = dataSnapshot.getValue(UserDomain::class.java)
+                    holder.topicName.text = dataList[position].topicName
+                    if (user != null) {
+                        holder.owner.text = user.username
+                    }
+                    if (user != null) {
+                        Picasso.get()
+                            .load(user.avatarUrl)
+                            .into(holder.avatar)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
         db.GetTheNumberOfItemsInTopic(dataList[position].topicPK, object : ValueEventListenerCallback {
             override fun onDataChange(dataSnapshot: Long) {
                 holder.numberItems.text = "$dataSnapshot"
@@ -52,9 +87,12 @@ class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView
         }).toString()
 
         holder.itemView.setOnClickListener{
+
+            TopicDTO.currentTopic = dataList[position]
+            TopicDTO.numItems = holder.numberItems.text.toString()
+            db.GetListItemOfTopic(dataList[position].topicPK)
+
             val intent = Intent(holder.itemView.context, DetailTopicActivity::class.java)
-            intent.putExtra("numItems", holder.numberItems.text)
-            intent.putExtra("topic", dataList[position])
             holder.itemView.context.startActivity(intent)
         }
     }
@@ -65,5 +103,11 @@ class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView
     fun searchDataList(searchList: List<TopicDomain>) {
         dataList = searchList
         notifyDataSetChanged()
+    }
+    class SearchTopicViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val topicName = itemView.findViewById<TextView>(R.id.tv_folderName)
+        val numberItems = itemView.findViewById<TextView>(R.id.textView_numberItems)
+        val owner = itemView.findViewById<TextView>(R.id.textView_name)
+        val avatar = itemView.findViewById<ImageView>(R.id.circleImageView_avatar)
     }
 }

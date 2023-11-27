@@ -23,8 +23,6 @@ import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import com.example.afinal.DB.UserDAL
-import com.squareup.picasso.Target
-
 
 
 open class EditProfileActivity : AppCompatActivity() {
@@ -85,6 +83,7 @@ open class EditProfileActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(applicationContext, "No Changes Found", Toast.LENGTH_SHORT).show();
             }
+            finish()
         })
     }
 
@@ -92,13 +91,9 @@ open class EditProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val uri = data?.data
         binding.ava.setImageURI(uri)
+        val inputStream = uri?.let { contentResolver.openInputStream(it) }
+        UserDTO.userAvatar =  BitmapFactory.decodeStream(inputStream)
         avatarChange = true
-//        if (requestCode == CAMERAREQUEST) {
-//            val photo = data?.extras?.get("data") as Bitmap
-//            binding.ava.setImageBitmap(photo)
-//            bitmap = photo
-//            avatarChange = true
-//        }
     }
 
 
@@ -206,18 +201,16 @@ open class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showData() {
-        val intent = intent;
-        emailUser = intent.getStringExtra("email").toString()
-        usernameUser = intent.getStringExtra("username").toString()
-        passwordUser = intent.getStringExtra("password").toString()
-        val avatar = intent.getByteArrayExtra("avatar")
-//        avatar = intent.getParcelableExtra<Bitmap>("avatar")!!
+        emailUser = UserDTO.currentUser?.email ?: "Error"
+        usernameUser = UserDTO.currentUser?.username ?: "Error"
+        passwordUser = UserDTO.currentUser?.password ?: "Error"
 
         binding.edEmail.setText(emailUser)
         binding.edName.setText(usernameUser)
         binding.edPass.setText(passwordUser)
 
-        val bitmap = avatar?.let { BitmapFactory.decodeByteArray(avatar, 0, it.size) }
-        binding.ava.setImageBitmap(bitmap)
+        if (UserDTO.currentUser?.avatarUrl ?: ""  != "") {
+            binding.ava.setImageBitmap(UserDTO.userAvatar)
+        }
     }
 }

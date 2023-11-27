@@ -34,8 +34,6 @@ class FragmentTopic : Fragment() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerViewTopicList)
 
-
-
         loadTopic()
     }
 

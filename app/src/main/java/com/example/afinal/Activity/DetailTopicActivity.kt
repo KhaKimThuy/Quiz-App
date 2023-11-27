@@ -8,20 +8,26 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.FlashCardAdapter
 import com.example.afinal.DB.MyDB
+import com.example.afinal.DB.TopicDAL
 import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.TopicPublicDomain
 import com.example.afinal.databinding.ActivityDetailTopicBinding
+import java.time.LocalDateTime
 
 
 class DetailTopicActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailTopicBinding
     private lateinit var db: MyDB
+    private lateinit var topicDAL: TopicDAL
     private lateinit var adapter : FlashCardAdapter
     private lateinit var topic : TopicDomain
     private lateinit var numItems : String
@@ -34,8 +40,13 @@ class DetailTopicActivity : AppCompatActivity() {
         binding = ActivityDetailTopicBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (TopicDTO.currentTopic?.isPublic == true) {
+            initPublicTopic()
+        }
+
         // Init Firebase
         db = MyDB()
+        topicDAL = TopicDAL()
         itemList = TopicDTO.itemList
 
         // Load topic
@@ -63,14 +74,56 @@ class DetailTopicActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
-        binding.imgMore.setOnClickListener(View.OnClickListener {
-            showOptionsMenu(it)
+        // Statistic
+        binding.itemViewStatis.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, CongratulationActivity::class.java)
+            startActivity(intent)
         })
 
         binding.imgBack.setOnClickListener(View.OnClickListener {
 //            onBackPressed()
             finish()
         })
+    }
+
+    private fun initPublicTopic() {
+        binding.itemViewRanking.visibility = View.VISIBLE
+        binding.saveTopic.visibility = View.VISIBLE
+        binding.imgMore.visibility = View.VISIBLE
+
+        // Ranking
+        binding.itemViewRanking.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, ActivityRanking::class.java)
+            startActivity(intent)
+        })
+
+        binding.saveTopic.setOnClickListener(View.OnClickListener {
+            addPublicTopic()
+            Toast.makeText(this, "Saved topic", Toast.LENGTH_SHORT).show()
+        })
+
+        binding.imgMore.setOnClickListener(View.OnClickListener {
+            showOptionsMenu(it)
+        })
+    }
+
+    private fun addPublicTopic() {
+        val topic = TopicPublicDomain()
+        topic.guestPK = UserDTO.currentUser?.GetPK() ?: "Error"
+        val topicPK = TopicDTO.currentTopic?.topicPK
+        if (topicPK != null) {
+            topic.topicPK = topicPK
+        }
+        val userPK = TopicDTO.currentTopic?.userPK
+        val topicPublicPK = topicPK + userPK
+        topic.isPublic = true
+
+        if (topicPublicPK != null) {
+            topic.topicPublicPK = topicPublicPK
+        }
+
+        topicDAL.AddPublicTopic(topic)
+
     }
 
 
@@ -131,6 +184,11 @@ class DetailTopicActivity : AppCompatActivity() {
 //        itemList = adapter.itemList
         Log.d("TAG", "loadInfoTopic: " + itemList.size);
     }
+
+    fun loadTopic(topicList : ArrayList<TopicDomain>) {
+
+    }
+
 
     @Throws(Resources.NotFoundException::class)
     private fun deleteDialog() {
