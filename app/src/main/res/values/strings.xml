@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">Cloud FireStore</string>
+    <string name="free_register">Đăng ký miễn phí</string>
+    <string name="or_login">Hoặc đăng nhập</string>
+    <string name="provisions">Bằng việc đăng ký, tôi chấp thuận Điều khoản dịch vụ và Chính sách quyền riêng tư của Quizlet</string>
+
+    <!--  register activity  -->
+    <string name="login_quickly">ĐĂNG NHẬP NHANH BẰNG</string>
+    <string name="register_with_email">HOẶC ĐĂNG KÝ BẰNG EMAIL</string>
+    <string name="birthday">NGÀY SINH</string>
+    <string name="email_of_parents">EMAIL CỦA BỐ MẸ</string>
+    <string name="password">MẬT KHẨU</string>
+    <string name="confirm_password">XÁC NHẬN MẬT KHẨU</string>
+    <string name="register">Đăng ký</string>
+    <string name="email_invalid">NHẬP ĐỊA CHỈ EMAIL KHÔNG HỢP LỆ</string>
+    <string name="day_invalid">NGÀY SINH KHÔNG HỢP LỆ</string>
+    <string name="pass_invalid">MẬT KHẨU PHẢI CÓ ĐỘ DÀI NHIỀU HƠN 8 KÝ TỰ</string>
+
+    <!--    login activity-->
+    <string name="enter_email_or_username">Nhập email hoặc tên người dùng</string>
+    <string name="enter_password">Nhập mật khẩu của bạn</string>
+    <string name="forgot_username_password">Quên người dùng hoặc mật khẩu?</string>
+    <string name="user_isnot_exist">Người dùng không tồn tại</string>
+    <string name="login">Đăng nhập</string>
+    <string name="username_empty">Vui lòng nhập email hoặc tên người dùng</string>
+    <string name="password_empty">Vui lòng nhập mật khẩu</string>
+    <string name="or_login_with">\u2501 Hoặc đăng nhập bằng \u2501</string>
+
+
+    <!--    main activity-->
+    <string name="title_find">Học phần, sách giáo khoa, câu hỏi</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_answer">Lời giải</string>
+    <string name="title_library">Thư viện</string>
+    <string name="title_profile">Hồ sơ</string>
+    <string name="upgrade">Nâng cấp</string>
+
+    <!--    Create study module-->
+    <string name="title_create_module">Tạo học phần</string>
+    <string name="topic_chapter">Chủ đề, chương, đơn vị</string>
+    <string name="title_module">TIÊU ĐỀ</string>
+    <string name="term">THUẬT NGỮ</string>
+    <string name="define">ĐỊNH NGHĨA</string>
+
+    <!--    Create class-->
+    <string name="title_create_class">Lớp mới</string>
+    <string name="name_class">Tên lớp</string>
+    <string name="describe_class">Mô tả</string>
+    <string name="allow_member_class">Cho phép thành viên lớp thêm học phần và thành viên mới</string>
+
+    <!--    Answers activity-->
+    <string name="answer_expert">Lời giải chuyên gia</string>
+
+    <!--    Library activity-->
+    <string name="module_study">Học phần</string>
+    <string name="folder">Thư mục</string>
+    <string name="_class">Lớp học</string>
+    <!--    Setting activity-->
+    <string name="setting">Cài đặt</string>
+    <!--    Setting password-->
+    <!--    Add password  -->
+    <string name="add_pass">Thêm mật khẩu</string>
+    <string name="enter_pass1">NHẬP MẬT KHẨU</string>
+    <string name="enter_pass2">NHẬP LẠI MẬT KHẨU</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--Change password activity-->
+    <string name="change_pass">Đổi mật khẩu</string>
+    <string name="pass_now">Nhập mật khẩu hiện tại</string>
+    <string name="pass_ch1">Nhập mật khẩu mới</string>
+    <string name="pass_ch2">Nhập lại mật khẩu mới</string>
+    <string name="pass_ch_invalid"><font color="#ff0000">Mật khẩu phải ít nhất 8 ký tự</font></string>
+    <string name="pass_not_match"><font color="#ff0000">Không khớp mật khẩu</font></string>
+    <string name="pass_now_false"><font color="#ff0000">Mật khẩu hiện tại không đúng</font></string>
+    <string name="pass_change_confim">Xác nhận</string>
+    <!--Forgot password-->
+    <string name="forgot_pass">Quên mật khẩu</string>
+    <string name="email_to_recover">Nhập email để khôi phục mật khẩu</string>
+</resources>

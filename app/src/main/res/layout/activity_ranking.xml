@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#6a5ae0"
+    tools:context=".Activity.ActivityRanking">
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="BẢNG XẾP HẠNG"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="128dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-30dp">
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:background="@drawable/top_ranking_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:background="@drawable/top_ranking_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/view1" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:background="@drawable/top_ranking_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view1" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ava1"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:elevation="2dp"
+                android:src="@drawable/user"
+                app:layout_constraintBottom_toTopOf="@+id/rank1"
+                app:layout_constraintEnd_toEndOf="@+id/view1"
+                app:layout_constraintStart_toStartOf="@+id/view1" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ava2"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:elevation="2dp"
+                android:src="@drawable/user"
+                app:layout_constraintBottom_toTopOf="@+id/rank2"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ava3"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:elevation="2dp"
+                android:src="@drawable/user"
+                app:layout_constraintBottom_toTopOf="@+id/rank3"
+                app:layout_constraintEnd_toEndOf="@+id/view3"
+                app:layout_constraintStart_toStartOf="@+id/view3" />
+
+            <TextView
+                android:id="@+id/rank1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/num_rank"
+                android:gravity="center"
+                android:text="1"
+                app:layout_constraintEnd_toEndOf="@+id/ava1"
+                app:layout_constraintStart_toStartOf="@+id/ava1"
+                app:layout_constraintTop_toTopOf="@+id/view1" />
+
+            <TextView
+                android:id="@+id/username1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No user"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/score1"
+                app:layout_constraintEnd_toEndOf="@+id/ava1"
+                app:layout_constraintStart_toStartOf="@+id/ava1"
+                app:layout_constraintTop_toBottomOf="@+id/rank1" />
+
+            <TextView
+                android:id="@+id/score1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="81dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/ava1"
+                app:layout_constraintStart_toStartOf="@+id/ava1"
+                app:layout_constraintTop_toTopOf="@+id/view1" />
+
+            <TextView
+                android:id="@+id/rank2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/num_rank"
+                android:gravity="center"
+                android:text="2"
+                app:layout_constraintEnd_toEndOf="@+id/ava2"
+                app:layout_constraintStart_toStartOf="@+id/ava2"
+                app:layout_constraintTop_toTopOf="@+id/view2" />
+
+            <TextView
+                android:id="@+id/username2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No user"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/ava2"
+                app:layout_constraintStart_toStartOf="@+id/ava2"
+                app:layout_constraintTop_toBottomOf="@+id/rank2" />
+
+            <TextView
+                android:id="@+id/score2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/ava2"
+                app:layout_constraintStart_toStartOf="@+id/ava2"
+                app:layout_constraintTop_toBottomOf="@+id/username2" />
+
+            <TextView
+                android:id="@+id/rank3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/num_rank"
+                android:gravity="center"
+                android:text="3"
+                app:layout_constraintEnd_toEndOf="@+id/ava3"
+                app:layout_constraintStart_toStartOf="@+id/ava3"
+                app:layout_constraintTop_toTopOf="@+id/view3" />
+
+            <TextView
+                android:id="@+id/username3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="No user"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/ava3"
+                app:layout_constraintStart_toStartOf="@+id/ava3"
+                app:layout_constraintTop_toTopOf="@+id/rank3" />
+
+            <TextView
+                android:id="@+id/score3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/ava3"
+                app:layout_constraintStart_toStartOf="@+id/ava3"
+                app:layout_constraintTop_toTopOf="@+id/username3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

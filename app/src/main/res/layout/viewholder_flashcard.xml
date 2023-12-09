@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/flashcard_bg"
+    android:layout_marginHorizontal="16dp"
+    android:padding="16dp"
+    android:layout_marginBottom="20dp">
+
+    <ImageView
+        android:id="@+id/imageView_speaker"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/speaker"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_marker"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/imageView_marker"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/empty_star"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="10dp"
+        android:text="Trạng thái"
+        android:background="@drawable/state_item_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:autoFlipBack="true"
+        app:autoFlipBackTime="1000"
+        app:flipDuration="400"
+        app:flipEnabled="true"
+        app:flipFrom="front"
+        app:flipOnTouch="true"
+        app:flipType="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_marker">
+
+        <!-- Back Layout Goes Here -->
+        <include
+            android:id="@+id/front_card"
+            layout="@layout/fc_back_learning" />
+
+        <!-- Front Layout Goes Here -->
+        <include
+            android:id="@+id/back_card"
+            layout="@layout/flashcard_front" />
+
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

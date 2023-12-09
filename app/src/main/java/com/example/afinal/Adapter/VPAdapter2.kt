@@ -1,0 +1,32 @@
+package com.example.afinal.Adapter
+
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.afinal.Fragment.FragmentClass
+import com.example.afinal.Fragment.FragmentFolder
+import com.example.afinal.Fragment.FragmentTopic
+
+class VPAdapter2(fragmentManager: FragmentManager,lifecycle: Lifecycle): FragmentStateAdapter(fragmentManager, lifecycle) {
+    override fun getItemCount(): Int {
+        return 3
+    }
+
+    override fun createFragment(position: Int): Fragment {
+        return   when(position){
+            0->{
+                FragmentTopic()
+            }
+            1->{
+                FragmentFolder()
+            }
+            2->{
+                FragmentClass()
+            }
+            else->{
+                Fragment()
+            }
+        }
+    }
+}
