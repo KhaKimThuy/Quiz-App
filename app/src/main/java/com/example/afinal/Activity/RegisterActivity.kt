@@ -24,7 +24,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener(View.OnClickListener {
             binding.progressBar5.visibility = View.VISIBLE
 
-
             val email = binding.edtEmail.text.toString()
             val pass = binding.edtPassword.text.toString()
             val confirm = binding.edtPasswordConfirm.text.toString()

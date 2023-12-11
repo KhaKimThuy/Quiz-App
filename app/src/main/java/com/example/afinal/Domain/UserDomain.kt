@@ -3,6 +3,7 @@ package com.example.afinal.Domain
 import kotlin.random.Random
 
 class UserDomain {
+    var userPK : String = ""
     var email : String = ""
     var password : String = ""
     var username : String = RandomName()

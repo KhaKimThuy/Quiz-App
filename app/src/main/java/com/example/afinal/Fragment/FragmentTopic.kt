@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Adapter.TopicAdapter
+import com.example.afinal.DAL.MyDB
 import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.ViewModel.TopicViewModel
 import com.example.afinal.databinding.FragmentStudyModuleBinding
 
@@ -39,7 +41,6 @@ class FragmentTopic : Fragment() {
         // Processing smarter later
         TopicDTO.topicList.clear()
 
-
         topicViewModel = ViewModelProvider(this)[TopicViewModel::class.java]
         topicViewModel.getListTopicLiveData().observe(requireActivity()) { topics ->
             adapter = TopicAdapter(topics, object : TopicAdapter.IClickTopicListener {
@@ -47,6 +48,11 @@ class FragmentTopic : Fragment() {
                     TopicDTO.currentTopic = topics[position]
                     TopicDTO.numItems = topicView.numItem.text.toString()
                     val intent = Intent(activity, DetailTopicActivity::class.java)
+                    if (topics[position].userPK == UserDTO.currentUser?.userPK) {
+                        intent.putExtra("isMine", true)
+                    } else {
+                        intent.putExtra("isMine", false)
+                    }
                     requireActivity().startActivity(intent)
                 }
 

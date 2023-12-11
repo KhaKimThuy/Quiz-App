@@ -57,8 +57,8 @@ class FolderDAL : MyDB() {
         query.get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.size() > 0) {
-                    for (querySnapshot in querySnapshot) {
-                        val folderObject = querySnapshot.toObject(FolderDomain::class.java)
+                    for (folder in querySnapshot) {
+                        val folderObject = folder.toObject(FolderDomain::class.java)
                         folderList.add(folderObject)
                     }
                 }
@@ -70,13 +70,10 @@ class FolderDAL : MyDB() {
             }
     }
 
-
-    fun GetTopicOfFolder(folder: FolderDomain, callback: () -> Unit) {
+    fun GetTopicOfFolder (folder: FolderDomain, callback: () -> Unit) {
         val documentTFRef = MyDB().db.collection("topic_folder")
 
         val query = documentTFRef.whereEqualTo("folderPK",folder.folderPK)
-
-        Log.d("TAG", "Folder PK = " + folder.folderPK)
 
         val topicIds = ArrayList<String>()
 

@@ -1,18 +1,28 @@
 package com.example.afinal.Fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import com.example.afinal.Activity.DetailTopicActivity
+import com.example.afinal.Adapter.FolderAdapter
+import com.example.afinal.Adapter.TopicAdapter
+import com.example.afinal.DAL.FolderDAL
 import com.example.afinal.DAL.MyDB
+import com.example.afinal.DAL.TopicDAL
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.databinding.FragmentHomeBinding
 
 class FragmentHome : Fragment() {
     private lateinit var binding : FragmentHomeBinding
-    private lateinit var db: MyDB
+    private lateinit var adapter: TopicAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,6 +33,11 @@ class FragmentHome : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        init()
+        Log.d("TAG", "Fragment Home")
+
 
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -51,6 +66,37 @@ class FragmentHome : Fragment() {
                 return false
             }
         })
-
     }
+
+    private fun init() {
+        binding.recyclerViewPublicTopic.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        loadPublicTopic()
+    }
+
+    private fun loadPublicTopic(){
+        Log.d("TAG", "Load public topic")
+        TopicDAL().GetPublicTopic() {
+            adapter = TopicAdapter(it, object : TopicAdapter.IClickTopicListener {
+                override fun onClickTopicListener(
+                    topicView: TopicAdapter.TopicViewHolder,
+                    position: Int
+                ) {
+                    TopicDTO.currentTopic = it[position]
+                    TopicDTO.numItems = topicView.numItem.text.toString()
+                    val intent = Intent(activity, DetailTopicActivity::class.java)
+                    intent.putExtra("isMine", false)
+                    requireActivity().startActivity(intent)
+                }
+
+                override fun onLongClickTopicListener(
+                    topicView: TopicAdapter.TopicViewHolder,
+                    position: Int
+                ) {
+                    TODO("Not yet implemented")
+                }
+            })
+            binding.recyclerViewPublicTopic.adapter = adapter
+        }
+    }
+
 }

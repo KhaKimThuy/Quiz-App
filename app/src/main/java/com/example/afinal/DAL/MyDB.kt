@@ -8,7 +8,6 @@ import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Domain.TopicFolderDomain
-import com.example.afinal.Interface.ValueEventListenerCallback
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 
 open class MyDB() {
@@ -26,6 +27,7 @@ open class MyDB() {
     var reference: DatabaseReference = database.reference
     var db = Firebase.firestore
     var dbAuth = FirebaseAuth.getInstance()
+    var storageRef : StorageReference = FirebaseStorage.getInstance().reference
 
 //    fun PicassoToBitmap(srcBitmap, imgUrl : String) {
 //        val target = object : Target {
@@ -284,39 +286,39 @@ open class MyDB() {
         GetTopicFolderByID(tfPK).removeValue()
     }
 
-    fun GetTheNumberOfItemsInTopic(topicPK: String, callback: ValueEventListenerCallback) {
-        val query = GetItem().orderByChild("topicPK").equalTo(topicPK)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Khi dữ liệu thay đổi, hoặc được tải về lần đầu tiên
-                callback.onDataChange(dataSnapshot.childrenCount)
-                query.removeEventListener(this) // Hủy đăng ký listener
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Xử lý lỗi nếu có
-                callback.onCancelled(databaseError)
-                query.removeEventListener(this) // Hủy đăng ký listener
-            }
-        }
-        query.addValueEventListener(valueEventListener)
-    }
-
-    fun GetTheNumberOfTopicsInFolder(folderPK: String, callback: ValueEventListenerCallback) {
-        val query = GetTopicFolder().orderByChild("folderPK").equalTo(folderPK)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Khi dữ liệu thay đổi, hoặc được tải về lần đầu tiên
-                callback.onDataChange(dataSnapshot.childrenCount)
-                query.removeEventListener(this) // Hủy đăng ký listener
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Xử lý lỗi nếu có
-                callback.onCancelled(databaseError)
-                query.removeEventListener(this) // Hủy đăng ký listener
-            }
-        }
-        query.addValueEventListener(valueEventListener)
-    }
+//    fun GetTheNumberOfItemsInTopic(topicPK: String, callback: ValueEventListenerCallback) {
+//        val query = GetItem().orderByChild("topicPK").equalTo(topicPK)
+//        val valueEventListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                // Khi dữ liệu thay đổi, hoặc được tải về lần đầu tiên
+//                callback.onDataChange(dataSnapshot.childrenCount)
+//                query.removeEventListener(this) // Hủy đăng ký listener
+//            }
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Xử lý lỗi nếu có
+//                callback.onCancelled(databaseError)
+//                query.removeEventListener(this) // Hủy đăng ký listener
+//            }
+//        }
+//        query.addValueEventListener(valueEventListener)
+//    }
+//
+//    fun GetTheNumberOfTopicsInFolder(folderPK: String, callback: ValueEventListenerCallback) {
+//        val query = GetTopicFolder().orderByChild("folderPK").equalTo(folderPK)
+//        val valueEventListener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                // Khi dữ liệu thay đổi, hoặc được tải về lần đầu tiên
+//                callback.onDataChange(dataSnapshot.childrenCount)
+//                query.removeEventListener(this) // Hủy đăng ký listener
+//            }
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Xử lý lỗi nếu có
+//                callback.onCancelled(databaseError)
+//                query.removeEventListener(this) // Hủy đăng ký listener
+//            }
+//        }
+//        query.addValueEventListener(valueEventListener)
+//    }
 
     fun RecyclerTopic(folderPK : String = ""): FirebaseRecyclerOptions<TopicDomain> {
         val query : Query

@@ -70,9 +70,6 @@
             android:name=".Activity.CreateStudyModuleActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.LibraryActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activity.LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -103,6 +100,10 @@
         <activity
             android:name=".Activity.ActivityChangePassword"
             android:exported="false" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

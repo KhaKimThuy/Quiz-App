@@ -2,6 +2,7 @@ package com.example.afinal.DAL
 
 import android.util.Log
 import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.Domain.ItemRanking
 import com.example.afinal.Domain.TopicDomain
 
 class ItemDAL : MyDB() {
@@ -25,6 +26,26 @@ class ItemDAL : MyDB() {
                 .set(itemFB)
                 .addOnSuccessListener { Log.d("TAG", "Item successfully written!") }
                 .addOnFailureListener { e -> Log.w("TAG", "Error writing item document", e) }
+        }
+    }
+
+    fun AddPublicItem(rankingItem : ItemRanking) {
+        val rankingItemPK = db.collection("rankingItem").document().id
+
+        // Save user information in cloud storage
+        if (rankingItemPK != null) {
+            val itemRankingFB = hashMapOf (
+                "itemRankingPK" to rankingItemPK,
+                "topicRankingPK" to rankingItem.topicRankingPK,
+                "itemPK" to rankingItem.itemPK,
+                "isMarked" to rankingItem.isMarked,
+                "state" to rankingItem.state,
+                "numRights" to rankingItem.numRights,
+            )
+            db.collection("rankingItem").document(rankingItemPK)
+                .set(itemRankingFB)
+                .addOnSuccessListener { Log.d("TAG", "Ranking item successfully written!") }
+                .addOnFailureListener { e -> Log.w("TAG", "Error writing ranking item document", e) }
         }
     }
 

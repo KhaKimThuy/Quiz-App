@@ -34,7 +34,9 @@ class FragmentSettings : Fragment() {
             startActivity(intent)
         })
         binding.btnLogout.setOnClickListener(View.OnClickListener {
+            // Sign out current user
             MyDB().dbAuth.signOut()
+
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             startActivity(intent)
             requireActivity().finish()

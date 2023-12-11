@@ -26,7 +26,7 @@ class DetailTopicActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailTopicBinding
     private lateinit var topicDAL: TopicDAL
     private lateinit var adapter : FlashCardAdapter
-    private lateinit var topic : TopicDomain
+    private var isMine : Boolean = false
     var itemList: ArrayList<FlashCardDomain> = ArrayList<FlashCardDomain>()
 
 
@@ -67,13 +67,32 @@ class DetailTopicActivity : AppCompatActivity() {
             finish()
         })
 
-        binding.imgMore.setOnClickListener(View.OnClickListener {
-            showOptionsMenu(it)
-        })
+        if (isMine) {
+            binding.saveTopic.visibility = View.GONE
+            binding.imgMore.visibility = View.VISIBLE
+            binding.imgMore.setOnClickListener(View.OnClickListener {
+                showOptionsMenu(it)
+            })
 
+        } else {
+            binding.imgMore.visibility = View.GONE
+            binding.saveTopic.visibility = View.VISIBLE
+            binding.saveTopic.setOnClickListener(View.OnClickListener {
+                if (TopicDTO.currentTopic != null) {
+                    TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.itemList) {
+                        if (it) {
+                            Toast.makeText(this, "Okkkk", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+        }
     }
 
     private fun init () {
+        isMine = intent.getBooleanExtra("isMine", false)
         binding.recyclerviewFlashcard.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerviewFlashcard)
@@ -81,45 +100,6 @@ class DetailTopicActivity : AppCompatActivity() {
         loadInfoTopic()
     }
 
-    private fun initPublicTopic() {
-        binding.itemViewRanking.visibility = View.VISIBLE
-        binding.saveTopic.visibility = View.VISIBLE
-        binding.imgMore.visibility = View.VISIBLE
-
-        // Ranking
-        binding.itemViewRanking.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this, ActivityRanking::class.java)
-            startActivity(intent)
-        })
-
-        binding.saveTopic.setOnClickListener(View.OnClickListener {
-            addPublicTopic()
-            Toast.makeText(this, "Saved topic", Toast.LENGTH_SHORT).show()
-        })
-
-        binding.imgMore.setOnClickListener(View.OnClickListener {
-            showOptionsMenu(it)
-        })
-    }
-
-    private fun addPublicTopic() {
-        val topic = TopicPublicDomain()
-        topic.guestPK = UserDTO.currentUser?.GetPK() ?: "Error"
-        val topicPK = TopicDTO.currentTopic?.topicPK
-        if (topicPK != null) {
-            topic.topicPK = topicPK
-        }
-        val userPK = TopicDTO.currentTopic?.userPK
-        val topicPublicPK = topicPK + userPK
-        topic.isPublic = true
-
-        if (topicPublicPK != null) {
-            topic.topicPublicPK = topicPublicPK
-        }
-
-        topicDAL.AddPublicTopic(topic)
-
-    }
 
 
     private fun showOptionsMenu(anchorView: View) {

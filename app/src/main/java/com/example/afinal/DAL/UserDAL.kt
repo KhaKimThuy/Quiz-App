@@ -4,7 +4,9 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -12,10 +14,15 @@ import com.example.afinal.Activity.LoginActivity
 import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.Activity.RegisterActivity
 import com.example.afinal.DTO.UserDTO
+import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
+import com.google.android.gms.tasks.Task
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
+import java.io.ByteArrayOutputStream
 
 class UserDAL : MyDB() {
 
@@ -24,12 +31,13 @@ class UserDAL : MyDB() {
         MyDB().db.collection("user").document(userId).get().addOnCompleteListener{
             val user = it.result.toObject(UserDomain::class.java)
             if (user != null) {
+                user.userPK = userId
                 UserDTO.currentUser = user
+                Log.d("TAG" , "Login username : " + UserDTO.currentUser!!.userPK)
                 SaveAvatarLocal(user.avatarUrl)
             }
         }
     }
-
 
     fun GetUserObject(userId: String, callback: (UserDomain?) -> Unit) {
         val documentRef = MyDB().db.collection("user").document(userId)
@@ -59,7 +67,8 @@ class UserDAL : MyDB() {
 
                     // Save user information in cloud storage
                     if (userId != null) {
-                        val userFB = hashMapOf(
+                        val userFB = hashMapOf (
+                            "userPK" to userId,
                             "email" to user.email,
                             "password" to user.password,
                             "username" to user.username,
@@ -94,6 +103,18 @@ class UserDAL : MyDB() {
             }
     }
 
+    fun UpdateUserInfo(user : UserDomain) {
+
+        val updateInfo = mapOf (
+            "username" to user.username,
+            "email" to user.email,
+            "password" to user.password,
+        )
+        Log.d("TAG", "User PK = " + user.userPK)
+        db.collection("user").document(user.userPK).update(updateInfo)
+    }
+
+
     fun UserLogin(email : String, password : String, activity: LoginActivity) {
         MyDB().dbAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity) { task ->
@@ -113,6 +134,36 @@ class UserDAL : MyDB() {
     }
 
 
+
+    fun UpdateUserAvatar(bitmap : Bitmap) {
+        Log.d("TAG" , "Starting avatar update ...")
+        val userAvaRef = storageRef.child("UserImages")
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+
+        // Save image value in storage
+        val pk = MyDB().dbAuth.currentUser?.uid.toString()
+        val uploadTask = pk?.let { userAvaRef.child("$it.jpeg").putBytes(byteArray) }
+        if (uploadTask != null) {
+            uploadTask.addOnSuccessListener { taskSnapshot ->
+                val downloadUrlTask: Task<Uri> = taskSnapshot.storage.downloadUrl
+                downloadUrlTask.addOnSuccessListener { uri ->
+
+                    val newAvaUrl = uri.toString()
+                    val updateInfo = mapOf (
+                        "avatarUrl" to newAvaUrl,
+                    )
+                    db.collection("user").document(pk).update(updateInfo)
+
+                    Log.d("TAG" , "Avatar url = $newAvaUrl")
+                }
+            }?.addOnFailureListener {
+                Log.d("TAG" , "Fail to update avatar user")
+            }
+        }
+    }
+
     fun SaveAvatarLocal(imgUrl : String) {
         if (imgUrl == "") {
             val drawableId: Int = R.drawable.person
@@ -121,6 +172,7 @@ class UserDAL : MyDB() {
             val target = object : Target {
                 override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                     if (bitmap != null) {
+                        Log.d("TAG","Avatar saving ... ")
                         UserDTO.userAvatar = bitmap
                     }
                 }

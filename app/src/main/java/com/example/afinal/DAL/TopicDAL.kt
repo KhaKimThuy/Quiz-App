@@ -9,14 +9,17 @@ import com.example.afinal.Activity.ActivityRanking
 import com.example.afinal.Activity.CreateStudyModuleActivity
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Activity.LoginActivity
+import com.example.afinal.DTO.FolderDTO
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.FolderDomain
+import com.example.afinal.Domain.ItemRanking
 import com.example.afinal.Fragment.SearchResultFragment
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Domain.TopicFolderDomain
 import com.example.afinal.Domain.TopicPublicDomain
+import com.example.afinal.Domain.TopicRanking
 import com.example.afinal.Domain.UserDomain
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DataSnapshot
@@ -72,20 +75,96 @@ class TopicDAL : MyDB() {
     fun GetTopicOfUser(userId: String, callback: () -> Unit) {
         val documentRef = MyDB().db.collection("topic")
         val query = documentRef.whereEqualTo("userPK", userId)
-            .orderBy("createdTime", com.google.firebase.firestore.Query.Direction.ASCENDING)
+            .orderBy("createdTime", com.google.firebase.firestore.Query.Direction.DESCENDING)
 
         query.get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.size() > 0) {
-                    for (querySnapshot in querySnapshot) {
-                        val topicObject = querySnapshot.toObject(TopicDomain::class.java)
+                    for (topic in querySnapshot) {
+                        val topicObject = topic.toObject(TopicDomain::class.java)
                         TopicDTO.topicList.add(topicObject)
                     }
+                    // Get ranking topic saved by user
+                    GetRankingTopicUser(userId) {
+                        callback()
+                    }
+                } else {
+                    callback()
                 }
-                callback()
             }
             .addOnFailureListener { _ ->
                 callback()
+            }
+    }
+
+    fun GetRankingTopicUser (userId: String, callback: () -> Unit) {
+        val documentRef = MyDB().db.collection("rankingTopic")
+        val topicIds = ArrayList<String>()
+        val query = documentRef.whereEqualTo("userPK", userId)
+            .orderBy("savedTime", com.google.firebase.firestore.Query.Direction.ASCENDING)
+        query.get()
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.size() > 0) {
+                    for (rankingTopic in querySnapshot) {
+                        val topicObject = rankingTopic.toObject(TopicRanking::class.java)
+                        TopicDTO.rankingTopicList.add(topicObject)
+                        topicIds.add(topicObject.topicPK)
+                    }
+
+                    val topicDocumentRef = MyDB().db.collection("topic")
+                    val query = topicDocumentRef.whereIn("topicPK", topicIds)
+                    query.get()
+                        .addOnSuccessListener { documents ->
+                            for (document in documents) {
+                                val topicObject = document.toObject(TopicDomain::class.java)
+                                val rTopic = TopicDTO.rankingTopicList.find { it.topicPK == topicObject.topicPK }
+                                topicObject.createdTime = rTopic?.savedTime
+                                topicObject.timeStudy = rTopic?.timeStudy!!
+                                topicObject.highestScore = rTopic.highestScore
+                                TopicDTO.topicList.add(topicObject)
+                            }
+
+                            // Order topic according to created time
+                            TopicDTO.topicList.sortedByDescending { it.createdTime.time }
+                            callback()
+                        }
+                        .addOnFailureListener { _ ->
+                            // Handle any errors that occurred while retrieving the documents
+                            callback()
+                        }
+                }
+            }
+            .addOnFailureListener { _ ->
+            }
+    }
+
+
+    fun GetPublicTopic(callback: (ArrayList<TopicDomain>) -> Unit) {
+        val userPK = MyDB().dbAuth.currentUser?.uid.toString()
+        val documentRef = MyDB().db.collection("topic")
+
+        val query = documentRef .orderBy("userPK")
+                                .whereNotEqualTo("userPK", userPK)
+                                .orderBy("createdTime", com.google.firebase.firestore.Query.Direction.ASCENDING)
+                                .whereEqualTo("isPublic", true)
+
+        val publicTopicList : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
+
+        // Get 10 latest public topic
+        query.get()
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.size() > 0) {
+                    for (topic in querySnapshot) {
+                        val topicObject = topic.toObject(TopicDomain::class.java)
+                        publicTopicList.add(topicObject)
+                    }
+                }
+                Log.d("TAG", "Success - The number of public topic : " + publicTopicList.size)
+                callback(publicTopicList)
+            }
+            .addOnFailureListener { e ->
+                Log.d("TAG", "Fail - The number of public topic " + e)
+                callback(publicTopicList)
             }
     }
 
@@ -133,6 +212,43 @@ class TopicDAL : MyDB() {
                 }
 
                 .addOnFailureListener { e -> Log.w("TAG", "Error writing topic document", e) }
+        }
+    }
+
+
+    fun AddPublicTopic(orinTopic : TopicDomain, itemList : ArrayList<FlashCardDomain>, callback: (Boolean) -> Unit) {
+        // Sign in success, update UI with the signed-in user's information
+        val userId = MyDB().dbAuth.currentUser?.uid.toString()
+
+        val rankingTopicPK = db.collection("rankingTopic").document().id
+        // Save user information in cloud storage
+        if (rankingTopicPK != null) {
+            val rankingTopicFB = hashMapOf (
+                "rankingTopicPK" to rankingTopicPK,
+                "topicPK" to orinTopic.topicPK,
+                "userPK" to userId,
+                "highestScore" to 0,
+                "timeStudy" to 0,
+                "savedTime" to Calendar.getInstance().time,
+            )
+
+            db.collection("rankingTopic").document(rankingTopicPK)
+                .set(rankingTopicFB)
+                .addOnSuccessListener {
+
+                    // Add item to topic
+                    for (item in itemList) {
+                        var rankingItem = ItemRanking()
+                        rankingItem.itemPK = item.itemPK
+                        rankingItem.topicRankingPK = rankingTopicPK
+                        ItemDAL().AddPublicItem(rankingItem)
+                    }
+
+                    callback(true)
+                }
+                .addOnFailureListener {
+                    callback(false)
+                }
         }
     }
 
@@ -197,26 +313,7 @@ class TopicDAL : MyDB() {
             .build()
     }
 
-    fun GetListPublicTopic(activity: SearchResultFragment, topicList: ArrayList<TopicDomain>, search: String) {
-        val query = GetTopic().orderByChild("public").equalTo(true)
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val yourObject = snapshot.getValue(TopicDomain::class.java)
-                    if (yourObject != null) {
-                        topicList.add(yourObject)
-                        Log.d("TAG", "Topic name: " + yourObject.topicName)
-                    }
-                }
-                activity.adapter.notifyDataSetChanged();
-                activity.searchList(search);
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle any errors
-            }
-        })
-    }
 
 
     fun GetRankingOfTopic(activity : ActivityRanking) {
@@ -258,23 +355,6 @@ class TopicDAL : MyDB() {
         GetUser().addListenerForSingleValueEvent(valueEventListener)
     }
 
-    fun AddPublicTopic(topic : TopicPublicDomain) {
-        GetTopicPublic().addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (topic.topicPublicPK?.let { snapshot.hasChild(it) } == true){
-                    Log.d("AddTopic", "Topic name is already used")
-                }else{
-                    if (topic.topicPublicPK != null) {
-                        GetTopicPublic().child(topic.topicPublicPK).setValue(topic)
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
 
 
     fun GetListTopicPublicIdOfUser(activity: DetailTopicActivity, topicIDs: ArrayList<String>, folder: FolderDomain){
@@ -298,34 +378,16 @@ class TopicDAL : MyDB() {
     }
 
     fun GetListTopicIdOfUser(activity: DetailTopicActivity, topicIDs: ArrayList<String>){
-        val query = GetTopic().orderByChild("userPK").equalTo(UserDTO.currentUser?.GetPK())
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val yourObject = snapshot.getValue(TopicDomain::class.java)
-                    if (yourObject != null) {
-                        topicIDs.add(yourObject.topicPK)
-                    }
-                }
-                GetListTopicOfUser(activity, topicIDs)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle any errors
-            }
-        })
-    }
-
-    fun GetListTopicOfUser(activity: DetailTopicActivity, topicIDs: ArrayList<String>){
-//        val topicList : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
-//        GetTopic().addValueEventListener(object : ValueEventListener {
+//        val query = GetTopic().orderByChild("userPK").equalTo(UserDTO.currentUser?.GetPK())
+//        query.addValueEventListener(object : ValueEventListener {
 //            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                for (key in topicIDs) {
-//                    val snapshot = dataSnapshot.child(key)
+//                for (snapshot in dataSnapshot.children) {
 //                    val yourObject = snapshot.getValue(TopicDomain::class.java)
-//                    yourObject?.let { topicList.add(it) }
+//                    if (yourObject != null) {
+//                        topicIDs.add(yourObject.topicPK)
+//                    }
 //                }
-//                activity.loadTopic(topicList)
+//                GetListTopicOfUser(activity, topicIDs)
 //            }
 //
 //            override fun onCancelled(databaseError: DatabaseError) {
@@ -333,4 +395,10 @@ class TopicDAL : MyDB() {
 //            }
 //        })
     }
+
+
+
+
+
+
 }

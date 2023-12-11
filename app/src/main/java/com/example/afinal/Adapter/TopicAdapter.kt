@@ -44,7 +44,7 @@ class TopicAdapter(private var topicList: List<TopicDomain>,
 
         if (topicList[position].userPK == MyDB().dbAuth.currentUser?.uid) {
             holder.owner.text = UserDTO.currentUser?.username // Get user info later
-            if (UserDTO.currentUser?.avatarUrl != "") {
+            if (UserDTO.userAvatar != null) {
                 holder.avatar.setImageBitmap(UserDTO.userAvatar)
             }
         } else {

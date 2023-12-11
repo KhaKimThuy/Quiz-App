@@ -14,7 +14,6 @@ import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.FolderDomain
 import com.example.afinal.Domain.TopicDomain
 import com.example.afinal.Domain.UserDomain
-import com.example.afinal.Interface.ValueEventListenerCallback
 import com.example.afinal.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -51,28 +50,28 @@ class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView
 
         })
 
-        db.GetTheNumberOfItemsInTopic(dataList[position].topicPK, object : ValueEventListenerCallback {
-            override fun onDataChange(dataSnapshot: Long) {
-                holder.numberItems.text = "$dataSnapshot"
-            }
-
-            override fun onDataChange(dataSnapshot: FolderDomain) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onDataChange(topicIDs: ArrayList<String>) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onDataChangeTopic(dataSnapshot: TopicDomain) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                holder.numberItems.text = "0"
-            }
-
-        }).toString()
+//        db.GetTheNumberOfItemsInTopic(dataList[position].topicPK, object : ValueEventListenerCallback {
+//            override fun onDataChange(dataSnapshot: Long) {
+//                holder.numberItems.text = "$dataSnapshot"
+//            }
+//
+//            override fun onDataChange(dataSnapshot: FolderDomain) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onDataChange(topicIDs: ArrayList<String>) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onDataChangeTopic(dataSnapshot: TopicDomain) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                holder.numberItems.text = "0"
+//            }
+//
+//        }).toString()
 
         holder.itemView.setOnClickListener{
 
