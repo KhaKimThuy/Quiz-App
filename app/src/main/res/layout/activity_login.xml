@@ -103,7 +103,7 @@
 
 
         <TextView
-            android:id="@+id/textView29"
+            android:id="@+id/tvFogotPw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -116,11 +116,10 @@
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/tvInvalidEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lỗi hiển thị ở đây"
             android:textColor="#FF0000"
             app:layout_constraintStart_toStartOf="@+id/edtUsername"
             app:layout_constraintTop_toBottomOf="@+id/edtUsername" />
@@ -130,7 +129,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lỗi hiển thị ở đây"
             android:textColor="#FF0000"
             app:layout_constraintStart_toStartOf="@+id/edtPassword"
             app:layout_constraintTop_toBottomOf="@+id/edtPassword" />

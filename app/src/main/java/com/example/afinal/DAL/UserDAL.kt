@@ -4,20 +4,23 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.example.afinal.Activity.ActivityForgotPassword
 import com.example.afinal.Activity.LoginActivity
 import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.Activity.RegisterActivity
 import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.Domain.UserDomain
 import com.example.afinal.R
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Firebase
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -25,6 +28,8 @@ import com.squareup.picasso.Target
 import java.io.ByteArrayOutputStream
 
 class UserDAL : MyDB() {
+
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun SaveUserLocal(userId : String){
         // Save user information locally
@@ -172,12 +177,14 @@ class UserDAL : MyDB() {
             val target = object : Target {
                 override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                     if (bitmap != null) {
-                        Log.d("TAG","Avatar saving ... ")
+                        Log.d("TAG", "Avatar saving ... ")
                         UserDTO.userAvatar = bitmap
                     }
                 }
+
                 override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
                 }
+
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                 }
             }
