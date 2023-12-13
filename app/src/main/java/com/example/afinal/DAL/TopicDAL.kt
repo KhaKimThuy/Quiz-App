@@ -123,7 +123,11 @@ class TopicDAL : MyDB() {
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.size() > 0) {
                     for (topic in querySnapshot) {
+                        val isPublic = topic.getBoolean("isPublic")
                         val topicObject = topic.toObject(Topic::class.java)
+                        if (isPublic != null) {
+                            topicObject.isPublic = isPublic
+                        }
                         Log.d("TAG", "(GetTopicOfUser) TOPIC is public : " + topicObject.isPublic)
                         topics.add(topicObject)
                     }
