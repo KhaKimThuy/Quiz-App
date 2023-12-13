@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.afinal.Activity.LoginActivity
+import com.example.afinal.Activity.OustandingVocabularyActivity
 import com.example.afinal.Activity.ProfileActivity
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.databinding.FragmentSettingsBinding
@@ -30,7 +31,7 @@ class FragmentSettings : Fragment() {
             startActivity(intent)
         })
         binding.cardViewFlashCard.setOnClickListener(View.OnClickListener{
-            val intent = Intent(activity, ProfileActivity::class.java)
+            val intent = Intent(activity, OustandingVocabularyActivity::class.java)
             startActivity(intent)
         })
         binding.btnLogout.setOnClickListener(View.OnClickListener {

@@ -25,6 +25,9 @@
             android:name=".Activity.EndTestActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.OustandingVocabularyActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.CongratulationActivity"
             android:exported="false" />
         <activity
@@ -105,9 +108,6 @@
             android:exported="false" />
         <activity
             android:name=".Activity.ActivityRanking"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.ActivityChangePassword"
             android:exported="false" />
 
         <meta-data
