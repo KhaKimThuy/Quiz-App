@@ -31,6 +31,10 @@ class ProfileActivity : AppCompatActivity() {
             passUserData()
         })
 
+        binding.btnChangePass.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, ActivityChangePassword::class.java)
+            startActivity(intent)
+        })
     }
 
     private fun loadUserInfo(){

@@ -91,7 +91,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_folderCurName" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/tvInvalidEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            app:layout_constraintTop_toBottomOf="@+id/tvInvalidEmail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

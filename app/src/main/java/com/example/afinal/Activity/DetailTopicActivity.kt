@@ -63,14 +63,14 @@ class DetailTopicActivity : AppCompatActivity() {
 
         // Ranking
         if (TopicDTO.currentTopic?.isPublic == true) {
-            binding.itemViewRanking.visibility = View.GONE
-        } else {
             binding.itemViewRanking.visibility = View.VISIBLE
             binding.itemViewRanking.setOnClickListener(View.OnClickListener {
                 val intent = Intent(this, ActivityRanking::class.java)
                 intent.putExtra("topicId", TopicDTO.currentTopic?.topicPK)
                 startActivity(intent)
             })
+        } else {
+            binding.itemViewRanking.visibility = View.GONE
         }
 
         binding.imgBack.setOnClickListener(View.OnClickListener {

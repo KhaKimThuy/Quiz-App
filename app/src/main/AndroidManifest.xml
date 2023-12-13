@@ -34,6 +34,12 @@
             android:name=".Activity.AddTopicToFolderActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.ActivityForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ActivityChangePassword"
+            android:exported="false" />
+        <activity
             android:name=".Activity.DetailFolderActivity"
             android:exported="false" />
         <activity

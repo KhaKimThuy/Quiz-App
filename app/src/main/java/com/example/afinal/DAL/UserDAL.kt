@@ -168,12 +168,14 @@ class UserDAL : MyDB() {
             val target = object : Target {
                 override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                     if (bitmap != null) {
-                        Log.d("TAG","Avatar saving ... ")
+                        Log.d("TAG", "Avatar saving ... ")
                         UserDTO.userAvatar = bitmap
                     }
                 }
+
                 override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
                 }
+
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                 }
             }
