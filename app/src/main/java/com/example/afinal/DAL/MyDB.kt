@@ -4,10 +4,10 @@ import android.util.Log
 import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.FolderDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Domain.TopicFolderDomain
+import com.example.afinal.Domain.Item
+import com.example.afinal.Domain.Folder
+import com.example.afinal.Domain.Topic
+import com.example.afinal.Domain.TopicFolder
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -77,7 +77,7 @@ open class MyDB() {
     }
 
     fun CreateFolder(folderName : String, folderDesc : String) {
-        val folder = FolderDomain()
+        val folder = Folder()
         folder.folderName = folderName
         folder.folderDesc = folderDesc
         folder.folderPK = GetFolder().push().key!!
@@ -98,7 +98,7 @@ open class MyDB() {
         })
     }
 
-    fun EditFolder(folder: FolderDomain, folderName : String, folderDesc : String) {
+    fun EditFolder(folder: Folder, folderName : String, folderDesc : String) {
         GetFolderByID(folder.folderPK).child("folderName").setValue(folderName)
         GetFolderByID(folder.folderPK).child("folderDesc").setValue(folderDesc)
     }
@@ -115,14 +115,14 @@ open class MyDB() {
         return database.getReference("Item")
     }
 
-    fun RecyclerItem(topicPK: String): FirebaseRecyclerOptions<FlashCardDomain> {
+    fun RecyclerItem(topicPK: String): FirebaseRecyclerOptions<Item> {
         val query = GetItem().orderByChild("topicPK").equalTo(topicPK)
-        return FirebaseRecyclerOptions.Builder<FlashCardDomain>()
-            .setQuery(query, FlashCardDomain::class.java)
+        return FirebaseRecyclerOptions.Builder<Item>()
+            .setQuery(query, Item::class.java)
             .build()
     }
 
-    fun CreateTopicWithItems(topic : TopicDomain, itemList : ArrayList<FlashCardDomain>) {
+    fun CreateTopicWithItems(topic : Topic, itemList : ArrayList<Item>) {
         // Add topic
         GetTopic().addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -159,8 +159,8 @@ open class MyDB() {
         })
     }
 
-    fun AddTopicForFolder(topic : TopicDomain, folder: FolderDomain) {
-        val topicFolder = TopicFolderDomain()
+    fun AddTopicForFolder(topic : Topic, folder: Folder) {
+        val topicFolder = TopicFolder()
         topicFolder.topicPK = topic.topicPK
         topicFolder.folderPK = folder.folderPK
         val tfPK = topicFolder.topicPK + topicFolder.folderPK
@@ -174,13 +174,13 @@ open class MyDB() {
         })
     }
 
-    fun GetListTopicIDFromTF(activity: DetailFolderActivity, topicIDs: ArrayList<String>, folder: FolderDomain){
+    fun GetListTopicIDFromTF(activity: DetailFolderActivity, topicIDs: ArrayList<String>, folder: Folder){
         val query = GetTopicFolder().orderByChild("folderPK").equalTo(folder.folderPK)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 topicIDs.clear()
                 for (snapshot in dataSnapshot.children) {
-                    val yourObject = snapshot.getValue(TopicFolderDomain::class.java)
+                    val yourObject = snapshot.getValue(TopicFolder::class.java)
                     if (yourObject != null) {
                         topicIDs.add(yourObject.topicPK)
                     }
@@ -228,7 +228,7 @@ open class MyDB() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 TopicDTO.itemList.clear()
                 for (snapshot in dataSnapshot.children) {
-                    val yourObject = snapshot.getValue(FlashCardDomain::class.java)
+                    val yourObject = snapshot.getValue(Item::class.java)
                     if (yourObject != null) {
                         TopicDTO.itemList.add(yourObject)
                     }
@@ -240,7 +240,7 @@ open class MyDB() {
         })
     }
 
-    fun CreateItem(item : FlashCardDomain, topicPK : String = "") {
+    fun CreateItem(item : Item, topicPK : String = "") {
         val itemPK = GetItem().push().key
         if (itemPK != null) {
             item.itemPK = itemPK
@@ -249,7 +249,7 @@ open class MyDB() {
         }
     }
 
-    fun DeleteItem(item : FlashCardDomain){
+    fun DeleteItem(item : Item){
         GetItem().child(item.itemPK).removeValue()
             .addOnSuccessListener {
                 // Object deleted successfully
@@ -281,7 +281,7 @@ open class MyDB() {
 //    }
 
     // Because folderPK of topic is the folderPk of current folder, give folder as argument is enough
-    fun DeleteTopicFromFolder(topic : TopicDomain, folder : FolderDomain) {
+    fun DeleteTopicFromFolder(topic : Topic, folder : Folder) {
         val tfPK = topic.topicPK + folder.folderPK
         GetTopicFolderByID(tfPK).removeValue()
     }
@@ -320,7 +320,7 @@ open class MyDB() {
 //        query.addValueEventListener(valueEventListener)
 //    }
 
-    fun RecyclerTopic(folderPK : String = ""): FirebaseRecyclerOptions<TopicDomain> {
+    fun RecyclerTopic(folderPK : String = ""): FirebaseRecyclerOptions<Topic> {
         val query : Query
         if (folderPK == "") {
             query = GetTopic().orderByChild("userPK")
@@ -331,8 +331,8 @@ open class MyDB() {
                 .orderByChild("folderPK").equalTo(folderPK)
         }
 
-        return FirebaseRecyclerOptions.Builder<TopicDomain>()
-            .setQuery(query, TopicDomain::class.java)
+        return FirebaseRecyclerOptions.Builder<Topic>()
+            .setQuery(query, Topic::class.java)
             .build()
     }
 
@@ -344,10 +344,10 @@ open class MyDB() {
         return pk
     }
 
-    fun RecyclerFolder(): FirebaseRecyclerOptions<FolderDomain> {
+    fun RecyclerFolder(): FirebaseRecyclerOptions<Folder> {
         val query = GetFolder().orderByChild("userPK").equalTo(UserDTO.currentUser?.GetPK())
-        return FirebaseRecyclerOptions.Builder<FolderDomain>()
-            .setQuery(query, FolderDomain::class.java)
+        return FirebaseRecyclerOptions.Builder<Folder>()
+            .setQuery(query, Folder::class.java)
             .build()
     }
 }

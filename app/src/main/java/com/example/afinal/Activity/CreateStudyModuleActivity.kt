@@ -13,12 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.AddItemTopicAdapter
-import com.example.afinal.DAL.MyDB
 import com.example.afinal.DAL.TopicDAL
-import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Fragment.FragmentTopic
+import com.example.afinal.Domain.Item
+import com.example.afinal.Domain.Topic
 import com.example.afinal.ViewModel.TopicViewModel
 import com.example.afinal.databinding.ActivityCreateStudyModuleBinding
 import java.io.BufferedReader
@@ -29,9 +26,9 @@ import java.io.InputStreamReader
 
 class CreateStudyModuleActivity : AppCompatActivity() {
     lateinit var binding: ActivityCreateStudyModuleBinding
-    private lateinit var itemList: ArrayList<FlashCardDomain>
+    private lateinit var itemList: ArrayList<Item>
     private lateinit var adapter: AddItemTopicAdapter
-    private lateinit var topic : TopicDomain
+    private lateinit var topic : Topic
     lateinit var topicViewModel: TopicViewModel
 
     private val READ_EXTERNAL_STORAGE_REQUEST = 101
@@ -45,7 +42,7 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         init()
 
         binding.imageViewAddItem.setOnClickListener(View.OnClickListener {
-            itemList.add(FlashCardDomain())
+            itemList.add(Item())
             adapter.notifyItemInserted(itemList.size - 1)
         })
 
@@ -69,8 +66,8 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         itemList = ArrayList()
         binding.progressBar3.visibility = View.GONE
 
-        itemList.add(FlashCardDomain())
-        itemList.add(FlashCardDomain())
+        itemList.add(Item())
+        itemList.add(Item())
 
         adapter = AddItemTopicAdapter(itemList)
         binding.recyclerViewAddTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -86,7 +83,7 @@ class CreateStudyModuleActivity : AppCompatActivity() {
             while (reader.readLine().also { line = it } != null){
                 val row : List<String> = line!!.split(",")
 
-                var fc = FlashCardDomain()
+                var fc = Item()
                 fc.engLanguage = row[0]
                 fc.vnLanguage = row[1]
 
@@ -131,7 +128,7 @@ class CreateStudyModuleActivity : AppCompatActivity() {
     }
 
     private fun addTopic() {
-        topic = TopicDomain()
+        topic = Topic()
         topic.topicName = binding.edtTopicName.text.toString()
         topic.isPublic = binding.switchIsPublic.isChecked
 

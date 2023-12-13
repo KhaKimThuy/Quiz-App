@@ -9,31 +9,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Activity.FlashCardStudyActivity
-import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.Domain.Item
 import com.example.afinal.R
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import java.util.Locale
 import java.util.UUID
 
 class FCLearningAdapter(
     activity: FlashCardStudyActivity,
-    private val cardList: ArrayList<FlashCardDomain>,
-    auto : Boolean = true,
+    private val cardList: ArrayList<Item>
 ) : RecyclerView.Adapter<FCLearningAdapter.FCViewHolder>(){
 
-    private var auto = auto
     private var textToSpeech : TextToSpeech
     private var ready : Boolean = false
     private var activity = activity
 
-    private val handler = Handler()
 
-    private val delayDuration = 5000L // Duration in milliseconds
-    private var eventRunnable: Runnable? = null
 
 
     init {
@@ -60,18 +51,20 @@ class FCLearningAdapter(
             speakOut(holder.eng_lang.text.toString())
         })
 
-        // Cancel any existing event runnable
-        eventRunnable?.let { handler.removeCallbacks(it) }
-        // Schedule a new event runnable
-        eventRunnable = Runnable {
-            // Perform the desired event after the duration
-            var nextIdx = position
-            if (position < itemCount) {
-                nextIdx = position + 1
-            }
-            activity.moveToNext(nextIdx)
-        }
-        handler.postDelayed(eventRunnable!!, delayDuration)
+//        if (activity.auto) {
+//            // Cancel any existing event runnable
+//            eventRunnable?.let { handler.removeCallbacks(it) }
+//            // Schedule a new event runnable
+//            eventRunnable = Runnable {
+//                // Perform the desired event after the duration
+//                var nextIdx = position
+//                if (position < itemCount) {
+//                    nextIdx = position + 1
+//                }
+//                activity.moveToNext(nextIdx)
+//            }
+//            handler.postDelayed(eventRunnable!!, delayDuration)
+//        }
     }
 
 //    private val runnable = Runnable {

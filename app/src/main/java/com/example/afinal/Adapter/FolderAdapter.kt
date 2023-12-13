@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.DTO.FolderDTO
 import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.FolderDomain
+import com.example.afinal.Domain.Folder
 import com.example.afinal.R
 
 
-class FolderAdapter (private val folderList: ArrayList<FolderDomain>, private val activity: FragmentActivity) : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>(){
+class FolderAdapter (private val folderList: ArrayList<Folder>, private val activity: FragmentActivity) : RecyclerView.Adapter<FolderAdapter.FolderViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.viewholder_folder, parent, false)

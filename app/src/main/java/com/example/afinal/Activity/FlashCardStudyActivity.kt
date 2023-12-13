@@ -9,15 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.afinal.Adapter.FCLearningAdapter
 import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.R
 import com.example.afinal.databinding.ActivityFlashCardStudyBinding
 
 
 class FlashCardStudyActivity : AppCompatActivity() {
 
-    private lateinit var handler: Handler
+    private val handler = Handler()
+    private val delayDuration = 5000L // Duration in milliseconds
+    private var eventRunnable: Runnable? = null
+
     private lateinit var adapter: FCLearningAdapter
     lateinit var binding:ActivityFlashCardStudyBinding
     private var loadNumber : Int = 0
+    var auto = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,16 @@ class FlashCardStudyActivity : AppCompatActivity() {
 
         binding.imgViewQuit.setOnClickListener(View.OnClickListener {
             finish()
+        })
+
+        binding.imageViewPlay.setOnClickListener(View.OnClickListener {
+            if (auto) {
+                binding.imageViewPlay.setImageResource(R.drawable.play_icon)
+                auto = false
+            } else {
+                binding.imageViewPlay.setImageResource(R.drawable.pause)
+                auto = true
+            }
         })
     }
 
@@ -56,9 +71,27 @@ class FlashCardStudyActivity : AppCompatActivity() {
 
 
     private fun loadFlashCards(){
-        handler = Handler(Looper.myLooper()!!)
+        //handler = Handler(Looper.myLooper()!!)
+
+
+
         adapter = FCLearningAdapter(this, TopicDTO.itemList)
         binding.recyclerView.adapter = adapter
+
+
+//        // Cancel any existing event runnable
+//        eventRunnable?.let { handler.removeCallbacks(it) }
+//        // Schedule a new event runnable
+//        eventRunnable = Runnable {
+//            // Perform the desired event after the duration
+//            var nextIdx = position
+//            if (position < itemCount) {
+//                nextIdx = position + 1
+//            }
+//            activity.moveToNext(nextIdx)
+//        }
+//        handler.postDelayed(eventRunnable!!, delayDuration)
+
     }
 
 

@@ -2,14 +2,14 @@ package com.example.afinal.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.afinal.Domain.FolderDomain
+import com.example.afinal.Domain.Folder
 import com.example.afinal.R
 import com.example.afinal.ViewHolder.FolderViewHolder
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class FolderListAdapter(options: FirebaseRecyclerOptions<FolderDomain>) :
-    FirebaseRecyclerAdapter<FolderDomain, FolderViewHolder>(options) {
+class FolderListAdapter(options: FirebaseRecyclerOptions<Folder>) :
+    FirebaseRecyclerAdapter<Folder, FolderViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -17,7 +17,7 @@ class FolderListAdapter(options: FirebaseRecyclerOptions<FolderDomain>) :
         return FolderViewHolder(listItem)
     }
 
-    override fun onBindViewHolder(holder: FolderViewHolder, position: Int, model: FolderDomain) {
+    override fun onBindViewHolder(holder: FolderViewHolder, position: Int, model: Folder) {
         holder.bind(model)
     }
 }

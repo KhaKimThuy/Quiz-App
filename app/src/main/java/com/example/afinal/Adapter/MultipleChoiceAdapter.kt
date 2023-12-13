@@ -1,30 +1,22 @@
 package com.example.afinal.Adapter
 
 import android.annotation.SuppressLint
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.example.afinal.Activity.FlashCardStudyActivity
 import com.example.afinal.Activity.MultiChoiceStudyActivity
-import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.DAL.ItemDAL
+import com.example.afinal.Domain.Item
 import com.example.afinal.R
-import java.util.Locale
 import java.util.Random
-import java.util.UUID
 
 class MultipleChoiceAdapter(
     activity: MultiChoiceStudyActivity,
-    private val cardList: ArrayList<FlashCardDomain>,
+    private val cardList: ArrayList<Item>,
 ) : RecyclerView.Adapter<MultipleChoiceAdapter.MultipleViewHolder>(){
 
     private var activity = activity
@@ -52,7 +44,7 @@ class MultipleChoiceAdapter(
         generateChoice(holder.mainView, position, nextIdx)
     }
 
-    private fun generateChoice(mainView : LinearLayout, answerIdx : Int, currentIdx : Int) {
+    private fun generateChoice (mainView : LinearLayout, answerIdx : Int, currentIdx : Int) {
 
         mainView.removeAllViews()
         choiceIndices.clear()
@@ -86,12 +78,20 @@ class MultipleChoiceAdapter(
             mainView.addView(textView)
 
             textView.setOnClickListener(View.OnClickListener {
-                Log.d("TAG", "dddddddd")
 //                selectAnswer = i
                 if (i == answerIdx) {
                     rightAnswer += 1
+
+                    // Update num rights of item
+                    ItemDAL().UpdateScoreItem(cardList[i])
                     activity.showRightToast(currentIdx)
                 } else {
+
+                    // Update first learning
+                    if (cardList[i].state == "Chưa được học") {
+                        ItemDAL().UpdateFirstLearningItem(cardList[i])
+                    }
+
                     activity.shoWrongDialog(cardList[answerIdx].engLanguage.toString(),
                         cardList[answerIdx].vnLanguage.toString(),
                         cardList[i].vnLanguage.toString(), currentIdx)

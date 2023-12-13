@@ -2,42 +2,43 @@ package com.example.afinal.ViewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelStoreOwner
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.Topic
+import com.example.afinal.Domain.TopicRanking
 
 class TopicViewModel : ViewModel() {
-    private var listTopicLiveData: MutableLiveData<List<TopicDomain>>
+    private var listTopicLiveData: MutableLiveData<List<Topic>>
 
     init {
-        listTopicLiveData = MutableLiveData<List<TopicDomain>>()
+        listTopicLiveData = MutableLiveData<List<Topic>>()
         initData()
     }
 
     private fun initData() {
         val userId = MyDB().dbAuth.currentUser?.uid.toString()
         TopicDAL().GetTopicOfUser(userId) {
+            TopicDTO.topicList.addAll(it)
             listTopicLiveData.value = TopicDTO.topicList
         }
     }
 
-    fun getListTopicLiveData() : MutableLiveData<List<TopicDomain>> {
+    fun getListTopicLiveData() : MutableLiveData<List<Topic>> {
         return listTopicLiveData
     }
 
-    fun addTopic(topic : TopicDomain) {
+    fun addTopic(topic : Topic) {
         TopicDTO.topicList.add(topic)
         listTopicLiveData.value = TopicDTO.topicList
     }
 
-    fun removeTopic(topic : TopicDomain) {
+    fun removeTopic(topic : Topic) {
         TopicDTO.topicList.remove(topic)
         listTopicLiveData.value = TopicDTO.topicList
     }
 
-    fun updateTopic(oldTopic : TopicDomain, updateTopic : TopicDomain) {
+    fun updateTopic(oldTopic : Topic, updateTopic : Topic) {
         val index: Int = TopicDTO.topicList.indexOf(oldTopic)
         TopicDTO.topicList[index] = updateTopic
         listTopicLiveData.value = TopicDTO.topicList

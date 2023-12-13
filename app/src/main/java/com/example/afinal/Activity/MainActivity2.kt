@@ -36,8 +36,6 @@ class MainActivity2 : AppCompatActivity() {
 
 
         var fragmentHome = FragmentHome()
-        var fragmentLibrary = FragmentLibrary()
-        var fragmentSettings = FragmentSettings()
 
         // Show homepage fragment
         fragmentTransaction.add(com.example.afinal.R.id.frameLayout, FragmentHome())
@@ -64,17 +62,27 @@ class MainActivity2 : AppCompatActivity() {
         binding.imageViewAdd.setOnClickListener(View.OnClickListener {
             showBottomDialog();
         })
+
     }
 
     private fun switchToFragment(fragment: Fragment) {
 //        if (supportFragmentManager != null) {
 //            supportFragmentManager.popBackStack()
 
+        // Quay lại Fragment trước đó
+            val fragmentManager = supportFragmentManager
+
             fragmentTransaction = supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, fragment)
-//            fragmentTransaction.addToBackStack(fragment.javaClass.name)
+            fragmentTransaction.addToBackStack(fragment.javaClass.name)
             Log.d("TAG", "switchtHome : " + fragment.javaClass.name)
             fragmentTransaction.commit()
+
+//            if (fragmentManager.backStackEntryCount > 0) {
+//                fragmentManager.popBackStack()
+//            } else {
+//                super.onBackPressed() // Nếu không có Fragment trong stack, thì thực hiện hành động mặc định
+//            }
 //        }
     }
 

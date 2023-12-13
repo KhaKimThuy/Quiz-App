@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.TopicAdapter
 import com.example.afinal.DAL.FolderDAL
 import com.example.afinal.DTO.FolderDTO
-import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.Topic
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityDetailFolderBinding
 
@@ -21,7 +21,7 @@ import com.example.afinal.databinding.ActivityDetailFolderBinding
 class DetailFolderActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailFolderBinding
     private lateinit var adapter : TopicAdapter
-    private var selectedTopic : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
+    private var selectedTopic : ArrayList<Topic> = ArrayList<Topic>()
     val ADD_TOPIC_TO_FOLDER = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,7 +150,7 @@ class DetailFolderActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == ADD_TOPIC_TO_FOLDER) {
             if (data != null) {
-                val moreAddedTopics = data.getParcelableArrayExtra("moreAddedTopics") as ArrayList<TopicDomain>
+                val moreAddedTopics = data.getParcelableArrayExtra("moreAddedTopics") as ArrayList<Topic>
                 FolderDTO.topicList.addAll(moreAddedTopics)
                 adapter.notifyDataSetChanged()
             }

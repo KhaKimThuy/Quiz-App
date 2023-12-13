@@ -4,19 +4,17 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
-import com.example.afinal.DTO.UserDTO
-import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
 
-class TopicDomain() : Parcelable{
+open class Topic() : Parcelable {
     var topicPK = ""
     var userPK = ""
     var topicName = ""
-    var isPublic = false
+    var isPublic: Boolean = false
     var highestScore = 0
     var timeStudy = 0
-    var createdTime = Calendar.getInstance().time
+    var createdTime: Date = Calendar.getInstance().time
 
     @RequiresApi(Build.VERSION_CODES.Q)
     constructor(parcel: Parcel) : this() {
@@ -44,13 +42,13 @@ class TopicDomain() : Parcelable{
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<TopicDomain> {
+    companion object CREATOR : Parcelable.Creator<Topic> {
         @RequiresApi(Build.VERSION_CODES.Q)
-        override fun createFromParcel(parcel: Parcel): TopicDomain {
-            return TopicDomain(parcel)
+        override fun createFromParcel(parcel: Parcel): Topic {
+            return Topic(parcel)
         }
 
-        override fun newArray(size: Int): Array<TopicDomain?> {
+        override fun newArray(size: Int): Array<Topic?> {
             return arrayOfNulls(size)
         }
     }

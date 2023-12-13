@@ -3,17 +3,14 @@ package com.example.afinal.Adapter
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.Domain.Item
 import com.example.afinal.R
 import com.example.afinal.ViewHolder.AddItemTopicHolder
 class AddItemTopicAdapter (
-    private val itemList:ArrayList<FlashCardDomain>
+    private val itemList:ArrayList<Item>
 ) : RecyclerView.Adapter<AddItemTopicHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddItemTopicHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

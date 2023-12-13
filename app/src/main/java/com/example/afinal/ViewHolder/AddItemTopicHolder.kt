@@ -1,10 +1,8 @@
 package com.example.afinal.ViewHolder
 
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.afinal.Domain.FlashCardDomain
 import com.example.afinal.R
 
 class AddItemTopicHolder(view : View)

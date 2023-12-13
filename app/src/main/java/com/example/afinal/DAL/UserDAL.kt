@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
@@ -14,12 +13,9 @@ import com.example.afinal.Activity.LoginActivity
 import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.Activity.RegisterActivity
 import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.UserDomain
+import com.example.afinal.Domain.User
 import com.example.afinal.R
 import com.google.android.gms.tasks.Task
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import java.io.ByteArrayOutputStream
@@ -29,7 +25,7 @@ class UserDAL : MyDB() {
     fun SaveUserLocal(userId : String){
         // Save user information locally
         MyDB().db.collection("user").document(userId).get().addOnCompleteListener{
-            val user = it.result.toObject(UserDomain::class.java)
+            val user = it.result.toObject(User::class.java)
             if (user != null) {
                 user.userPK = userId
                 UserDTO.currentUser = user
@@ -39,24 +35,24 @@ class UserDAL : MyDB() {
         }
     }
 
-    fun GetUserObject(userId: String, callback: (UserDomain?) -> Unit) {
+    fun GetUserObject(userId: String, callback: (User) -> Unit) {
         val documentRef = MyDB().db.collection("user").document(userId)
         documentRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
-                    val myObject = documentSnapshot.toObject(UserDomain::class.java)
-                    callback(myObject)
-                } else {
-                    callback(null)
+                    val myObject = documentSnapshot.toObject(User::class.java)
+                    if (myObject != null) {
+                        Log.d("TAG", "(GetUserObject) Username : " + myObject.username)
+                        callback(myObject)
+                    }
                 }
             }
             .addOnFailureListener { _ ->
-                callback(null)
             }
     }
 
 
-    fun AddUser(user : UserDomain, activity : RegisterActivity) {
+    fun AddUser(user : User, activity : RegisterActivity) {
 
         // Authentication firebase
         MyDB().dbAuth.createUserWithEmailAndPassword(user.email, user.password)
@@ -103,7 +99,7 @@ class UserDAL : MyDB() {
             }
     }
 
-    fun UpdateUserInfo(user : UserDomain) {
+    fun UpdateUserInfo(user : User) {
 
         val updateInfo = mapOf (
             "username" to user.username,

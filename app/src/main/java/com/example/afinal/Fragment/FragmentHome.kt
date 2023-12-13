@@ -34,10 +34,8 @@ class FragmentHome : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         init()
         Log.d("TAG", "Fragment Home")
-
 
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -73,8 +71,7 @@ class FragmentHome : Fragment() {
         loadPublicTopic()
     }
 
-    private fun loadPublicTopic(){
-        Log.d("TAG", "Load public topic")
+    private fun loadPublicTopic() {
         TopicDAL().GetPublicTopic() {
             adapter = TopicAdapter(it, object : TopicAdapter.IClickTopicListener {
                 override fun onClickTopicListener(
@@ -85,6 +82,8 @@ class FragmentHome : Fragment() {
                     TopicDTO.numItems = topicView.numItem.text.toString()
                     val intent = Intent(activity, DetailTopicActivity::class.java)
                     intent.putExtra("isMine", false)
+                    intent.putExtra("isSaved", false)
+                    intent.putExtra("from", "FragmentHome")
                     requireActivity().startActivity(intent)
                 }
 

@@ -8,17 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DAL.UserDAL
-import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.Topic
 import com.example.afinal.R
 import com.squareup.picasso.Picasso
 
-class TopicAdapter(private var topicList: List<TopicDomain>,
+class TopicAdapter(private var topicList: List<Topic>,
                    private val onClickListernerTopic: IClickTopicListener
 ) : RecyclerView.Adapter<TopicAdapter.TopicViewHolder>(){
 
@@ -66,55 +64,6 @@ class TopicAdapter(private var topicList: List<TopicDomain>,
             onClickListernerTopic.onLongClickTopicListener(holder, position)
             false
         })
-
-//        holder.itemView.setOnClickListener(View.OnClickListener {
-//            // Add topic to folder
-//            if (addToFolder) {
-//                val backgroundDrawable = holder.mainView.background
-//                val backgroundColor = (backgroundDrawable as ColorDrawable).color
-//                if (backgroundColor ==  R.color.add_topic_marker_color){
-//                    holder.mainView.setBackgroundColor(Color.WHITE)
-//                    if (selectedTopic != null) {
-//                        selectedTopic.remove(topicList[position])
-//                    }
-//                } else {
-//                    holder.mainView.setBackgroundColor(R.color.add_topic_marker_color)
-//                    if (selectedTopic != null) {
-//                        selectedTopic.add(topicList[position])
-//                    }
-//                }
-//                Log.d("TAG", "Item size = " + selectedTopic.size)
-//            }
-//
-//            // Go to detail topic
-//            else {
-//                TopicDTO.currentTopic = topicList[position]
-//                TopicDTO.numItems = holder.numItem.text.toString()
-//
-//                val intent = Intent(activity, DetailTopicActivity::class.java)
-//                activity.startActivity(intent)
-//            }
-//        })
-//
-//        holder.itemView.setOnLongClickListener(View.OnLongClickListener {
-//
-//            val backgroundDrawable = holder.mainView.background
-//            val backgroundColor = (backgroundDrawable as ColorDrawable).color
-//            if (backgroundColor ==  Color.MAGENTA) {
-//                holder.mainView.setBackgroundColor(Color.WHITE)
-//                if (selectedTopic != null) {
-//                    selectedTopic.remove(topicList[position])
-//                }
-//            } else {
-//                holder.mainView.setBackgroundColor(Color.MAGENTA)
-//                if (selectedTopic != null) {
-//                    selectedTopic.add(topicList[position])
-//                }
-//            }
-//            activity!!.checkDeleteItem()
-//
-//            false
-//        })
 
     }
 

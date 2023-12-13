@@ -2,6 +2,7 @@ package com.example.afinal.Fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,13 +47,18 @@ class FragmentTopic : Fragment() {
             adapter = TopicAdapter(topics, object : TopicAdapter.IClickTopicListener {
                 override fun onClickTopicListener(topicView: TopicAdapter.TopicViewHolder, position: Int) {
                     TopicDTO.currentTopic = topics[position]
+                    Log.d("TAG", "Topic public in fragment topic : " + TopicDTO.currentTopic!!.isPublic)
+
                     TopicDTO.numItems = topicView.numItem.text.toString()
+
                     val intent = Intent(activity, DetailTopicActivity::class.java)
                     if (topics[position].userPK == UserDTO.currentUser?.userPK) {
                         intent.putExtra("isMine", true)
                     } else {
                         intent.putExtra("isMine", false)
                     }
+                    intent.putExtra("isSaved", true)
+                    intent.putExtra("from", "FragmentTopic")
                     requireActivity().startActivity(intent)
                 }
 

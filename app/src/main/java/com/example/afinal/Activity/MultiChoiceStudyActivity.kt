@@ -1,6 +1,7 @@
 package com.example.afinal.Activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -11,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.afinal.Adapter.MultipleChoiceAdapter
+import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Dialog.WrongMutipleChoiceDialog
 import com.example.afinal.R
@@ -59,8 +61,16 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
         if (position < (adapter.itemCount)) {
             binding.recyclerView.layoutManager?.scrollToPosition(position)
         } else {
-            val result = "Done with " + adapter.rightAnswer + " / " + TopicDTO.numItems
-            Toast.makeText(this, result , Toast.LENGTH_SHORT).show()
+            val result = "Bạn đã trả lời đúng " + adapter.rightAnswer + " / " + TopicDTO.numItems + " câu hỏi"
+            val intent = Intent(this, EndTestActivity::class.java)
+
+            // Update highest score of current topic
+            val score = (adapter.rightAnswer / TopicDTO.numItems.toInt()) * 10
+            TopicDTO.currentTopic?.let { TopicDAL().UpdateTopicScore(it, score) }
+
+            intent.putExtra("result", result)
+            startActivity(intent)
+            finish()
         }
         val newProgress = binding.progressBar.progress + 1
         binding.progressBar.progress = newProgress

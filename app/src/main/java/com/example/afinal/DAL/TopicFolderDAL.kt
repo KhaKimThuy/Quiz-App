@@ -1,14 +1,13 @@
 package com.example.afinal.DAL
 
 import android.util.Log
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.FolderDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Domain.TopicFolderDomain
+import com.example.afinal.Domain.Folder
+import com.example.afinal.Domain.Topic
+import com.example.afinal.Domain.TopicFolder
 
 class TopicFolderDAL : MyDB() {
-    fun AddTopicFolder (topic : TopicDomain, folder : FolderDomain) {
-        val topicFolder = TopicFolderDomain()
+    fun AddTopicFolder (topic : Topic, folder : Folder) {
+        val topicFolder = TopicFolder()
         topicFolder.topicPK = topic.topicPK
         topicFolder.folderPK = folder.folderPK
 
@@ -29,7 +28,7 @@ class TopicFolderDAL : MyDB() {
         }
     }
 
-    fun DeleteTF(topicFolder: TopicFolderDomain) {
+    fun DeleteTF(topicFolder: TopicFolder) {
         val documentRef = MyDB().db.collection("topic_folder").document(topicFolder.topicFolderPK)
         documentRef.delete()
             .addOnSuccessListener {

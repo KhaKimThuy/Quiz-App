@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.DAL.FolderDAL
 import com.example.afinal.DAL.MyDB
-import com.example.afinal.Domain.FolderDomain
+import com.example.afinal.Domain.Folder
 import com.example.afinal.R
 
 class FolderDialog(
@@ -70,7 +70,7 @@ class FolderDialog(
 //    }
 
     private fun addFolder(){
-        var folder = FolderDomain()
+        var folder = Folder()
         folder.folderName = folderName.text.toString()
         folder.folderDesc = folderDesc.text.toString()
         FolderDAL().AddFolder(folder, activity)

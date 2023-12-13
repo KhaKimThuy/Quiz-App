@@ -10,14 +10,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.DAL.ItemDAL
-import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.Domain.Item
 import com.example.afinal.R
+import com.google.firebase.auth.userProfileChangeRequest
 import java.util.Locale
 import java.util.UUID
 
-class FlashCardAdapter (private val itemList: ArrayList<FlashCardDomain>, activity: DetailTopicActivity) : RecyclerView.Adapter<FlashCardAdapter.ItemViewHolder>(){
-
-
+class FlashCardAdapter (private val itemList: ArrayList<Item>,
+                        activity: DetailTopicActivity,
+                        private val learning : Boolean = true,
+                        private val onClickListernerItem: IClickItemListener
+) : RecyclerView.Adapter<FlashCardAdapter.ItemViewHolder>() {
     private var textToSpeech : TextToSpeech
     private var ready : Boolean = false
 
@@ -65,8 +68,6 @@ class FlashCardAdapter (private val itemList: ArrayList<FlashCardDomain>, activi
     }
 
     // ===============================================================================================================================================================
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.viewholder_flashcard, parent, false)
@@ -81,28 +82,46 @@ class FlashCardAdapter (private val itemList: ArrayList<FlashCardDomain>, activi
         holder.eng_lang.text = itemList[position].engLanguage
         holder.vn_lang.text = itemList[position].vnLanguage
         holder.state.text = itemList[position].state
+        holder.numRights.text = itemList[position].numRights.toString()
+
+        Log.d("TAG", "Item mark : " + itemList[position].isMarked)
+        if (itemList[position].isMarked) {
+            holder.marker.setImageResource(R.drawable.marked_star)
+        }
+
+        holder.marker.setOnClickListener(View.OnClickListener {
+            onClickListernerItem.onClickItemListener(holder, position)
+        })
+
         holder.speaker.setOnClickListener(View.OnClickListener {
             speakOut(holder.eng_lang.text.toString())
         })
-        holder.marker.setOnClickListener(View.OnClickListener {
-            if (itemList[position].isMarked) {
-                itemList[position].isMarked = false
-                holder.marker.setImageResource(R.drawable.empty_star)
-            } else {
-                itemList[position].isMarked = true
-                holder.marker.setImageResource(R.drawable.marked_star)
-            }
 
-            // Change item info on database
-            ItemDAL().UpdateItem(itemList[position])
-        })
     }
 
-    class ItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+    inner class ItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val eng_lang = itemView.findViewById<TextView>(R.id.textView_engLang)
         val vn_lang = itemView.findViewById<TextView>(R.id.textView_vnLang)
         val state = itemView.findViewById<TextView>(R.id.tvState)
+
         val speaker = itemView.findViewById<ImageView>(R.id.imageView_speaker)
         val marker = itemView.findViewById<ImageView>(R.id.imageView_marker)
+
+        val numRights = itemView.findViewById<TextView>(R.id.tvNumRight)
+
+        init {
+            if (learning) {
+                speaker.visibility = View.VISIBLE
+                marker.visibility = View.VISIBLE
+            } else {
+                speaker.visibility = View.GONE
+                marker.visibility = View.GONE
+            }
+        }
     }
+
+    interface IClickItemListener {
+        fun onClickItemListener(itemView : ItemViewHolder, position: Int)
+    }
+
 }

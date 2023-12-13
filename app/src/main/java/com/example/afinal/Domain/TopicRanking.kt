@@ -2,30 +2,31 @@ package com.example.afinal.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.Calendar
+import java.util.Date
 
-class TopicRanking() : Parcelable {
-    var topicRankingPK = ""
-    var topicPK = ""
-    var userPK = ""
-    var highestScore = 0
-    var timeStudy = 0
-    var savedTime = Calendar.getInstance().time
+class TopicRanking() : Topic(), Parcelable {
+    var rankingTopicPK = ""
+//    var topicPK = ""
+//    var userPK = ""
+//    var highestScore = 0
+//    var timeStudy = 0
 
     constructor(parcel: Parcel) : this() {
-        topicRankingPK = parcel.readString().toString()
+        rankingTopicPK = parcel.readString().toString()
         topicPK = parcel.readString().toString()
         userPK = parcel.readString().toString()
         highestScore = parcel.readInt()
         timeStudy = parcel.readInt()
+        createdTime = Date(parcel.readLong())
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(topicRankingPK)
+        parcel.writeString(rankingTopicPK)
         parcel.writeString(topicPK)
         parcel.writeString(userPK)
         parcel.writeInt(highestScore)
         parcel.writeInt(timeStudy)
+        parcel.writeLong(createdTime.time)
     }
 
     override fun describeContents(): Int {
@@ -41,4 +42,6 @@ class TopicRanking() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+
 }

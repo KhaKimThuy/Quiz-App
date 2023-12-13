@@ -11,16 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.Domain.FolderDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Domain.UserDomain
+import com.example.afinal.Domain.Topic
+import com.example.afinal.Domain.User
 import com.example.afinal.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 
-class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView.Adapter<SearchTopicAdapter.SearchTopicViewHolder>() {
+class SearchTopicAdapter(private var dataList: List<Topic>) : RecyclerView.Adapter<SearchTopicAdapter.SearchTopicViewHolder>() {
     val db = MyDB()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTopicViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -31,7 +30,7 @@ class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView
         db.GetUserByID(dataList[position].userPK)?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    val user = dataSnapshot.getValue(UserDomain::class.java)
+                    val user = dataSnapshot.getValue(User::class.java)
                     holder.topicName.text = dataList[position].topicName
                     if (user != null) {
                         holder.owner.text = user.username
@@ -87,7 +86,7 @@ class SearchTopicAdapter(private var dataList: List<TopicDomain>) : RecyclerView
     override fun getItemCount(): Int {
         return dataList.size
     }
-    fun searchDataList(searchList: List<TopicDomain>) {
+    fun searchDataList(searchList: List<Topic>) {
         dataList = searchList
         notifyDataSetChanged()
     }

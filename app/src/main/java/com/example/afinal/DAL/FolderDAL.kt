@@ -2,23 +2,15 @@ package com.example.afinal.DAL
 
 import android.content.Intent
 import android.util.Log
-import androidx.privacysandbox.ads.adservices.topics.Topic
 import com.example.afinal.Activity.DetailFolderActivity
-import com.example.afinal.Activity.DetailTopicActivity
 import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.DTO.FolderDTO
 import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.FolderDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Domain.TopicFolderDomain
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.example.afinal.Domain.Folder
+import com.example.afinal.Domain.TopicFolder
 
 class FolderDAL : MyDB() {
-    fun AddFolder(folder : FolderDomain, activity : MainActivity2) {
+    fun AddFolder(folder : Folder, activity : MainActivity2) {
         val folderPK = db.collection("folder").document().id
         folder.folderPK = folderPK
         folder.userPK = dbAuth.currentUser?.uid.toString()
@@ -48,17 +40,17 @@ class FolderDAL : MyDB() {
 
 
 
-    fun GetFolderOfUser(userId: String, callback: (ArrayList<FolderDomain>) -> Unit) {
+    fun GetFolderOfUser(userId: String, callback: (ArrayList<Folder>) -> Unit) {
         val documentRef = MyDB().db.collection("folder")
         val query = documentRef.whereEqualTo("userPK", userId)
 
-        val folderList = ArrayList<FolderDomain>()
+        val folderList = ArrayList<Folder>()
 
         query.get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.size() > 0) {
                     for (folder in querySnapshot) {
-                        val folderObject = folder.toObject(FolderDomain::class.java)
+                        val folderObject = folder.toObject(Folder::class.java)
                         folderList.add(folderObject)
                     }
                 }
@@ -70,7 +62,7 @@ class FolderDAL : MyDB() {
             }
     }
 
-    fun GetTopicOfFolder (folder: FolderDomain, callback: () -> Unit) {
+    fun GetTopicOfFolder (folder: Folder, callback: () -> Unit) {
         val documentTFRef = MyDB().db.collection("topic_folder")
 
         val query = documentTFRef.whereEqualTo("folderPK",folder.folderPK)
@@ -107,7 +99,7 @@ class FolderDAL : MyDB() {
             }
     }
 
-    fun DeleteFolder (folder : FolderDomain) {
+    fun DeleteFolder (folder : Folder) {
         // Remove all topic-folder included in that folder
         val documentFolderRef = MyDB().db.collection("folder").document(folder.folderPK)
         val documentTFRef = MyDB().db.collection("topic_folder")
@@ -117,7 +109,7 @@ class FolderDAL : MyDB() {
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.size() > 0) {
                     for (tf in querySnapshot) {
-                        val tfObject = tf.toObject(TopicFolderDomain::class.java)
+                        val tfObject = tf.toObject(TopicFolder::class.java)
                         TopicFolderDAL().DeleteTF(tfObject)
                     }
                 }

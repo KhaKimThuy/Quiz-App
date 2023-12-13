@@ -2,7 +2,7 @@ package com.example.afinal.Domain
 
 import kotlin.random.Random
 
-class UserDomain {
+class User {
     var userPK : String = ""
     var email : String = ""
     var password : String = ""

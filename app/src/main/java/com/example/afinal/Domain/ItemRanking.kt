@@ -2,15 +2,16 @@ package com.example.afinal.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.Calendar
+import com.google.firebase.database.IgnoreExtraProperties
+import com.google.firebase.database.PropertyName
 
-class ItemRanking () : Parcelable {
+@IgnoreExtraProperties
+class ItemRanking () : Item() ,Parcelable {
     var itemRankingPK = ""
     var topicRankingPK = ""
-    var itemPK = ""
-    var isMarked : Boolean = false
-    var state : String = "Chưa được học"
-    var numRights : Int = 0
+//    var itemPK = ""
+//    var state : String = "Chưa được học"
+//    var numRights : Int = 0
 
     constructor(parcel: Parcel) : this() {
         itemRankingPK = parcel.readString().toString()

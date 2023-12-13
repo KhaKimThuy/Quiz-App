@@ -1,13 +1,13 @@
 package com.example.afinal.DTO
 
-import com.example.afinal.Domain.FolderDomain
-import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.Folder
+import com.example.afinal.Domain.Topic
 
 class FolderDTO {
     companion object {
         // Current specific topic
-        var currentFolder: FolderDomain? = null
-        var topicList : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
+        var currentFolder: Folder? = null
+        var topicList : ArrayList<Topic> = ArrayList<Topic>()
         var numTopics  = "0"
     }
 }

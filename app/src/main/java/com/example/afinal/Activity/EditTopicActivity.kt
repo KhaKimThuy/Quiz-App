@@ -7,14 +7,14 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.AddItemTopicAdapter
 import com.example.afinal.DAL.MyDB
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.Item
+import com.example.afinal.Domain.Topic
 import com.example.afinal.databinding.ActivityEditTopicBinding
 
 class EditTopicActivity : AppCompatActivity() {
     private lateinit var binding : ActivityEditTopicBinding
-    private lateinit var topic : TopicDomain
-    private lateinit var itemList : ArrayList<FlashCardDomain>
+    private lateinit var topic : Topic
+    private lateinit var itemList : ArrayList<Item>
     private lateinit var adapter: AddItemTopicAdapter
     private lateinit var db : MyDB
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class EditTopicActivity : AppCompatActivity() {
         topic = intent.getParcelableExtra("topic")!!
         val bundle = intent.extras
         if (bundle != null) {
-            itemList = bundle.getParcelableArrayList<FlashCardDomain>("itemList")!!
+            itemList = bundle.getParcelableArrayList<Item>("itemList")!!
         }
 
         // Load current topic information
@@ -35,7 +35,7 @@ class EditTopicActivity : AppCompatActivity() {
 
         // Create new item
         binding.imageViewAddItem.setOnClickListener(View.OnClickListener {
-            itemList.add(FlashCardDomain())
+            itemList.add(Item())
             adapter.notifyItemInserted(itemList.size - 1)
         })
 

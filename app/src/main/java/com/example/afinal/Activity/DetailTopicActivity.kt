@@ -13,22 +13,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.afinal.Adapter.FlashCardAdapter
+import com.example.afinal.DAL.ItemDAL
 import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.DTO.UserDTO
-import com.example.afinal.Domain.FlashCardDomain
-import com.example.afinal.Domain.TopicDomain
-import com.example.afinal.Domain.TopicPublicDomain
+import com.example.afinal.Domain.Item
+import com.example.afinal.Domain.ItemRanking
+import com.example.afinal.R
 import com.example.afinal.databinding.ActivityDetailTopicBinding
 
 
 class DetailTopicActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDetailTopicBinding
-    private lateinit var topicDAL: TopicDAL
     private lateinit var adapter : FlashCardAdapter
     private var isMine : Boolean = false
-    var itemList: ArrayList<FlashCardDomain> = ArrayList<FlashCardDomain>()
-
+    private var isSaved : Boolean = true
+    private lateinit var topicFrom : String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +61,18 @@ class DetailTopicActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
+        // Ranking
+        if (TopicDTO.currentTopic?.isPublic == true) {
+            binding.itemViewRanking.visibility = View.GONE
+        } else {
+            binding.itemViewRanking.visibility = View.VISIBLE
+            binding.itemViewRanking.setOnClickListener(View.OnClickListener {
+                val intent = Intent(this, ActivityRanking::class.java)
+                intent.putExtra("topicId", TopicDTO.currentTopic?.topicPK)
+                startActivity(intent)
+            })
+        }
+
         binding.imgBack.setOnClickListener(View.OnClickListener {
 //            onBackPressed()
             finish()
@@ -76,31 +87,38 @@ class DetailTopicActivity : AppCompatActivity() {
 
         } else {
             binding.imgMore.visibility = View.GONE
-            binding.saveTopic.visibility = View.VISIBLE
-            binding.saveTopic.setOnClickListener(View.OnClickListener {
-                if (TopicDTO.currentTopic != null) {
-                    TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.itemList) {
-                        if (it) {
-                            Toast.makeText(this, "Okkkk", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show()
+            if (topicFrom == "FragmentHome") {
+                binding.saveTopic.visibility = View.VISIBLE
+                binding.saveTopic.setOnClickListener(View.OnClickListener {
+                    if (TopicDTO.currentTopic != null) {
+                        TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.itemList) {
+                            if (it) {
+                                Toast.makeText(this, "Okkkk", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
-                }
-            })
+                })
+            } else {
+                binding.saveTopic.visibility = View.GONE
+            }
         }
     }
 
     private fun init () {
         isMine = intent.getBooleanExtra("isMine", false)
+        isSaved = intent.getBooleanExtra("isSaved", true)
+        topicFrom = intent.getStringExtra("from").toString()
+
+        binding.topicScore.text = TopicDTO.currentTopic?.highestScore.toString()
+
         binding.recyclerviewFlashcard.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerviewFlashcard)
 
         loadInfoTopic()
     }
-
-
 
     private fun showOptionsMenu(anchorView: View) {
         val popupMenu = PopupMenu(this, anchorView)
@@ -142,11 +160,41 @@ class DetailTopicActivity : AppCompatActivity() {
         binding.textViewNumItems.text = "${TopicDTO.numItems} Thuật ngữ"
 
         TopicDTO.currentTopic?.let { it ->
-            TopicDAL().GetItemOfTopic(it.topicPK) {
-                TopicDTO.itemList = it
-                
+            TopicDAL().GetItemOfTopic(it.topicPK) {items ->
+                Log.d("TAG", "CHECK size : " + items.size)
+                TopicDTO.itemList.addAll(items)
+
+                Log.d("TAG", "Topic public : " + TopicDTO.currentTopic!!.isPublic)
+                if (topicFrom == "FragmentHome") {
+                    adapter = FlashCardAdapter(TopicDTO.itemList, this, false, object :
+                        FlashCardAdapter.IClickItemListener {
+                        override fun onClickItemListener(itemView: FlashCardAdapter.ItemViewHolder, position: Int) {
+                                // User only visit public topic
+                        }
+                    })
+                } else {
+                    adapter = FlashCardAdapter(TopicDTO.itemList, this, true, object :
+                        FlashCardAdapter.IClickItemListener {
+                        override fun onClickItemListener(itemView: FlashCardAdapter.ItemViewHolder, position: Int) {
+                            if (TopicDTO.itemList[position].isMarked) {
+                                TopicDTO.itemList[position].isMarked = false
+                                itemView.marker.setImageResource(R.drawable.empty_star)
+                            } else {
+                                TopicDTO.itemList[position].isMarked = true
+                                itemView.marker.setImageResource(R.drawable.marked_star)
+                            }
+                            if (it.isPublic) {
+                                ItemDAL().UpdateMarkedRankingItem(TopicDTO.itemList[position])
+                            } else {
+                                ItemDAL().UpdateMarkedItem(TopicDTO.itemList[position])
+                            }
+
+                            // Change item info on database
+                        }
+                    })
+                }
+
                 // Load items of current topic
-                adapter = FlashCardAdapter(TopicDTO.itemList, this)
                 Log.d("TAG", "Item list size in detail topic activity = " + adapter.itemCount)
                 binding.recyclerviewFlashcard.adapter = adapter
             }

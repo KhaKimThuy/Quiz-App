@@ -12,14 +12,14 @@ import com.example.afinal.Adapter.TopicAdapter
 import com.example.afinal.DAL.TopicFolderDAL
 import com.example.afinal.DTO.FolderDTO
 import com.example.afinal.DTO.TopicDTO
-import com.example.afinal.Domain.TopicDomain
+import com.example.afinal.Domain.Topic
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityAddTopicToFolderBinding
 
 class AddTopicToFolderActivity : AppCompatActivity() {
     private lateinit var adapter: TopicAdapter
     private lateinit var binding : ActivityAddTopicToFolderBinding
-    private var selectedTopic : ArrayList<TopicDomain> = ArrayList<TopicDomain>()
+    private var selectedTopic : ArrayList<Topic> = ArrayList<Topic>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTopicToFolderBinding.inflate(layoutInflater)
@@ -37,7 +37,7 @@ class AddTopicToFolderActivity : AppCompatActivity() {
 
     private fun init () {
         binding.recyclerViewTopicList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val outTopic = ArrayList<TopicDomain>()
+        val outTopic = ArrayList<Topic>()
         outTopic.addAll(TopicDTO.topicList)
 
         // Temporary remove topic already in folder
@@ -46,7 +46,7 @@ class AddTopicToFolderActivity : AppCompatActivity() {
         loadTopic(outTopic)
     }
 
-    private fun loadTopic(outTopic : ArrayList<TopicDomain>) {
+    private fun loadTopic(outTopic : ArrayList<Topic>) {
         adapter = TopicAdapter(outTopic, object : TopicAdapter.IClickTopicListener {
             @SuppressLint("ResourceAsColor")
             override fun onClickTopicListener(topicView : TopicAdapter.TopicViewHolder, position : Int) {
@@ -76,7 +76,7 @@ class AddTopicToFolderActivity : AppCompatActivity() {
     }
 
     private fun addTopicToFolder() {
-        val moreAddedTopics = ArrayList<TopicDomain>()
+        val moreAddedTopics = ArrayList<Topic>()
         if (selectedTopic.size > 0) {
             for (topic in selectedTopic) {
                 // Add topic-folder object to db

@@ -2,9 +2,8 @@ package com.example.afinal.Domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.afinal.DTO.UserDTO
 
-class FolderDomain() : Parcelable{
+class Folder() : Parcelable{
     var folderName = ""
     var folderDesc = ""
     var userPK = ""
@@ -28,12 +27,12 @@ class FolderDomain() : Parcelable{
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<FolderDomain> {
-        override fun createFromParcel(parcel: Parcel): FolderDomain {
-            return FolderDomain(parcel)
+    companion object CREATOR : Parcelable.Creator<Folder> {
+        override fun createFromParcel(parcel: Parcel): Folder {
+            return Folder(parcel)
         }
 
-        override fun newArray(size: Int): Array<FolderDomain?> {
+        override fun newArray(size: Int): Array<Folder?> {
             return arrayOfNulls(size)
         }
     }

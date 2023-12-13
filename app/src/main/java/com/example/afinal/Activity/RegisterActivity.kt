@@ -6,7 +6,7 @@ import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.afinal.DAL.UserDAL
-import com.example.afinal.Domain.UserDomain
+import com.example.afinal.Domain.User
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityRegisterBinding
 
@@ -93,7 +93,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun writeNewUser(email: String, pass: String) {
-        val user = UserDomain()
+        val user = User()
         user.email = email
         user.password = pass
         UserDAL().AddUser(user, this)

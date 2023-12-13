@@ -22,6 +22,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgBack">
+
+                <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/highest_score" />
+
+                <TextView
+                    android:id="@+id/topicScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/amaranth"
+                    android:text="230"
+                    android:textSize="32sp" />
+            </RelativeLayout>
+
+
+
             <ImageView
                 android:id="@+id/imgBack"
                 android:layout_width="25dp"
@@ -32,8 +60,8 @@
 
             <ImageView
                 android:id="@+id/imgMore"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/more" />
@@ -43,38 +71,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgBack" />
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerview_flashcard">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/tv_topicName"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Detail topic"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
+                        android:text="Topic name"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/saveTopic"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="end"
                         android:src="@drawable/save"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        tools:gravity="clip_vertical" />
 
                 </LinearLayout>
                 <TextView
@@ -253,7 +285,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-                    <!--            android:background="@drawable/topic_card"-->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/itemView_statis"
@@ -291,16 +322,15 @@
                             app:layout_constraintStart_toEndOf="@+id/imageView7"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_marginTop="8dp"
-                    android:background="@color/white"
                     android:elevation="2dp"
                     app:cardCornerRadius="10dp"
-                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

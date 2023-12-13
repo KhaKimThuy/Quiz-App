@@ -1,28 +1,18 @@
 package com.example.afinal.Activity
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.afinal.DTO.UserDTO
-import com.example.afinal.DAL.MyDB
-import com.example.afinal.Domain.UserDomain
 import com.example.afinal.databinding.ActivityEditProfileBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.google.android.gms.tasks.Task
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.squareup.picasso.Picasso
-import java.io.ByteArrayOutputStream
 import com.example.afinal.DAL.UserDAL
 
 

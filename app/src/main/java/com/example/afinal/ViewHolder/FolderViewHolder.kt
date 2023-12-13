@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.DetailFolderActivity
 import com.example.afinal.DTO.UserDTO
 import com.example.afinal.DAL.MyDB
-import com.example.afinal.Domain.FolderDomain
+import com.example.afinal.Domain.Folder
 import com.example.afinal.R
 import com.squareup.picasso.Picasso
 
@@ -23,7 +23,7 @@ class FolderViewHolder(view : View): RecyclerView.ViewHolder(view){
         Picasso.get().load(UserDTO.currentUser?.avatarUrl).into(avatar)
     }
 
-    fun bind(folder: FolderDomain) {
+    fun bind(folder: Folder) {
         folderName.text = folder.folderName
         itemView.setOnClickListener {
             val intent = Intent(itemView.context, DetailFolderActivity::class.java)

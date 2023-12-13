@@ -7,19 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.afinal.Activity.MultiChoiceStudyActivity
 import com.example.afinal.Activity.TypeVocabStudyActivity
-import com.example.afinal.Domain.FlashCardDomain
+import com.example.afinal.Domain.Item
 import com.example.afinal.R
-import java.util.Random
 
 class TypeWordAdapter(
     activity: TypeVocabStudyActivity,
-    private val cardList: ArrayList<FlashCardDomain>,
+    private val cardList: ArrayList<Item>,
 ) : RecyclerView.Adapter<TypeWordAdapter.TypeWordViewHolder>(){
 
     private var activity = activity

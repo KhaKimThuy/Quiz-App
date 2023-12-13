@@ -4,10 +4,9 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
-import com.example.afinal.DTO.UserDTO
 import java.time.LocalDateTime
 
-class TopicPublicDomain : Parcelable {
+class TopicPublic : Parcelable {
     var guestPK = ""
     var topicPK = ""
     var topicPublicPK = ""
@@ -45,13 +44,13 @@ class TopicPublicDomain : Parcelable {
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<TopicPublicDomain> {
+    companion object CREATOR : Parcelable.Creator<TopicPublic> {
         @RequiresApi(Build.VERSION_CODES.Q)
-        override fun createFromParcel(parcel: Parcel): TopicPublicDomain {
-            return TopicPublicDomain(parcel)
+        override fun createFromParcel(parcel: Parcel): TopicPublic {
+            return TopicPublic(parcel)
         }
 
-        override fun newArray(size: Int): Array<TopicPublicDomain?> {
+        override fun newArray(size: Int): Array<TopicPublic?> {
             return arrayOfNulls(size)
         }
     }
