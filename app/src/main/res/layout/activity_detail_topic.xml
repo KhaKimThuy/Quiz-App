@@ -244,7 +244,7 @@
                         android:paddingVertical="10dp">
 
                         <ImageView
-                            android:id="@+id/imageView6"
+                            android:id="@+id/imageView_back"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginVertical="20dp"
@@ -259,7 +259,7 @@
                             android:layout_marginLeft="24dp"
                             android:text="Ôn lại các thuật ngữ và định nghĩa"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView6" />
+                            app:layout_constraintStart_toEndOf="@+id/imageView_back" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -268,7 +268,7 @@
                             android:text="Gõ từ"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/imageView6"
+                            app:layout_constraintStart_toEndOf="@+id/imageView_back"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

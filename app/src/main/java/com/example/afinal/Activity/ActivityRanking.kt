@@ -2,6 +2,7 @@ package com.example.afinal.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.RankingAdapter
 import com.example.afinal.DAL.TopicDAL
@@ -24,10 +25,12 @@ class ActivityRanking : AppCompatActivity() {
         userRanking = ArrayList<TopicPublic>()
 //        topicDAL.GetRankingOfTopic(this)
         // fakeData()
-
         topicId = intent.getStringExtra("topicId").toString()
         loadUserRanking()
 
+        binding.imageViewBack.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     fun loadUserRanking() {

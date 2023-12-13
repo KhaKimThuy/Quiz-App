@@ -46,6 +46,11 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
                 return super.canScrollHorizontally()
             }
         }
+
+        binding.imageViewBack.setOnClickListener(View.OnClickListener {
+            finish()
+        })
+
 //        binding.recyclerView.isNestedScrollingEnabled = false
         loadMultipleChoice()
     }

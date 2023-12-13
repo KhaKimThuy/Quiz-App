@@ -48,8 +48,6 @@ class TopicDAL : MyDB() {
     }
 
     fun GetItemOfTopic(topicId: String, callback: (ArrayList<Item>) -> Unit) {
-        // Truyền thêm parameter để biết lúc nào là user vào học, lúc nào vào xem (khi topic là public) later
-
         val documentRef = MyDB().db.collection("item")
         val query = documentRef.whereEqualTo("topicPK", topicId)
 
@@ -59,6 +57,10 @@ class TopicDAL : MyDB() {
                 if (querySnapshot.size() > 0) {
                     for (item in querySnapshot) {
                         val itemObject = item.toObject(Item::class.java)
+                        val isMarked = item.getBoolean("isMarked")
+                        if (isMarked != null) {
+                            itemObject.isMarked = isMarked
+                        }
                         itemList.add(itemObject)
                     }
                     if (TopicDTO.currentTopic is TopicRanking) {
@@ -88,17 +90,15 @@ class TopicDAL : MyDB() {
         query.get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.size() > 0) {
-                    for (rankingItem in querySnapshot) {
-                        val rankingItem = rankingItem.toObject(ItemRanking::class.java)
-                        Log.d("TAG", "(GetRanking -TopicDAL) Item mark : " + rankingItem.isMarked)
-                        Log.d("TAG", "(GetRanking -TopicDAL) Item topic : " + rankingItem.itemPK)
-                        Log.d("TAG", "(GetRanking -TopicDAL) Item topic : " + rankingItem.topicRankingPK)
-                        Log.d("TAG", "(GetRanking -TopicDAL) Item ranking pk : " + rankingItem.itemRankingPK)
-
+                    for (rankingItemFB in querySnapshot) {
+                        val rankingItem = rankingItemFB.toObject(ItemRanking::class.java)
+                        val isMareked = rankingItemFB.getBoolean("isMarked")
                         val rootItem = itemList.find { it.itemPK == rankingItem.itemPK }
-
                         rankingItem.engLanguage = rootItem?.engLanguage
                         rankingItem.vnLanguage = rootItem?.vnLanguage
+                        if (isMareked != null) {
+                            rankingItem.isMarked = isMareked
+                        }
 
                         if (rootItem != null) {
                             rankingItems.add(rankingItem)
