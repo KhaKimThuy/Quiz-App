@@ -13,7 +13,8 @@
         android:background="@drawable/custom_background_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imgBack"
@@ -132,7 +133,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lỗi hiển thị ở đây"
             android:textColor="#FF0000"
             app:layout_constraintStart_toStartOf="@+id/edtEmail"
             app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
@@ -142,7 +142,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lỗi hiển thị ở đây"
             android:textColor="#FF0000"
             app:layout_constraintStart_toStartOf="@+id/edtPassword"
             app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
@@ -152,7 +151,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Lỗi hiển thị ở đây"
             android:textColor="#FF0000"
             app:layout_constraintStart_toStartOf="@+id/edtPasswordConfirm"
             app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirm" />

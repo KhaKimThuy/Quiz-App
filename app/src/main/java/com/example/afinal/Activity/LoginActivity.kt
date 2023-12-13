@@ -2,6 +2,7 @@ package com.example.afinal.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,17 +29,18 @@ class   LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent)
+        })
+
         // Setup database
         db = MyDB()
         topicDAL = TopicDAL()
         folderDAL = FolderDAL()
         userDAL = UserDAL()
 
-        // To register activity
-        binding.buttonRegister.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+        
 
         // To login
         binding.btnLogin.setOnClickListener {
