@@ -41,10 +41,10 @@ class ProfileActivity : AppCompatActivity() {
 
         binding.textViewEmail.text = UserDTO.currentUser?.email ?: "Error"
         binding.textViewPwd.text = UserDTO.currentUser?.password ?: "Error"
-        binding.textViewAlias.text = UserDTO.currentUser?.username ?: "Error"
+        binding.UserName.text = UserDTO.currentUser?.username ?: "Error"
 
         if (UserDTO.currentUser?.avatarUrl == ""){
-            binding.ava.setImageResource(R.drawable.user)
+            binding.ava.setImageResource(R.drawable.avt)
         }else{
 //            Picasso.get().load(UserDTO.currentUser?.avatarUrl).into(binding.ava)
             binding.ava.setImageBitmap(UserDTO.userAvatar)

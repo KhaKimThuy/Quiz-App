@@ -22,8 +22,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.YourSettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.FirstStartActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +62,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.StartActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -95,8 +98,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Activity.ProfileActivity"
             android:exported="false" />
