@@ -111,8 +111,6 @@ class DetailTopicActivity : AppCompatActivity() {
         isSaved = intent.getBooleanExtra("isSaved", true)
         topicFrom = intent.getStringExtra("from").toString()
 
-        binding.topicScore.text = TopicDTO.currentTopic?.highestScore.toString()
-
         binding.recyclerviewFlashcard.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerviewFlashcard)
@@ -162,6 +160,7 @@ class DetailTopicActivity : AppCompatActivity() {
 
         // Load name and the number of items in current topic
         binding.tvTopicName.text = TopicDTO.currentTopic?.topicName ?: "Null"
+        binding.topicScore.text = TopicDTO.currentTopic?.highestScore.toString()
 
         TopicDTO.currentTopic?.let { it ->
             TopicDAL().GetItemOfTopic(it.topicPK) {items ->

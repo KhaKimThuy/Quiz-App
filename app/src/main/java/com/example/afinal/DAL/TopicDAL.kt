@@ -289,6 +289,7 @@ class TopicDAL : MyDB() {
         val updateTopic = mapOf (
             "topicName" to topic.topicName,
             "createdTime" to Calendar.getInstance().time,
+            "highestScore" to 0.0
         )
         db.collection("topic").document(topic.topicPK).update(updateTopic)
         // Add item to topic
