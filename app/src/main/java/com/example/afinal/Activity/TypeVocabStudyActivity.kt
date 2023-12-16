@@ -71,7 +71,7 @@ class TypeVocabStudyActivity : AppCompatActivity() {
             val intent = Intent(this, EndTestActivity::class.java)
 
             // Update highest score of current topic
-            val score = (adapter.rightAnswer / TopicDTO.numItems.toInt()) * 10
+            val score = (adapter.rightAnswer / TopicDTO.numItems.toInt()) * 10.0
             TopicDTO.currentTopic?.let { TopicDAL().UpdateTopicScore(it, score) }
 
             intent.putExtra("result", result)

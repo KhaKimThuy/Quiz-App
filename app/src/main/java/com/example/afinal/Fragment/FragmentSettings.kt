@@ -9,7 +9,9 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.afinal.Activity.EditProfileActivity
 import com.example.afinal.Activity.LoginActivity
+import com.example.afinal.Activity.OustandingVocabularyActivity
 import com.example.afinal.Activity.ProfileActivity
+import com.example.afinal.Activity.YourSettingActivity
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.databinding.FragmentSettingsBinding
 
@@ -27,14 +29,19 @@ class FragmentSettings : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.cardViewProfile.setOnClickListener(View.OnClickListener{
-            val intent = Intent(activity, EditProfileActivity::class.java)
+//<<<<<<< HEAD
+//            val intent = Intent(activity, EditProfileActivity::class.java)
+//=======
+            val intent = Intent(activity, YourSettingActivity::class.java)
+//>>>>>>> b248393befc239a1388c36b0b52d6dddc73d59bc
             startActivity(intent)
         })
+
         binding.cardViewFlashCard.setOnClickListener(View.OnClickListener{
-            val intent = Intent(activity, ProfileActivity::class.java)
+            val intent = Intent(activity, OustandingVocabularyActivity::class.java)
             startActivity(intent)
         })
-        binding.btnLogout.setOnClickListener(View.OnClickListener {
+        binding.cardViewLogout.setOnClickListener(View.OnClickListener {
             // Sign out current user
             MyDB().dbAuth.signOut()
 

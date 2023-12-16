@@ -1,5 +1,6 @@
 package com.example.afinal.Activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -21,6 +22,11 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent)
+        })
+
         binding.btnRegister.setOnClickListener(View.OnClickListener {
             binding.progressBar5.visibility = View.VISIBLE
 
@@ -37,7 +43,12 @@ class RegisterActivity : AppCompatActivity() {
                     binding.edtEmail.error = "Email form is invalid";
                 }else{
                     if (pass == confirm){
-                        writeNewUser(email, pass)
+                        if(pass.length < 8) {
+                            binding.edtPassword.error = "The password must be longer than 8 characters"
+                        }
+                        else {
+                            writeNewUser(email, pass)
+                        }
                     }else{
                         binding.edtPasswordConfirm.error = "Password is not matching";
 //                    Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
@@ -46,29 +57,27 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
 
-        binding.edtEmail.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
-            if (!b) {
-                if (binding.edtEmail.text.toString().endsWith("@gmail.com")) {
-                    binding.tvEmail.text = getString(R.string.email_of_parents)
-                    binding.tvEmail.setTextColor(resources.getColor(R.color.black))
-                } else {
-                    binding.tvEmail.text = getString(R.string.email_invalid)
-                    binding.tvEmail.setTextColor(resources.getColor(R.color.red))
-                }
-            }
-        }
-
-        binding.edtPassword.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
-            if (!b) {
-                if (binding.edtPassword.text.toString().length >= 8) {
-                    binding.tvPassword.setText(R.string.password);
-                    binding.tvPassword.setTextColor(resources.getColor(R.color.black))
-                } else {
-                    binding.tvPassword.setText(R.string.pass_invalid);
-                    binding.tvPassword.setTextColor(resources.getColor(R.color.red))
-                }
-            }
-        }
+//        binding.edtEmail.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+//            if (!b) {
+//                if (binding.edtEmail.text.toString().endsWith("@gmail.com")) {
+//                    binding.tvEmail.text = ""
+//                    binding.tvEmail.setTextColor(resources.getColor(R.color.black))
+//                } else {
+//                    binding.tvEmail.text = getString(R.string.email_invalid)
+//                    binding.tvEmail.setTextColor(resources.getColor(R.color.red))
+//                }
+//            }
+//        }
+//
+//        binding.edtPassword.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+//            if (!b) {
+//                if (binding.edtPassword.text.toString().length < 8) {
+//                    binding.tvPassword.setText(R.string.pass_invalid);
+//                } else {
+//                    binding.tvPassword.setText("");
+//                }
+//            }
+//        }
 
         binding.btnRegister.isEnabled = false;
         binding.btnRegister.setBackgroundDrawable(resources.getDrawable(R.drawable.custom_button_gray));
@@ -85,6 +94,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent)
+        })
 
     }
 

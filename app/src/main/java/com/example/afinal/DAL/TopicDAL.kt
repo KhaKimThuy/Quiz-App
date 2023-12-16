@@ -61,6 +61,7 @@ class TopicDAL : MyDB() {
                         if (isMarked != null) {
                             itemObject.isMarked = isMarked
                         }
+                        Log.d("markedItem", "(GetItemOfTopic-TopicDAL) Marked item : " + itemObject.isMarked)
                         itemList.add(itemObject)
                     }
                     if (TopicDTO.currentTopic is TopicRanking) {
@@ -305,11 +306,11 @@ class TopicDAL : MyDB() {
         callback()
     }
 
-    fun UpdateTopicScore(topic : Topic, newScore : Int) {
-        Log.d("TAG", "Starting update score ... ")
+    fun UpdateTopicScore(topic : Topic, newScore : Double) {
+        Log.d("TAG", "newScore =  " + newScore)
         if (topic.highestScore < newScore) {
             Log.d("TAG", "Starting update score ... ")
-            val updateTopic = mapOf(
+            val updateTopic = mapOf (
                 "highestScore" to newScore,
             )
             if (topic is TopicRanking) {

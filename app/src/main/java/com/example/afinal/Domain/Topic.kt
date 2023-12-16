@@ -12,7 +12,7 @@ open class Topic() : Parcelable {
     var userPK = ""
     var topicName = ""
     var isPublic: Boolean = false
-    var highestScore = 0
+    var highestScore : Double = 0.0
     var timeStudy = 0
     var createdTime: Date = Calendar.getInstance().time
 
@@ -22,7 +22,7 @@ open class Topic() : Parcelable {
         userPK = parcel.readString().toString()
         topicName = parcel.readString().toString()
         isPublic = parcel.readBoolean()
-        highestScore = parcel.readInt()
+        highestScore = parcel.readDouble()
         timeStudy = parcel.readInt()
         createdTime = Date(parcel.readLong())
     }
@@ -33,7 +33,7 @@ open class Topic() : Parcelable {
         parcel.writeString(userPK)
         parcel.writeString(topicName)
         parcel.writeBoolean(isPublic)
-        parcel.writeInt(highestScore)
+        parcel.writeDouble(highestScore)
         parcel.writeInt(timeStudy)
         parcel.writeLong(createdTime.time)
     }

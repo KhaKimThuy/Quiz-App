@@ -157,42 +157,39 @@ class DetailTopicActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun loadInfoTopic() {
         // Remove old items
+        TopicDTO.allItemList.clear()
         TopicDTO.itemList.clear()
 
         // Load name and the number of items in current topic
         binding.tvTopicName.text = TopicDTO.currentTopic?.topicName ?: "Null"
-        binding.textViewNumItems.text = "${TopicDTO.numItems} Thuật ngữ"
 
         TopicDTO.currentTopic?.let { it ->
             TopicDAL().GetItemOfTopic(it.topicPK) {items ->
                 Log.d("TAG", "CHECK size : " + items.size)
-                TopicDTO.itemList.addAll(items)
+                TopicDTO.allItemList.addAll(items)
+
+                binding.textViewNumItems.text = "${TopicDTO.allItemList.size} Thuật ngữ"
 
                 Log.d("TAG", "Topic public : " + TopicDTO.currentTopic!!.isPublic)
                 if (topicFrom == "FragmentHome") {
-                    adapter = FlashCardAdapter(TopicDTO.itemList, this, false, object :
+                    adapter = FlashCardAdapter(TopicDTO.allItemList, this, false, object :
                         FlashCardAdapter.IClickItemListener {
                         override fun onClickItemListener(itemView: FlashCardAdapter.ItemViewHolder, position: Int) {
                                 // User only visit public topic
                         }
                     })
                 } else {
-                    adapter = FlashCardAdapter(TopicDTO.itemList, this, true, object :
+                    adapter = FlashCardAdapter(TopicDTO.allItemList, this, true, object :
                         FlashCardAdapter.IClickItemListener {
                         override fun onClickItemListener(itemView: FlashCardAdapter.ItemViewHolder, position: Int) {
-                            if (TopicDTO.itemList[position].isMarked) {
-                                TopicDTO.itemList[position].isMarked = false
+                            if (TopicDTO.allItemList[position].isMarked) {
+                                TopicDTO.allItemList[position].isMarked = false
                                 itemView.marker.setImageResource(R.drawable.empty_star)
                             } else {
-                                TopicDTO.itemList[position].isMarked = true
+                                TopicDTO.allItemList[position].isMarked = true
                                 itemView.marker.setImageResource(R.drawable.marked_star)
                             }
-                            if (it.isPublic) {
-                                ItemDAL().UpdateMarkedRankingItem(TopicDTO.itemList[position])
-                            } else {
-                                ItemDAL().UpdateMarkedItem(TopicDTO.itemList[position])
-                            }
-
+                            ItemDAL().UpdateMarkedItem(TopicDTO.allItemList[position])
                             // Change item info on database
                         }
                     })

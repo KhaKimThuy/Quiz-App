@@ -42,8 +42,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:fontFamily="@font/amaranth"
-                    android:text="10"
-                    android:textSize="95sp" />
+                    android:text="1.0"
+                    android:textSize="70sp" />
             </RelativeLayout>
 
 

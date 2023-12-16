@@ -9,6 +9,7 @@ class TopicDTO {
         // Current specific topic
         var currentTopic: Topic? = null
         var itemList : ArrayList<Item> = ArrayList<Item>()
+        var allItemList : ArrayList<Item> = ArrayList<Item>()
         var numItems  = "0"
 
         // User's list of topics

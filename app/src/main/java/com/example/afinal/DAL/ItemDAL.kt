@@ -54,11 +54,16 @@ class ItemDAL : MyDB() {
     }
 
     fun UpdateMarkedItem(item : Item) {
-        val updateItem = mapOf(
+        val updateItem = mapOf (
             "isMarked" to item.isMarked,
         )
-        Log.d("TAG", "Mark on item")
-        db.collection("item").document(item.itemPK).update(updateItem)
+        if (item is ItemRanking) {
+            Log.d("Marker" , "Mark on update item")
+            db.collection("rankingItem").document(item.itemRankingPK).update(updateItem)
+        } else {
+            Log.d("Marker" , "Mark on item")
+            db.collection("item").document(item.itemPK).update(updateItem)
+        }
     }
 
     fun UpdateMarkedRankingItem(item : Item) {
@@ -66,9 +71,6 @@ class ItemDAL : MyDB() {
             val updateItem = mapOf (
                 "isMarked" to item.isMarked,
             )
-            Log.d("TAG", "Ranking item mark : " + item.isMarked)
-            Log.d("TAG", "Ranking item pk : " + item.itemRankingPK)
-            Log.d("TAG", "Mark on ranking item")
             db.collection("rankingItem").document(item.itemRankingPK).update(updateItem)
         }
     }

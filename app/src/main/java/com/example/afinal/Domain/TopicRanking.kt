@@ -15,7 +15,7 @@ class TopicRanking() : Topic(), Parcelable {
         rankingTopicPK = parcel.readString().toString()
         topicPK = parcel.readString().toString()
         userPK = parcel.readString().toString()
-        highestScore = parcel.readInt()
+        highestScore = parcel.readDouble()
         timeStudy = parcel.readInt()
         createdTime = Date(parcel.readLong())
     }
@@ -24,7 +24,7 @@ class TopicRanking() : Topic(), Parcelable {
         parcel.writeString(rankingTopicPK)
         parcel.writeString(topicPK)
         parcel.writeString(userPK)
-        parcel.writeInt(highestScore)
+        parcel.writeDouble(highestScore)
         parcel.writeInt(timeStudy)
         parcel.writeLong(createdTime.time)
     }

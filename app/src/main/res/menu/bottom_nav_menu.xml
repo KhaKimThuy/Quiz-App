@@ -19,6 +19,6 @@
         android:title="@string/title_library" />
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/user"
+        android:icon="@drawable/baseline_settings_24"
         android:title="@string/title_profile" />
 </menu>
