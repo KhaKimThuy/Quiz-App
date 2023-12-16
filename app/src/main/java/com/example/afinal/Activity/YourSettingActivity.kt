@@ -55,7 +55,11 @@ class YourSettingActivity : AppCompatActivity() {
     }
 
     private fun loadUserInfo() {
-        binding.UserName.text = UserDTO.currentUser?.email ?: "Username"
+        binding.UserName.text = UserDTO.currentUser?.username ?: "Username"
+        binding.tvName.text = UserDTO.currentUser?.username ?: "Chưa cập nhật"
+        binding.tvEmailSt.text = UserDTO.currentUser?.email ?: "Email"
+        val intent = intent
+        binding.tvPhone.text = intent.getStringExtra("phone")
         if (UserDTO.currentUser?.avatarUrl == "") {
             binding.ava.setImageResource(R.drawable.avt)
         } else {

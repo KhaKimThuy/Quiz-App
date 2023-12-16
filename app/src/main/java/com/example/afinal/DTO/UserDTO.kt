@@ -7,7 +7,7 @@ class UserDTO{
     companion object {
         var currentUser: User? = null
         var userAvatar: Bitmap? = null
-        fun UpdateInfo(newEmail : String, newPass : String, newName : String, newAvatarUrl : String) {
+        fun UpdateInfo(newEmail : String, newPass : String, newName : String, newAvatarUrl : String, newPhone : String) {
             currentUser?.email = newEmail
             currentUser?.username = newName
             currentUser?.password = newPass

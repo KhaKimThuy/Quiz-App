@@ -42,7 +42,7 @@ class ActivityChangePassword : AppCompatActivity() {
                             if(task.isSuccessful) {
                                 Toast.makeText(this, "Password is changed successfully", Toast.LENGTH_SHORT).show()
                                 auth.signOut()
-                                startActivity(Intent(this, ProfileActivity::class.java))
+                                startActivity(Intent(this, YourSettingActivity::class.java))
                                 finish()
                             }
 
@@ -55,7 +55,7 @@ class ActivityChangePassword : AppCompatActivity() {
                 }
             }
             else {
-                startActivity(Intent(this, ProfileActivity::class.java))
+                startActivity(Intent(this, YourSettingActivity::class.java))
                 finish()
             }
         }
@@ -66,8 +66,7 @@ class ActivityChangePassword : AppCompatActivity() {
     }
 
     private fun navigateToNextScreen() {
-        // Optionally, you can redirect the user to another screen
-        val intent = Intent(this, ProfileActivity::class.java)
+        val intent = Intent(this, YourSettingActivity::class.java)
         startActivity(intent)
         finish()
     }

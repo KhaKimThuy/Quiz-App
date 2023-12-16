@@ -17,132 +17,105 @@ import com.example.afinal.DAL.UserDAL
 
 
 open class EditProfileActivity : AppCompatActivity() {
-    private lateinit var storageRef: StorageReference
-    private lateinit var pk : String
-    private lateinit var binding : ActivityEditProfileBinding
 
-    private lateinit var emailUser : String
-    private lateinit var usernameUser : String
-    private lateinit var passwordUser : String
+    private lateinit var storageRef: StorageReference
+    private lateinit var pk: String
+    private lateinit var binding: ActivityEditProfileBinding
+    private lateinit var emailUser: String
+    private lateinit var usernameUser: String
+    private lateinit var phone: String
 
     private var avatarChange = false
-    private var newAvatarUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        phone = binding.edPhone.text.toString()
+        initUI()
+        initListeners()
+    }
 
-
+    private fun initUI() {
         pk = UserDTO.currentUser?.GetPK() ?: ""
         storageRef = FirebaseStorage.getInstance().reference.child("UserImages")
-
-        // Load user information
         showData()
+    }
 
-        binding.cam.setOnClickListener(View.OnClickListener {
-//            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            startActivityForResult(cameraIntent, CAMERAREQUEST)
-
+    private fun initListeners() {
+        binding.cam.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
                 .start()
+        }
 
-        })
+        binding.buttonUpdate.setOnClickListener {
+            updateUserInfo()
+        }
+    }
 
-        binding.buttonUpdate.setOnClickListener(View.OnClickListener {
+    private fun updateUserInfo() {
+        val updatedUser = UserDTO.currentUser?.apply {
+            username = binding.edName.text.toString()
+            email = binding.edEmail.text.toString()
+        }
 
-            // Update information
-            val updatedUser = UserDTO.currentUser
-            updatedUser?.username = binding.edName.text.toString()
-            updatedUser?.email = binding.edEmail.text.toString()
-            updatedUser?.password = binding.edPass.text.toString()
-            Log.d("TAG", "serDTO.currentUser : " + updatedUser?.userPK)
+        updatedUser?.let {
+            UserDAL().UpdateUserInfo(it)
+        }
 
-            if (updatedUser != null) {
-                UserDAL().UpdateUserInfo(updatedUser)
-            }
+        if (avatarChange) {
+            uploadAvatar()
+        }
 
-            // Update avatar
-            if (avatarChange) {
-                uploadAvatar()
-            }
+        Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show();
+//        val intent = Intent()
+//        setResult(RESULT_OK, intent)
+//        finish()
 
-            val intent = Intent()
-            setResult(RESULT_OK, intent)
-            finish()
-        })
+        val intent = Intent(this, YourSettingActivity::class.java)
+        intent.putExtra("phone", binding.edPhone.text.toString())
+        startActivity(intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val uri = data?.data
-        binding.ava.setImageURI(uri)
-        val inputStream = uri?.let { contentResolver.openInputStream(it) }
-        UserDTO.userAvatar =  BitmapFactory.decodeStream(inputStream)
-        avatarChange = true
+        data?.data?.let {
+            binding.ava.setImageURI(it)
+            val inputStream = contentResolver.openInputStream(it)
+            UserDTO.userAvatar = BitmapFactory.decodeStream(inputStream)
+            avatarChange = true
+        }
     }
 
-
-    // Upload avatar user to database
     private fun uploadAvatar() {
-            val drawable = binding.ava.drawable as BitmapDrawable
-            val bitmap = drawable.bitmap
+        val drawable = binding.ava.drawable as? BitmapDrawable
+        val bitmap = drawable?.bitmap
 
-            // Save new avatar lacally
-            UserDTO.userAvatar = bitmap
-            UserDAL().UpdateUserAvatar(bitmap);
-            Log.d("TAG" , "upload avatar part")
+        bitmap?.let {
+            UserDTO.userAvatar = it
+            UserDAL().UpdateUserAvatar(it)
+            Log.d("TAG", "upload avatar part")
+        }
     }
-
-//    private fun isNameChanged(): Boolean {
-//        return if (usernameUser != binding.edName.text.toString()) {
-//            db.GetUserByID()?.child("username")?.setValue(binding.edName.text.toString())
-//            usernameUser = binding.edName.text.toString()
-//            true
-//        } else {
-//            false
-//        }
-//    }
-//
-//    private fun isEmailChanged(): Boolean {
-//        return if (emailUser != binding.edEmail.text.toString()) {
-//            db.GetUserByID()?.child("email")?.setValue(binding.edEmail.text.toString())
-//            emailUser = binding.edEmail.text.toString()
-//            true
-//        } else {
-//            false
-//        }
-//    }
-//
-//    private fun isPasswordChanged(): Boolean {
-//        return if (passwordUser != binding.edPass.text.toString()) {
-//            db.GetUserByID()?.child("password")?.setValue(binding.edPass.text.toString())
-//            passwordUser = binding.edPass.text.toString()
-//            true
-//        } else {
-//            false
-//        }
-//    }
 
     private fun showData() {
-        if (UserDTO.userAvatar  != null) {
-            Log.d("TAG" , "Bitmap is not null")
-            binding.ava.setImageBitmap(UserDTO.userAvatar)
+        UserDTO.userAvatar?.let {
+            Log.d("TAG", "Bitmap is not null")
+            binding.ava.setImageBitmap(it)
         }
 
-        Log.d("TAG" , "User avatar url : " + UserDTO.currentUser?.avatarUrl)
         emailUser = UserDTO.currentUser?.email ?: "Error"
         usernameUser = UserDTO.currentUser?.username ?: "Error"
-        passwordUser = UserDTO.currentUser?.password ?: "Error"
 
         binding.edEmail.setText(emailUser)
         binding.edName.setText(usernameUser)
-        binding.edPass.setText(passwordUser)
+        binding.edPhone.setText(phone)
 
     }
+
 }
