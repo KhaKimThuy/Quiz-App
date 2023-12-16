@@ -249,17 +249,6 @@ open class MyDB() {
         }
     }
 
-    fun DeleteItem(item : Item){
-        GetItem().child(item.itemPK).removeValue()
-            .addOnSuccessListener {
-                // Object deleted successfully
-                Log.d("Delete item", "Delete item success")
-            }
-            .addOnFailureListener { error ->
-                // Handle the error
-                Log.d("Delete item", "Delete item success")
-            }
-    }
 
 //
 //    fun DeleteFolder(folder : FolderDomain) {

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.EditTopicActivity
+import com.example.afinal.DAL.ItemDAL
 import com.example.afinal.Domain.Item
 import com.example.afinal.R
 import com.example.afinal.ViewHolder.AddItemTopicHolder
@@ -37,7 +38,7 @@ class EditItemTopicAdapter (
         }
 
         // Create new item
-        holder.eng_lang.addTextChangedListener(object : TextWatcher{
+        holder.eng_lang.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 itemList[position].engLanguage = p0.toString()
             }
@@ -79,46 +80,18 @@ class EditItemTopicAdapter (
     inner class EditItemTopicHolder(view : View) : RecyclerView.ViewHolder(view) {
         val eng_lang = view.findViewById<TextView>(R.id.edt_eng)
         val vn_lang = view.findViewById<TextView>(R.id.edt_vn)
+        val del = view.findViewById<ImageView>(R.id.imgView_delItem)
         init {
             eng_lang.text = ""
             vn_lang.text = ""
-
-            itemView.setOnLongClickListener(View.OnLongClickListener {
-                popupMenus(itemView)
-                false
+            del.visibility = View.VISIBLE
+            del.setOnClickListener(View.OnClickListener {
+                ItemDAL().DeleteFC(itemList[adapterPosition])
+                itemList.removeAt(adapterPosition)
+                notifyDataSetChanged()
             })
         }
-
-        private fun popupMenus(v:View) {
-            val popupMenus = PopupMenu(activity,v)
-            popupMenus.inflate(R.menu.item_menu)
-            popupMenus.setOnMenuItemClickListener {
-                when(it.itemId){
-                    R.id.delItem -> {
-                        itemList.removeAt(adapterPosition)
-                        notifyDataSetChanged()
-                        true
-                    }
-                    else-> true
-                }
-            }
-            popupMenus.show()
-            val popup = PopupMenu::class.java.getDeclaredField("mPopup")
-            popup.isAccessible = true
-            val menu = popup.get(popupMenus)
-            menu.javaClass.getDeclaredMethod("setForceShowIcon",Boolean::class.java)
-                .invoke(menu,true)
-        }
-
     }
-
-
-
-
-
-
-
-
 
 //    private fun showOptionsMenu(anchorView: View) {
 //        val popupMenu = PopupMenu(this, anchorView)

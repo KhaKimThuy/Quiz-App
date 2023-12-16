@@ -108,16 +108,18 @@ class ItemDAL : MyDB() {
     }
 
     fun DeleteFC(item: Item) {
-        val documentRef = MyDB().db.collection("item").document(item.itemPK)
-        documentRef.delete()
-            .addOnSuccessListener {
-                // File deleted successfully
-                Log.w("TAG", "Delete item successfully")
-            }
-            .addOnFailureListener { _ ->
-                // Handle any errors
-                Log.w("TAG", "Fail to delete item")
-            }
+        if (item.itemPK != "") {
+            val documentRef = MyDB().db.collection("item").document(item.itemPK)
+            documentRef.delete()
+                .addOnSuccessListener {
+                    // File deleted successfully
+                    Log.w("TAG", "Delete item successfully")
+                }
+                .addOnFailureListener { _ ->
+                    // Handle any errors
+                    Log.w("TAG", "Fail to delete item")
+                }
+        }
     }
 
     fun DeleteRankingItem(item: Item) {

@@ -19,7 +19,6 @@ import com.example.afinal.databinding.ActivityEditTopicBinding
 
 class EditTopicActivity : AppCompatActivity() {
     private lateinit var binding : ActivityEditTopicBinding
-//    private lateinit var newItemList : ArrayList<Item>
     private lateinit var adapter: EditItemTopicAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +35,8 @@ class EditTopicActivity : AppCompatActivity() {
 
         // Create new item
         binding.imageViewAddItem.setOnClickListener(View.OnClickListener {
-            TopicDTO.itemList.add(Item())
-            adapter.notifyItemInserted(TopicDTO.itemList.size - 1)
+            TopicDTO.allItemList.add(Item())
+            adapter.notifyItemInserted(TopicDTO.allItemList.size - 1)
         })
 
         binding.checkOk.setOnClickListener(View.OnClickListener {
@@ -45,39 +44,25 @@ class EditTopicActivity : AppCompatActivity() {
             GetChange()
             UpdateTopic()
         })
+
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun UpdateTopic() {
-        TopicDTO.currentTopic?.let { TopicDAL().UpdateTopic(it, TopicDTO.itemList) {
+        TopicDTO.currentTopic?.let { TopicDAL().UpdateTopic(it, TopicDTO.allItemList) {
                 binding.progressBar7.visibility = View.GONE
                 val resultIntent = Intent()
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
             }
         }
-//        // Update topic
-//        val topicDB = db.GetTopicByID(topic.topicPK)
-//        if (topic.topicName != topicDB.child("topicName").toString())
-//            topicDB.child("topicName").setValue(topic.topicName)
-//        // Update items
-//        for (item in itemList) {
-//            if (item.topicPK.isNullOrEmpty()) {
-//                db.CreateItem(item, topic.topicPK)
-//            } else {
-//                val itemDB = db.GetItemByID(item.itemPK)
-//
-//                if (itemDB.child("vnLanguage").toString() != item.vnLanguage)
-//                    itemDB.child("vnLanguage").setValue(item.vnLanguage)
-//
-//                if (itemDB.child("engLanguage").toString() != item.engLanguage)
-//                    itemDB.child("engLanguage").setValue(item.engLanguage)
-//            }
-//        }
     }
 
     private fun loadCurrentTopic() {
         binding.edtTopicName.setText(TopicDTO.currentTopic?.topicName)
-        adapter = EditItemTopicAdapter(TopicDTO.itemList, this)
+        adapter = EditItemTopicAdapter(TopicDTO.allItemList, this)
         binding.recyclerViewAddTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerViewAddTopic.adapter = adapter
     }
@@ -85,6 +70,4 @@ class EditTopicActivity : AppCompatActivity() {
     private fun GetChange() {
         TopicDTO.currentTopic?.topicName = binding.edtTopicName.text.toString()
     }
-
-
 }
