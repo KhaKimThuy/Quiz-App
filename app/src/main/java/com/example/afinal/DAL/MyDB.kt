@@ -281,10 +281,6 @@ open class MyDB() {
 //    }
 
     // Because folderPK of topic is the folderPk of current folder, give folder as argument is enough
-    fun DeleteTopicFromFolder(topic : Topic, folder : Folder) {
-        val tfPK = topic.topicPK + folder.folderPK
-        GetTopicFolderByID(tfPK).removeValue()
-    }
 
 //    fun GetTheNumberOfItemsInTopic(topicPK: String, callback: ValueEventListenerCallback) {
 //        val query = GetItem().orderByChild("topicPK").equalTo(topicPK)

@@ -1,6 +1,5 @@
 package com.example.afinal.Activity
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +26,16 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
         binding = ActivityMultiChoiceStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        init()
+
+        binding.imageViewBack.setOnClickListener(View.OnClickListener {
+            finish()
+        })
+//        binding.recyclerView.isNestedScrollingEnabled = false
+        loadMultipleChoice()
+    }
+
+    private fun init() {
         binding.tvLoad.text = TopicDTO.numItems
         binding.tvGet.text = "0"
 
@@ -35,7 +44,6 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
         val toastWrapper = findViewById<ConstraintLayout>(R.id.toastWrapper)
         rightToast = layoutInflater.inflate(R.layout.right_choice_toast, toastWrapper)
 
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.layoutManager = object : LinearLayoutManager(this) {
@@ -46,13 +54,6 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
                 return super.canScrollHorizontally()
             }
         }
-
-        binding.imageViewBack.setOnClickListener(View.OnClickListener {
-            finish()
-        })
-
-//        binding.recyclerView.isNestedScrollingEnabled = false
-        loadMultipleChoice()
     }
 
     private fun loadMultipleChoice(){

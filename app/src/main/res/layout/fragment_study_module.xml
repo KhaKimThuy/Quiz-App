@@ -7,18 +7,10 @@
     android:paddingHorizontal="16dp"
     tools:context=".Fragment.FragmentTopic">
 
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tiến trình"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_topicList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:layout_marginTop="16dp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -12,20 +12,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.FlashCardStudyActivity
 import com.example.afinal.Domain.Item
 import com.example.afinal.R
+import com.wajahatkarim3.easyflipview.EasyFlipView
 import java.util.Locale
 import java.util.UUID
 
 class FCLearningAdapter(
     activity: FlashCardStudyActivity,
-    private val cardList: ArrayList<Item>
+    private val cardList: ArrayList<Item>,
+    private val onClickFCItem : onClickFCLearningListener
 ) : RecyclerView.Adapter<FCLearningAdapter.FCViewHolder>(){
 
     private var textToSpeech : TextToSpeech
     private var ready : Boolean = false
-    private var activity = activity
 
+    private val handler = Handler()
+    private val delayDuration = 2000L // Duration in milliseconds
+    private var eventRunnable: Runnable? = null
 
-
+    var currentPost : Int = 0
+    lateinit var curViewHolder : FCViewHolder
 
     init {
         textToSpeech = TextToSpeech(activity.applicationContext) { setTextToSpeechLanguage() }
@@ -42,37 +47,38 @@ class FCLearningAdapter(
     }
 
     override fun onBindViewHolder(holder: FCViewHolder, position: Int) {
+        curViewHolder = holder
+        currentPost = position
+
         holder.eng_lang.text = cardList[position].engLanguage
         holder.vn_lang.text = cardList[position].vnLanguage
 
+        if (cardList[position].isMarked) {
+            holder.marker.setImageResource(R.drawable.marked_star)
+        }
+
         // Auto
-        speakOut(holder.eng_lang.text.toString())
+        // speakOut(holder.eng_lang.text.toString())
         holder.speaker.setOnClickListener(View.OnClickListener {
-            speakOut(holder.eng_lang.text.toString())
+            speakOut(cardList[position].engLanguage.toString())
         })
 
+        holder.marker.setOnClickListener(View.OnClickListener {
+            onClickFCItem.onClickFCListener(holder, position)
+        })
 //        if (activity.auto) {
 //            // Cancel any existing event runnable
 //            eventRunnable?.let { handler.removeCallbacks(it) }
 //            // Schedule a new event runnable
-//            eventRunnable = Runnable {
-//                // Perform the desired event after the duration
-//                var nextIdx = position
-//                if (position < itemCount) {
-//                    nextIdx = position + 1
-//                }
-//                activity.moveToNext(nextIdx)
-//            }
-//            handler.postDelayed(eventRunnable!!, delayDuration)
-//        }
     }
 
-//    private val runnable = Runnable {
-//        cardList.addAll(cardList)
-//        notifyDataSetChanged()
-//    }
+    fun flipFC(callback: () -> Unit) {
+        Log.d("TAG", "Flip " + curViewHolder.eng_lang)
+        curViewHolder.mainView.flipTheView(true)
+        callback()
+    }
 
-    private fun speakOut(engVocab : String) {
+    fun speakOut(eng : String) {
         Log.d("TAG", "Language valid: $ready")
         if (!ready) {
             return
@@ -80,8 +86,30 @@ class FCLearningAdapter(
 
         // Văn bản cần đọc.
         val utteranceId = UUID.randomUUID().toString()
-        textToSpeech.speak(engVocab, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
+        textToSpeech.speak(eng, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
     }
+
+    fun autoSpeak(callback: () -> Unit) {
+        eventRunnable = Runnable {
+            // Perform the desired event after the duration
+            if (currentPost < itemCount) {
+                speakOut(cardList[currentPost].engLanguage.toString())
+                callback()
+            }
+        }
+        handler.postDelayed(eventRunnable!!, delayDuration)
+    }
+
+//    fun speakOut(engVocab : String) {
+//        Log.d("TAG", "Language valid: $ready")
+//        if (!ready) {
+//            return
+//        }
+//
+//        // Văn bản cần đọc.
+//        val utteranceId = UUID.randomUUID().toString()
+//        textToSpeech.speak(engVocab, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
+//    }
 
     private fun getUserSelectedLanguage(): Locale? {
         return Locale.ENGLISH
@@ -114,6 +142,17 @@ class FCLearningAdapter(
         val eng_lang = itemView.findViewById<TextView>(R.id.textView_engLang)
         val vn_lang = itemView.findViewById<TextView>(R.id.textView_vnLang)
         val speaker = itemView.findViewById<ImageView>(R.id.imageView_speaker)
+        val marker = itemView.findViewById<ImageView>(R.id.imageView_marker)
+
+        val mainView = itemView.findViewById<EasyFlipView>(R.id.mainView)
+
+        init {
+            mainView.flipDuration = 1000
+        }
+    }
+
+    interface onClickFCLearningListener {
+        fun onClickFCListener(itemView : FCViewHolder, position: Int)
     }
 
 }

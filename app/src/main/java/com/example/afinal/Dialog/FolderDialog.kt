@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -12,6 +13,7 @@ import com.example.afinal.Activity.MainActivity2
 import com.example.afinal.DAL.FolderDAL
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.Domain.Folder
+import com.example.afinal.Domain.Item
 import com.example.afinal.R
 
 class FolderDialog(
@@ -25,7 +27,6 @@ class FolderDialog(
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        db = MyDB()
         val builder = AlertDialog.Builder(requireActivity())
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.add_folder_dialog, null)
@@ -75,4 +76,6 @@ class FolderDialog(
         folder.folderDesc = folderDesc.text.toString()
         FolderDAL().AddFolder(folder, activity)
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.afinal.Activity
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.afinal.Adapter.MultipleChoiceAdapter
 import com.example.afinal.Adapter.TypeWordAdapter
+import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Dialog.WrongMutipleChoiceDialog
 import com.example.afinal.R
@@ -22,11 +24,21 @@ class TypeVocabStudyActivity : AppCompatActivity() {
     private lateinit var binding : ActivityTypeVocabStudyBinding
     private lateinit var adapter: TypeWordAdapter
     private lateinit var rightToast : View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTypeVocabStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        init()
+
+        binding.imageViewBack.setOnClickListener(View.OnClickListener {
+            finish()
+        })
+
+    }
+
+    private fun init() {
         binding.tvLoad.text = TopicDTO.numItems
         binding.tvGet.text = "0"
 
@@ -35,7 +47,7 @@ class TypeVocabStudyActivity : AppCompatActivity() {
         val toastWrapper = findViewById<ConstraintLayout>(R.id.toastWrapper)
         rightToast = layoutInflater.inflate(R.layout.right_choice_toast, toastWrapper)
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerView)
         binding.recyclerView.layoutManager = object : LinearLayoutManager(this) {
@@ -51,11 +63,20 @@ class TypeVocabStudyActivity : AppCompatActivity() {
 
     private fun nextTest(position : Int)
     {
+        Log.d("TAG", "Position: $position")
         if (position < (adapter.itemCount)) {
             binding.recyclerView.layoutManager?.scrollToPosition(position)
         } else {
-            val result = "Done with " + adapter.rightAnswer + " / " + TopicDTO.numItems
-            Toast.makeText(this, result , Toast.LENGTH_SHORT).show()
+            val result = "Bạn đã trả lời đúng " + adapter.rightAnswer + " / " + TopicDTO.numItems + " câu hỏi"
+            val intent = Intent(this, EndTestActivity::class.java)
+
+            // Update highest score of current topic
+            val score = (adapter.rightAnswer / TopicDTO.numItems.toInt()) * 10
+            TopicDTO.currentTopic?.let { TopicDAL().UpdateTopicScore(it, score) }
+
+            intent.putExtra("result", result)
+            startActivity(intent)
+            finish()
         }
         val newProgress = binding.progressBar.progress + 1
         binding.progressBar.progress = newProgress

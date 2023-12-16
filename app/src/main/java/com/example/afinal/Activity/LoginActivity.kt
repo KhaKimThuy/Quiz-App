@@ -52,7 +52,7 @@ class   LoginActivity : AppCompatActivity() {
         // To forgot password activity
         binding.tvFogotPw.setOnClickListener {
             val intent = Intent(this, ActivityForgotPassword::class.java)
-            startActivity(intent);
+            startActivity(intent)
         }
     }
 

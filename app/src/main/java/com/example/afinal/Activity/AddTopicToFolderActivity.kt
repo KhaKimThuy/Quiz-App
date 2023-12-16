@@ -29,9 +29,6 @@ class AddTopicToFolderActivity : AppCompatActivity() {
 
         binding.checkOk.setOnClickListener(View.OnClickListener {
             addTopicToFolder()
-            val intent = Intent()
-            setResult(RESULT_OK, intent)
-            finish()
         })
     }
 
@@ -66,7 +63,6 @@ class AddTopicToFolderActivity : AppCompatActivity() {
             }
 
             override fun onLongClickTopicListener(topicView : TopicAdapter.TopicViewHolder, position : Int) {
-                TODO("Not yet implemented")
             }
 
         })
@@ -76,16 +72,12 @@ class AddTopicToFolderActivity : AppCompatActivity() {
     }
 
     private fun addTopicToFolder() {
-        val moreAddedTopics = ArrayList<Topic>()
         if (selectedTopic.size > 0) {
-            for (topic in selectedTopic) {
-                // Add topic-folder object to db
-                FolderDTO.currentFolder?.let { TopicFolderDAL().AddTopicFolder(topic, it) }
-                moreAddedTopics.add(topic)
-            }
+            // Add topic-folder object to db
+            FolderDTO.currentFolder?.let { TopicFolderDAL().AddTopicFolder(selectedTopic, it) }
+            FolderDTO.topicList.addAll(selectedTopic)
         }
         val intent = Intent()
-        intent.putParcelableArrayListExtra("moreAddedTopics", moreAddedTopics)
         setResult(RESULT_OK, intent)
         finish()
     }

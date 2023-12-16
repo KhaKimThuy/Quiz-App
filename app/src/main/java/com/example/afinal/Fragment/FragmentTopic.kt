@@ -15,6 +15,7 @@ import com.example.afinal.Adapter.TopicAdapter
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.DTO.UserDTO
+import com.example.afinal.Domain.Topic
 import com.example.afinal.ViewModel.TopicViewModel
 import com.example.afinal.databinding.FragmentStudyModuleBinding
 
@@ -23,6 +24,7 @@ class FragmentTopic : Fragment() {
     private lateinit var binding : FragmentStudyModuleBinding
 
     private lateinit var topicViewModel: TopicViewModel
+    private val DETAIL_TOPIC_CODE = 444
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +61,8 @@ class FragmentTopic : Fragment() {
                     }
                     intent.putExtra("isSaved", true)
                     intent.putExtra("from", "FragmentTopic")
-                    requireActivity().startActivity(intent)
+                    Log.d("fragmentHome", "Before - Topic list size : " + TopicDTO.topicList.size)
+                    startActivityForResult(intent, DETAIL_TOPIC_CODE)
                 }
 
                 override fun onLongClickTopicListener(
@@ -68,7 +71,6 @@ class FragmentTopic : Fragment() {
                 ) {
                     TODO("Not yet implemented")
                 }
-
             })
             binding.recyclerViewTopicList.adapter = adapter
         }
@@ -78,12 +80,18 @@ class FragmentTopic : Fragment() {
         snapHelper.attachToRecyclerView(binding.recyclerViewTopicList)
     }
 
-//    private fun loadTopic() {
-//        val userId = MyDB().dbAuth.currentUser?.uid.toString()
-//        TopicDAL().GetTopicOfUser(userId) {
-//            Log.d("TAG", "ReLoad adapter")
-//            adapter = TopicAdapter(TopicDTO.topicList, requireActivity())
-//            binding.recyclerViewTopicList.adapter = adapter
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == DETAIL_TOPIC_CODE) {
+            val operation = data?.getStringExtra("operation")
+            Log.d("fragmentHome", "onActivityResult")
+            if (operation == "delete") {
+                TopicDTO.currentTopic?.let { topicViewModel.removeTopic(it) }
+                // Refresh current topic value
+                TopicDTO.itemList.clear()
+                TopicDTO.currentTopic = null
+                Log.d("fragmentHome", "After - Topic list size : " + TopicDTO.topicList.size)
+            }
+        }
+    }
 }

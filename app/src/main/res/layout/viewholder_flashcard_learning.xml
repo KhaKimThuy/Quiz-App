@@ -25,10 +25,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:id="@+id/mainView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:autoFlipBack="true"
-        app:autoFlipBackTime="1000"
         app:flipEnabled="true"
         app:flipFrom="front"
         app:flipOnTouch="true"
@@ -51,3 +50,6 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    app:autoFlipBack="true"-->
+<!--    app:autoFlipBackTime="1000"-->

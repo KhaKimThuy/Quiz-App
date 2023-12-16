@@ -16,32 +16,39 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.PagerSnapHelper
+import com.example.afinal.Adapter.TopicAdapter
+import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Dialog.FolderDialog
 import com.example.afinal.Fragment.FragmentHome
 import com.example.afinal.Fragment.FragmentLibrary
 import com.example.afinal.Fragment.FragmentSettings
+import com.example.afinal.ViewModel.TopicViewModel
 import com.example.afinal.databinding.ActivityMain2Binding
 
 
 class MainActivity2 : AppCompatActivity() {
     private lateinit var binding : ActivityMain2Binding
     private lateinit var fragmentTransaction: FragmentTransaction
+    private lateinit var topicViewModel: TopicViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 //        binding.bottomNavigationView.background = null
 
+//        loadUserTopic()
+
         fragmentTransaction = supportFragmentManager.beginTransaction()
 
-
-        var fragmentHome = FragmentHome()
-
         // Show homepage fragment
-        fragmentTransaction.add(com.example.afinal.R.id.frameLayout, FragmentHome())
-        fragmentTransaction.addToBackStack(fragmentHome.javaClass.name)
-        Log.d("TAG", "fragmentHome : " + fragmentHome.javaClass.name)
-        fragmentTransaction.commit()
+//        fragmentTransaction.add(com.example.afinal.R.id.frameLayout, FragmentHome())
+//        fragmentTransaction.addToBackStack(fragmentHome.javaClass.name)
+//        Log.d("TAG", "fragmentHome : " + fragmentHome.javaClass.name)
+//        fragmentTransaction.commit()
+        switchToFragment(FragmentHome())
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -65,25 +72,20 @@ class MainActivity2 : AppCompatActivity() {
 
     }
 
+
+
     private fun switchToFragment(fragment: Fragment) {
-//        if (supportFragmentManager != null) {
-//            supportFragmentManager.popBackStack()
+//
+//            fragmentTransaction = supportFragmentManager.beginTransaction()
+//            fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, fragment)
+//            fragmentTransaction.addToBackStack(fragment.javaClass.name)
+//            Log.d("TAG", "switchtHome : " + fragment.javaClass.name)
+//            fragmentTransaction.commit()
 
-        // Quay lại Fragment trước đó
-            val fragmentManager = supportFragmentManager
-
-            fragmentTransaction = supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(com.example.afinal.R.id.frameLayout, fragment)
-            fragmentTransaction.addToBackStack(fragment.javaClass.name)
-            Log.d("TAG", "switchtHome : " + fragment.javaClass.name)
-            fragmentTransaction.commit()
-
-//            if (fragmentManager.backStackEntryCount > 0) {
-//                fragmentManager.popBackStack()
-//            } else {
-//                super.onBackPressed() // Nếu không có Fragment trong stack, thì thực hiện hành động mặc định
-//            }
-//        }
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(fragment.javaClass.name)
+            .replace(com.example.afinal.R.id.frameLayout, fragment)
+            .commit()
     }
 
 
@@ -124,4 +126,14 @@ class MainActivity2 : AppCompatActivity() {
 //        fragmentTransaction.addToBackStack(fragment.javaClass.name)
 //        fragmentTransaction.commit()
 //    }
+
+
+
+    private fun loadUserTopic() {
+        // Processing smarter later
+        TopicDTO.topicList.clear()
+        topicViewModel = ViewModelProvider(this)[TopicViewModel::class.java]
+        topicViewModel.getListTopicLiveData().observe(this) { topics ->
+        }
+    }
 }

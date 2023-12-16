@@ -92,12 +92,14 @@ class TopicDAL : MyDB() {
                 if (querySnapshot.size() > 0) {
                     for (rankingItemFB in querySnapshot) {
                         val rankingItem = rankingItemFB.toObject(ItemRanking::class.java)
-                        val isMareked = rankingItemFB.getBoolean("isMarked")
+                        val isMarked = rankingItemFB.getBoolean("isMarked")
                         val rootItem = itemList.find { it.itemPK == rankingItem.itemPK }
                         rankingItem.engLanguage = rootItem?.engLanguage
                         rankingItem.vnLanguage = rootItem?.vnLanguage
-                        if (isMareked != null) {
-                            rankingItem.isMarked = isMareked
+
+                        Log.d("TAG", "State of ranking item  : "+ rankingItem.state)
+                        if (isMarked != null) {
+                            rankingItem.isMarked = isMarked
                         }
 
                         if (rootItem != null) {
@@ -131,11 +133,10 @@ class TopicDAL : MyDB() {
                         Log.d("TAG", "(GetTopicOfUser) TOPIC is public : " + topicObject.isPublic)
                         topics.add(topicObject)
                     }
-
-                    // Get ranking topic saved by user
+//                     Get ranking topic saved by user
                     GetRankingTopicUser(userId, topics) {
-                        topics.sortedByDescending { it.createdTime.time }
-                        callback(topics)
+                        var sortedTopics = ArrayList<Topic>(topics.sortedByDescending { it.createdTime.time })
+                        callback(sortedTopics)
                     }
                 } else {
                     callback(topics)
@@ -190,6 +191,7 @@ class TopicDAL : MyDB() {
                             callback()
                         }
                 }
+                callback()
             }
             .addOnFailureListener { _ ->
             }
@@ -212,6 +214,7 @@ class TopicDAL : MyDB() {
                 if (querySnapshot.size() > 0) {
                     for (topic in querySnapshot) {
                         val topicObject = topic.toObject(Topic::class.java)
+                        topicObject.isPublic = true
                         publicTopicList.add(topicObject)
                         Log.d("TAG", "(GetPublicTopic) Topic is public : " + topicObject.isPublic)
                     }
@@ -276,6 +279,32 @@ class TopicDAL : MyDB() {
         }
     }
 
+
+    fun UpdateTopic(topic : Topic, newItemList : ArrayList<Item>, callback: () -> Unit) {
+        // Save user information in cloud storage
+        Log.d("TAG", "(UpdateTopic - TopicDAL) Topic name edit : " + topic.topicName)
+        Log.d("TAG", "(UpdateTopic - TopicDAL) Topic PK edit : " + topic.topicPK)
+        Log.d("TAG", "(UpdateTopic - TopicDAL) Topic PK isPublic : " + topic.isPublic)
+        val updateTopic = mapOf (
+            "topicName" to topic.topicName,
+            "createdTime" to Calendar.getInstance().time,
+        )
+        db.collection("topic").document(topic.topicPK).update(updateTopic)
+        // Add item to topic
+
+        Log.d("TAG", "(UpdateTopic - TopicDAL) The number of item in edit topic : " + newItemList.size)
+        for (item in newItemList) {
+            if (item.itemPK == "") {
+                item.topicPK = topic.topicPK
+                ItemDAL().AddItem(item)
+            } else {
+                ItemDAL().UpdateItem(item)
+            }
+        }
+        TopicDTO.numItems = TopicDTO.itemList.size.toString()
+        callback()
+    }
+
     fun UpdateTopicScore(topic : Topic, newScore : Int) {
         Log.d("TAG", "Starting update score ... ")
         if (topic.highestScore < newScore) {
@@ -284,10 +313,8 @@ class TopicDAL : MyDB() {
                 "highestScore" to newScore,
             )
             if (topic is TopicRanking) {
-                Log.d("TAG", "update ranking score = " + newScore)
                 db.collection("rankingTopic").document(topic.rankingTopicPK).update(updateTopic)
             } else {
-                Log.d("TAG", "update score = " + newScore)
                 db.collection("topic").document(topic.topicPK).update(updateTopic)
             }
         }
@@ -330,44 +357,66 @@ class TopicDAL : MyDB() {
     }
 
     fun DeleteTopic(topic: Topic) {
-        Log.d("TAG", "Starting delete topic ...")
+        // Delete your topic
+        if (topic.userPK == UserDTO.currentUser?.userPK ?: "") {
+            Log.d("TAG", "Starting delete topic ...")
 
-        val documentTopicRef = MyDB().db.collection("topic").document(topic.topicPK)
+            val documentTopicRef = MyDB().db.collection("topic").document(topic.topicPK)
 
-        val documentTFRef = MyDB().db.collection("topic_folder")
-        val queryTF = documentTFRef.whereEqualTo("topicPK", topic.topicPK)
+            val documentTFRef = MyDB().db.collection("topic_folder")
+            val queryTF = documentTFRef.whereEqualTo("topicPK", topic.topicPK)
 
-        // Delete topic_folder containing the topic
-        queryTF.get()
-            .addOnSuccessListener { querySnapshot ->
-                if (querySnapshot.size() > 0) {
-                    for (tf in querySnapshot) {
-                        val tfObject = tf.toObject(TopicFolder::class.java)
-                        TopicFolderDAL().DeleteTF(tfObject)
+            // Delete topic_folder containing the topic
+            queryTF.get()
+                .addOnSuccessListener { querySnapshot ->
+                    if (querySnapshot.size() > 0) {
+                        for (tf in querySnapshot) {
+                            val tfObject = tf.toObject(TopicFolder::class.java)
+                            TopicFolderDAL().DeleteTF(tfObject)
+                        }
                     }
                 }
-            }
-            .addOnFailureListener { _ ->
+                .addOnFailureListener { _ ->
+                }
+
+            for (item in TopicDTO.itemList) {
+                ItemDAL().DeleteFC(item)
             }
 
+            // Delete topic
+            documentTopicRef.delete()
+                .addOnSuccessListener {
+                    Log.w("TAG", "Delete topic successfully")
+                }
+                .addOnFailureListener { _ ->
+                    Log.w("TAG", "Fail to delete topic")
+                }
+
+            Log.d("TAG", "Ending delete topic")
+        } else {
+            // If you're not owner of topic -> Remove topic_ranking
+            topic as TopicRanking
+            DeleteRankingTopic(topic)
+        }
+    }
+
+
+    fun DeleteRankingTopic(topic : TopicRanking) {
+        Log.d("TAG", "Starting delete ranking topic ...")
+        val documentTopicRef = MyDB().db.collection("rankingTopic").document(topic.rankingTopicPK)
         for (item in TopicDTO.itemList) {
-            ItemDAL().DeleteFC(item)
+            ItemDAL().DeleteRankingItem(item)
         }
 
         // Delete topic
         documentTopicRef.delete()
             .addOnSuccessListener {
-                Log.w("TAG", "Delete topic successfully")
+                Log.w("TAG", "Delete ranking topic successfully")
             }
             .addOnFailureListener { _ ->
-                Log.w("TAG", "Fail to delete topic")
+                Log.w("TAG", "Fail to delete ranking topic")
             }
-
-        // Refresh current topic value
-        TopicDTO.itemList.clear()
-        TopicDTO.currentTopic = null
-
-        Log.d("TAG", "Ending delete topic")
+        Log.d("TAG", "Ending delete ranking topic")
     }
 
     fun GetRankingTable(topicId : String, callback: (ArrayList<RankingUser>) -> Unit) {
@@ -387,8 +436,6 @@ class TopicDAL : MyDB() {
                         rObj.userPK = topicObject.userPK
                         rObj.highestScore = topicObject.highestScore
                         rankingObj.add(rObj)
-
-
 
 //                        UserDAL().GetUserObject(topicObject.userPK) {
 //                            Log.d("TAG", "(GetRankingTopic) User : " + it.username)

@@ -1,5 +1,6 @@
 package com.example.afinal.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.afinal.DAL.MyDB
@@ -17,8 +18,10 @@ class TopicViewModel : ViewModel() {
     }
 
     private fun initData() {
+        Log.d("ModelView", "Create new model view")
         val userId = MyDB().dbAuth.currentUser?.uid.toString()
         TopicDAL().GetTopicOfUser(userId) {
+            TopicDTO.topicList.clear()
             TopicDTO.topicList.addAll(it)
             listTopicLiveData.value = TopicDTO.topicList
         }

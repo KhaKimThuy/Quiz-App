@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Activity.TypeVocabStudyActivity
+import com.example.afinal.DAL.ItemDAL
 import com.example.afinal.Domain.Item
 import com.example.afinal.R
 
@@ -20,7 +21,6 @@ class TypeWordAdapter(
 
     private var activity = activity
     private var currentItemPosition = 0
-    private val choiceIndices : MutableList<Int> = mutableListOf()
     var rightAnswer : Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TypeWordViewHolder {
@@ -51,19 +51,20 @@ class TypeWordAdapter(
     }
 
     private fun checkAnswer(answerIdx : Int, userAnswer : String, currentIdx : Int) {
-
         Log.d("TAG", "Type position: $currentItemPosition")
-
 
         if (currentItemPosition < itemCount) {
             currentItemPosition += 1
         }
 
-
         val answer = cardList[answerIdx].vnLanguage?.toLowerCase()
+
         if (answer.equals(userAnswer)) {
+            ItemDAL().UpdateScoreItem(cardList[answerIdx])
+            rightAnswer += 1
             activity.showRightToast(currentIdx)
         } else {
+            ItemDAL().UpdateFirstLearningItem(cardList[answerIdx])
             activity.shoWrongDialog(cardList[answerIdx].engLanguage.toString(),
                 cardList[answerIdx].vnLanguage.toString(),
                 userAnswer, currentIdx)

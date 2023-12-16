@@ -1,6 +1,7 @@
 package com.example.afinal.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,43 +36,19 @@ class FragmentLibrary : Fragment() {
                 1 -> {
                     tab.text = "Thư mục"
                 }
-
-                2 -> {
-                    tab.text = "Lớp học"
-                }
+//
+//                2 -> {
+//                    tab.text = "Lớp học"
+//                }
             }
         }.attach()
 
-
-//        val mPagerAdapter = VPAdapter2(childFragmentManager);
-//        mPager.setAdapter(mPagerAdapter);
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.viewPager.adapter = vpAdapter
-    }
-
-//    override fun onPause() {
-//        super.onPause()
+//    override fun onResume() {
+//        super.onResume()
+//        Log.d("fragmentLibrary", "onResume")
 //        binding.viewPager.adapter = vpAdapter
 //    }
-
-//        vpAdapter = VPAdapter(a)
-//        vpAdapter.addFragment(FragmentStudyModule(), "Học phần")
-//        vpAdapter.addFragment(FragmentFolder(), "Thư mục")
-//        vpAdapter.addFragment(FragmentStudyModule(), "Lớp học")
-//        viewPager.adapter = vpAdapter
-//
-//        db = MyDB()
-////        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-//        binding.tabLayout.setupWithViewPager(viewPager)
-//
-//        //loadTopic()
-//        // Inflate the layout for this fragment
-//    }
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
 }

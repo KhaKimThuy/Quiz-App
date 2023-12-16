@@ -1,6 +1,7 @@
 package com.example.afinal.Activity
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
@@ -8,11 +9,17 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.TopicAdapter
 import com.example.afinal.DAL.FolderDAL
+import com.example.afinal.DAL.TopicFolderDAL
 import com.example.afinal.DTO.FolderDTO
+import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
+import com.example.afinal.Dialog.EditFolderDialog
 import com.example.afinal.Domain.Topic
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityDetailFolderBinding
@@ -43,33 +50,62 @@ class DetailFolderActivity : AppCompatActivity() {
             startActivityForResult(intent, ADD_TOPIC_TO_FOLDER)
         })
 
-
-//        binding.imgDel.setOnClickListener(View.OnClickListener {
-//            if (adapter.selectedTopics.size > 0) {
-//                var count = Integer.parseInt(binding.textViewNumTopic.text.toString()) - adapter.selectedTopics.size
-//                for (i in adapter.selectedTopics) {
-//                    db.DeleteTopicFromFolder(i, curFolder)
-//                    adapter.selectedTopics.remove(i)
-//                    adapter.notifyDataSetChanged()
+        binding.imgDel.setOnClickListener(View.OnClickListener {
+            Log.d("DeleteTopicFolder", "Selected topic size : " + selectedTopic.size)
+            if (selectedTopic.size > 0) {
+                var count = Integer.parseInt(binding.textViewNumTopic.text.toString()) - selectedTopic.size
+                FolderDTO.currentFolder?.let { it1 ->
+                    TopicFolderDAL().DeleteTFs(selectedTopic,
+                        it1
+                    ) {
+                        FolderDTO.topicList.removeAll(selectedTopic)
+                        adapter.notifyDataSetChanged()
+                        selectedTopic.clear()
+                    }
+                }
+//                for (i in selectedTopic) {
+//                    FolderDTO.currentFolder?.let { it1 ->
+//                        TopicFolderDAL().DeleteTF()(i,
+//                            it1
+//                        )
+//                    }
+//
 //                }
-//                binding.textViewNumTopic.text = "$count"
-//                binding.imgDel.visibility = View.INVISIBLE
-//            }
-//        })
+                binding.textViewNumTopic.text = "$count"
+                binding.imgDel.visibility = View.INVISIBLE
+            }
+        })
     }
 
     private fun init() {
+        binding.emptyFolder.visibility = View.GONE
         binding.recyclerViewTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         loadFolder()
     }
 
     fun loadFolder() {
         if (FolderDTO.currentFolder != null) {
+            FolderDTO.topicList.clear()
             FolderDAL().GetTopicOfFolder(FolderDTO.currentFolder!!) {
                 binding.textViewNumTopic.text = FolderDTO.topicList.size.toString()
+                binding.emptyFolder.visibility = View.GONE
                 adapter = TopicAdapter(FolderDTO.topicList, object : TopicAdapter.IClickTopicListener {
+
+                    @SuppressLint("ResourceAsColor")
                     override fun onClickTopicListener(topicView: TopicAdapter.TopicViewHolder, position: Int) {
-                        TODO("Not yet implemented")
+                        if (selectedTopic.size == 0) {
+                            TopicDTO.currentTopic = FolderDTO.topicList[position]
+                            TopicDTO.numItems = topicView.numItem.text.toString()
+                            val intent = Intent(applicationContext, DetailTopicActivity::class.java)
+                            if (FolderDTO.topicList[position].userPK == UserDTO.currentUser?.userPK) {
+                                intent.putExtra("isMine", true)
+                            } else {
+                                intent.putExtra("isMine", false)
+                            }
+                            intent.putExtra("isSaved", true)
+                            intent.putExtra("from", "TopicFromFolder")
+                            startActivity(intent)
+                        }
                     }
 
                     @SuppressLint("ResourceAsColor")
@@ -78,23 +114,31 @@ class DetailFolderActivity : AppCompatActivity() {
                         val backgroundColor = (backgroundDrawable as ColorDrawable).color
                         if (backgroundColor ==  R.color.delete_topic_marker_color) {
                             topicView.mainView.setBackgroundColor(Color.WHITE)
-                            if (selectedTopic != null) {
-                                selectedTopic.remove(FolderDTO.topicList[position])
-                            }
+                            selectedTopic.remove(FolderDTO.topicList[position])
                         } else {
                             topicView.mainView.setBackgroundColor(R.color.delete_topic_marker_color)
-                            if (selectedTopic != null) {
-                                selectedTopic.add(FolderDTO.topicList[position])
-                            }
+                            selectedTopic.add(FolderDTO.topicList[position])
+                        }
+                        if (selectedTopic.size > 0) {
+                            binding.imgDel.visibility = View.VISIBLE
+                        } else {
+                            binding.imgDel.visibility = View.GONE
                         }
                     }
 
                 })
+
+
                 binding.recyclerViewTopic.adapter = adapter
                 binding.progressBar2.visibility = View.GONE
+
+                if (FolderDTO.topicList.size == 0) {
+                    binding.emptyFolder.visibility = View.VISIBLE
+                }
             }
         }
 
+        binding.progressBar2.visibility = View.GONE
         // The number of topics in current folder
         binding.tvFolderCurName.text = FolderDTO.currentFolder?.folderName
     }
@@ -109,70 +153,56 @@ class DetailFolderActivity : AppCompatActivity() {
 
 
     private fun showOptionsMenu(anchorView: View) {
-//        val popupMenu = PopupMenu(this, anchorView)
-//        val inflater = popupMenu.menuInflater
-//        inflater.inflate(com.example.afinal.R.menu.detail_folder_menu, popupMenu.menu)
-//
-//        popupMenu.setOnMenuItemClickListener { item ->
-//            when (item.itemId) {
-//                com.example.afinal.R.id.edit -> {
-//                    // Handle edit action
-//                    val dialog = Dialog(this)
-//                    val folderDialog = FolderDialog("Sửa thư mục", curFolder.folderName, curFolder.folderDesc, this)
-//                    folderDialog.show(supportFragmentManager, "Folder dialog")
-//                    dialog.dismiss()
-////                    onPositiveButtonClick()
-//                    true
-//                }
-//                com.example.afinal.R.id.delete -> {
-////                     Handle delete action
-//                    deleteDialog()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//        popupMenu.show()
+        val popupMenu = PopupMenu(this, anchorView)
+        val inflater = popupMenu.menuInflater
+        inflater.inflate(com.example.afinal.R.menu.detail_folder_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.edit -> {
+                    // Handle edit action
+                    val dialog = Dialog(this)
+                    FolderDTO.currentFolder?.let { EditFolderDialog("Sửa thư mục", it, this) }
+                        ?.show(supportFragmentManager, "Folder dialog")
+                    dialog.dismiss()
+                    true
+                }
+                R.id.delete -> {
+                    deleteDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
     }
 
     @Throws(Resources.NotFoundException::class)
     private fun deleteDialog() {
-//        AlertDialog.Builder(this)
-//            .setMessage("Bạn chắc chắn muốn xóa thư mục này vĩnh viễn?")
-//            .setPositiveButton("Xóa") { dialog, which ->
-//                db.DeleteFolder(curFolder)
-//            }
-//            .setNegativeButton("Hủy", null)
-//            .show()
+        AlertDialog.Builder(this)
+            .setMessage("Bạn chắc chắn muốn xóa thư mục này vĩnh viễn?")
+            .setPositiveButton("Xóa") { dialog, which ->
+                FolderDTO.currentFolder?.let { FolderDAL().DeleteFolder(it) }
+            }
+            .setNegativeButton("Hủy", null)
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == ADD_TOPIC_TO_FOLDER) {
             if (data != null) {
-                val moreAddedTopics = data.getParcelableArrayExtra("moreAddedTopics") as ArrayList<Topic>
-                FolderDTO.topicList.addAll(moreAddedTopics)
-                adapter.notifyDataSetChanged()
+                if (FolderDTO.topicList.size > 0) {
+                    binding.textViewNumTopic.text = FolderDTO.topicList.size.toString()
+                    binding.emptyFolder.visibility = View.GONE
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("TAG", "OnStart in detail folder")
+    fun updateUI() {
+        binding.tvFolderCurName.text = FolderDTO.currentFolder?.folderName ?: "No folder"
     }
-
-    override fun onResume() {
-        super.onResume()
-//        Log.d("TAG", "OnResume in detail folder " + curFolder.folderName)
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-//    override fun onPositiveButtonClick() {
-//        Log.d("TAG", "NONOONONONONON")
-//    }
 
 }

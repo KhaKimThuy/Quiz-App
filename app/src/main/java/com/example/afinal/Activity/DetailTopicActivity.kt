@@ -1,6 +1,7 @@
 package com.example.afinal.Activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.example.afinal.Adapter.FlashCardAdapter
 import com.example.afinal.DAL.ItemDAL
 import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.Item
 import com.example.afinal.Domain.ItemRanking
 import com.example.afinal.R
@@ -28,6 +30,7 @@ class DetailTopicActivity : AppCompatActivity() {
     private var isMine : Boolean = false
     private var isSaved : Boolean = true
     private lateinit var topicFrom : String
+    private val EDIT_TOPIC = 111
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,35 +77,32 @@ class DetailTopicActivity : AppCompatActivity() {
         }
 
         binding.imgBack.setOnClickListener(View.OnClickListener {
-//            onBackPressed()
             finish()
         })
 
-        if (isMine) {
+        if (topicFrom == "FragmentHome") {
+            // Kiểm tra user đã lưu topic đó hay chưa - later
+            binding.relativeLayout.visibility = View.GONE
+            binding.imgMore.visibility = View.GONE
+            binding.saveTopic.visibility = View.VISIBLE
+            binding.saveTopic.setOnClickListener(View.OnClickListener {
+                if (TopicDTO.currentTopic != null) {
+                    TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.itemList) {
+                        if (it) {
+                            Toast.makeText(this, "Okkkk", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                binding.saveTopic.visibility = View.GONE
+            })
+        } else {
             binding.saveTopic.visibility = View.GONE
             binding.imgMore.visibility = View.VISIBLE
             binding.imgMore.setOnClickListener(View.OnClickListener {
                 showOptionsMenu(it)
             })
-
-        } else {
-            binding.imgMore.visibility = View.GONE
-            if (topicFrom == "FragmentHome") {
-                binding.saveTopic.visibility = View.VISIBLE
-                binding.saveTopic.setOnClickListener(View.OnClickListener {
-                    if (TopicDTO.currentTopic != null) {
-                        TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.itemList) {
-                            if (it) {
-                                Toast.makeText(this, "Okkkk", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(this, "Failure", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                })
-            } else {
-                binding.saveTopic.visibility = View.GONE
-            }
         }
     }
 
@@ -123,26 +123,27 @@ class DetailTopicActivity : AppCompatActivity() {
     private fun showOptionsMenu(anchorView: View) {
         val popupMenu = PopupMenu(this, anchorView)
         val inflater = popupMenu.menuInflater
-        inflater.inflate(com.example.afinal.R.menu.detail_topic_menu, popupMenu.menu)
+        inflater.inflate(R.menu.detail_topic_menu, popupMenu.menu)
+
+        Log.d("TAG", "User PK = " + UserDTO.currentUser?.userPK)
+        Log.d("TAG", "Topic user PK = " + TopicDTO.currentTopic?.userPK)
+
+        if (TopicDTO.currentTopic?.isPublic == true &&
+            TopicDTO.currentTopic?.userPK != UserDTO.currentUser?.userPK
+        ) {
+            val menuItem = popupMenu.menu.findItem(R.id.edit)
+            menuItem.isVisible = false
+        }
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                com.example.afinal.R.id.edit -> {
-//                    // Handle edit action
-//                    val intent = Intent(this, EditTopicActivity::class.java)
-//                    intent.putExtra("topic", topic)
-//                    val bundle = Bundle()
-//                    val itemList: ArrayList<FlashCardDomain> = ArrayList<FlashCardDomain>()
-//                    for (i in 0 until adapter.itemCount) {
-//                        val item = adapter.getItem(i)
-//                        itemList.add(item)
-//                    }
-//                    bundle.putParcelableArrayList("itemList", itemList)
-//                    intent.putExtras(bundle)
-//                    startActivity(intent)
+                R.id.edit -> {
+                    // Handle edit action
+                    val intent = Intent(this, EditTopicActivity::class.java)
+                    startActivityForResult(intent, EDIT_TOPIC)
                     true
                 }
-                com.example.afinal.R.id.delete -> {
+                R.id.delete -> {
                     // Handle delete action
                     deleteDialog()
                     true
@@ -155,6 +156,9 @@ class DetailTopicActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun loadInfoTopic() {
+        // Remove old items
+        TopicDTO.itemList.clear()
+
         // Load name and the number of items in current topic
         binding.tvTopicName.text = TopicDTO.currentTopic?.topicName ?: "Null"
         binding.textViewNumItems.text = "${TopicDTO.numItems} Thuật ngữ"
@@ -208,12 +212,22 @@ class DetailTopicActivity : AppCompatActivity() {
             .setPositiveButton("Xóa") { _, _ ->
                 TopicDTO.currentTopic?.let { TopicDAL().DeleteTopic(it) }
 //                 Return to library fragment
-//                onDestroy()
-                val intent = Intent(this, MainActivity2::class.java)
-                startActivity(intent)
+                val resultIntent = Intent()
+                resultIntent.putExtra("operation", "delete")
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+//                val intent = Intent(this, MainActivity2::class.java)
+//                startActivity(intent)
             }
             .setNegativeButton("Hủy", null)
             .show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == EDIT_TOPIC) {
+            loadInfoTopic()
+        }
     }
 
 }

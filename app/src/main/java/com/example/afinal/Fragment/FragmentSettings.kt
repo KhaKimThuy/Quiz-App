@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import com.example.afinal.Activity.EditProfileActivity
 import com.example.afinal.Activity.LoginActivity
 import com.example.afinal.Activity.ProfileActivity
 import com.example.afinal.DAL.MyDB
@@ -26,7 +27,7 @@ class FragmentSettings : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.cardViewProfile.setOnClickListener(View.OnClickListener{
-            val intent = Intent(activity, ProfileActivity::class.java)
+            val intent = Intent(activity, EditProfileActivity::class.java)
             startActivity(intent)
         })
         binding.cardViewFlashCard.setOnClickListener(View.OnClickListener{

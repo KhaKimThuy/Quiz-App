@@ -116,6 +116,8 @@ class FlashCardAdapter (private val itemList: ArrayList<Item>,
             } else {
                 speaker.visibility = View.GONE
                 marker.visibility = View.GONE
+                state.visibility = View.GONE
+                numRights.visibility = View.GONE
             }
         }
     }

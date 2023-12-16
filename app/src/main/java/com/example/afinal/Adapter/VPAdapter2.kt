@@ -21,9 +21,9 @@ class VPAdapter2(fragmentManager: FragmentManager,lifecycle: Lifecycle): Fragmen
             1->{
                 FragmentFolder()
             }
-            2->{
-                FragmentClass()
-            }
+//            2->{
+//                FragmentClass()
+//            }
             else->{
                 Fragment()
             }

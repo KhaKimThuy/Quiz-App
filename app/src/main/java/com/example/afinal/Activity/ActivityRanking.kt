@@ -2,6 +2,7 @@ package com.example.afinal.Activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.RankingAdapter
@@ -14,18 +15,14 @@ import com.squareup.picasso.Picasso
 class ActivityRanking : AppCompatActivity() {
     private lateinit var binding: ActivityRankingBinding
     private lateinit var userRanking: ArrayList<TopicPublic>
-    private lateinit var topicDAL : TopicDAL
     private lateinit var adapter: RankingAdapter
     private lateinit var topicId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRankingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        topicDAL = TopicDAL()
-        userRanking = ArrayList<TopicPublic>()
-//        topicDAL.GetRankingOfTopic(this)
-        // fakeData()
-        topicId = intent.getStringExtra("topicId").toString()
+
+        init()
         loadUserRanking()
 
         binding.imageViewBack.setOnClickListener(View.OnClickListener {
@@ -33,9 +30,18 @@ class ActivityRanking : AppCompatActivity() {
         })
     }
 
+    private fun init() {
+        userRanking = ArrayList<TopicPublic>()
+//        topicDAL.GetRankingOfTopic(this)
+        // fakeData()
+        topicId = intent.getStringExtra("topicId").toString()
+        Log.d("TAG", "Topid id in Ranking : " + topicId)
+    }
+
     fun loadUserRanking() {
         var topNum = 0
         TopicDAL().GetRankingTable(topicId) {
+            Log.d("TAG", "Rannking =====>  " + it.size)
             if (it.size > 0) {
                 if (it.size == 1) {
                     binding.username1.text = it[0].username
@@ -89,9 +95,10 @@ class ActivityRanking : AppCompatActivity() {
                     topNum = 3
                 }
 
-                for (topIdx in 0..<topNum) {
-                    it.removeAt(topIdx)
-                }
+//                for (topIdx in 0..<topNum) {
+//                    Log.d("TAG", "topIdx remove : " + topIdx)
+//                    it.removeAt(topIdx)
+//                }
             }
             binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             adapter = RankingAdapter(it, topNum)

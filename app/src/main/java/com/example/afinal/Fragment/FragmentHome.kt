@@ -97,5 +97,4 @@ class FragmentHome : Fragment() {
             binding.recyclerViewPublicTopic.adapter = adapter
         }
     }
-
 }

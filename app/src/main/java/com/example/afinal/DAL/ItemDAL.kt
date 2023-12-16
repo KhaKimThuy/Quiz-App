@@ -44,6 +44,15 @@ class ItemDAL : MyDB() {
             .addOnFailureListener { e -> Log.w("TAG", "Error writing ranking item document", e) }
     }
 
+    fun UpdateItem(item : Item) {
+        val updateItem = mapOf(
+            "engLanguage" to item.engLanguage,
+            "vnLanguage" to item.vnLanguage,
+        )
+        Log.d("TAG", "Udate item")
+        db.collection("item").document(item.itemPK).update(updateItem)
+    }
+
     fun UpdateMarkedItem(item : Item) {
         val updateItem = mapOf(
             "isMarked" to item.isMarked,
@@ -96,8 +105,6 @@ class ItemDAL : MyDB() {
         }
     }
 
-
-
     fun DeleteFC(item: Item) {
         val documentRef = MyDB().db.collection("item").document(item.itemPK)
         documentRef.delete()
@@ -108,6 +115,20 @@ class ItemDAL : MyDB() {
             .addOnFailureListener { _ ->
                 // Handle any errors
                 Log.w("TAG", "Fail to delete item")
+            }
+    }
+
+    fun DeleteRankingItem(item: Item) {
+        item as ItemRanking
+        val documentRef = MyDB().db.collection("rankingItem").document(item.itemRankingPK)
+        documentRef.delete()
+            .addOnSuccessListener {
+                // File deleted successfully
+                Log.w("TAG", "Delete ranking item successfully")
+            }
+            .addOnFailureListener { _ ->
+                // Handle any errors
+                Log.w("TAG", "Fail to delete ranking item")
             }
     }
 }
