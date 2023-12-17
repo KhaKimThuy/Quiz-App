@@ -89,7 +89,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="@string/enter_password"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:paddingHorizontal="15dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +107,7 @@
             android:drawablePadding="10dp"
             android:ems="10"
             android:hint="@string/enter_password"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:paddingHorizontal="15dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -147,13 +147,33 @@
             app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
         <TextView
-            android:id="@+id/textView32"
+            android:id="@+id/tvConfirmP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:textColor="#FF0000"
             app:layout_constraintStart_toStartOf="@+id/edtPasswordConfirm"
             app:layout_constraintTop_toBottomOf="@+id/edtPasswordConfirm" />
+
+        <ImageView
+            android:id="@+id/imgShow1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/edtPassword"
+            app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+            app:layout_constraintTop_toTopOf="@+id/edtPassword"
+            app:srcCompat="@drawable/view" />
+
+        <ImageView
+            android:id="@+id/imgShow2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/edtPasswordConfirm"
+            app:layout_constraintEnd_toEndOf="@+id/edtPasswordConfirm"
+            app:layout_constraintTop_toTopOf="@+id/edtPasswordConfirm"
+            app:srcCompat="@drawable/view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
