@@ -44,6 +44,7 @@
 
             </LinearLayout>
 
+<<<<<<< HEAD
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
                 android:layout_width="0dp"
@@ -56,6 +57,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+=======
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_input_login"
+            android:drawableStart="@drawable/baseline_lock_24"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="@string/enter_password"
+            android:inputType="text"
+            android:paddingHorizontal="15dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtUsername" />
+>>>>>>> 1fb543880d7be2a23c4dcc3a1376427550402204
 
                 <TextView
                     android:id="@+id/textView27"
@@ -137,6 +156,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
+<<<<<<< HEAD
                 <TextView
                     android:id="@+id/tvInvalidEmail"
                     android:layout_width="wrap_content"
@@ -156,6 +176,40 @@
                     app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+=======
+        <TextView
+            android:id="@+id/tvPasss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="#FF0000"
+            app:layout_constraintStart_toStartOf="@+id/edtPassword"
+            app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+
+        <ImageView
+            android:id="@+id/imgShowP"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/edtPassword"
+            app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+            app:layout_constraintTop_toTopOf="@+id/edtPassword"
+            app:srcCompat="@drawable/view" />
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="#FF0000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFogotPw" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+>>>>>>> 1fb543880d7be2a23c4dcc3a1376427550402204
 
             <TextView
                 android:id="@+id/textView28"

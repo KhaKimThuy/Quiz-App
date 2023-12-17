@@ -2,85 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/t"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg">
+    android:background="#f6f7fb">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/custom_background_login"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnUpgrade"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/custom_button_upgrade"
-        android:fontFamily="@font/amaranth"
-        android:text="@string/upgrade"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#323b55"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/ava"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="50dp"
-        android:elevation="2dp"
-        android:src="@drawable/user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.185"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/UserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:enabled="false"
-<<<<<<< HEAD
-        android:fontFamily="@font/amaranth"
-        android:text="edward_larry"
-=======
-        android:text="username"
->>>>>>> 1fb543880d7be2a23c4dcc3a1376427550402204
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/ava"
-        app:layout_constraintStart_toEndOf="@+id/ava"
-        app:layout_constraintTop_toTopOf="@+id/ava" />
-
-    <ImageView
-        android:id="@+id/imgBack"
-        android:layout_width="25dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_arrow_back" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout6"
@@ -88,16 +24,65 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp">
 
-<<<<<<< HEAD
-=======
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/custom_background_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnUpgrade"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/custom_button_upgrade"
+                    android:text="@string/upgrade"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#323b55"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ava"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:elevation="2dp"
+                    android:src="@drawable/avt"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.25"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/UserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="56dp"
+                    android:enabled="false"
+                    android:text="username"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/ava"
+                    app:layout_constraintTop_toTopOf="@+id/ava" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout7"
                 android:layout_width="380dp"
                 android:layout_height="150dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_shape_white_radius"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
                 <TextView
                     android:id="@+id/textView9"
@@ -166,43 +151,68 @@
                     android:textStyle="italic"
                     app:layout_constraintStart_toStartOf="@+id/tvEmailSt"
                     app:layout_constraintTop_toTopOf="@+id/textView29" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
->>>>>>> 1fb543880d7be2a23c4dcc3a1376427550402204
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPolicies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/custom_shape_white_radius"
                 android:drawableStart="@drawable/baseline_policy_24"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/amaranth"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="24dp"
+                android:paddingHorizontal="70dp"
                 android:text="Điều khoản &amp; chính sách"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.516"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnNightLight" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogout"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/custom_button_blue"
+                android:text="Đăng xuất"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnPolicies" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnOustanding"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/custom_shape_white_radius"
+                android:drawableStart="@drawable/baseline_star_rate_24"
+                android:drawablePadding="10dp"
+                android:paddingHorizontal="70dp"
+                android:text="Từ vựng nổi bật"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnChangePassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_shape_white_radius"
                 android:drawableStart="@drawable/baseline_password_24"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/amaranth"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="24dp"
+                android:paddingHorizontal="70dp"
                 android:text="Đổi mật khẩu"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -213,16 +223,13 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnNightLight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_shape_white_radius"
                 android:drawableStart="@drawable/baseline_nightlight_24"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/amaranth"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="24dp"
+                android:paddingHorizontal="70dp"
                 android:text="Chế độ tối"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -233,23 +240,30 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnEditProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/custom_shape_white_radius"
                 android:drawableStart="@drawable/baseline_edit_note_24"
                 android:drawablePadding="10dp"
-                android:fontFamily="@font/amaranth"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="24dp"
+                android:paddingHorizontal="70dp"
                 android:text="Chỉnh sửa thông tin"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/btnOustanding" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnLogout" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

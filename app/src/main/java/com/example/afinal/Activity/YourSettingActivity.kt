@@ -54,8 +54,20 @@ class YourSettingActivity : AppCompatActivity() {
     }
 
     private fun loadUserInfo() {
+<<<<<<< HEAD
         binding.UserName.text = UserDTO.currentUser?.username ?: "No user"
         if (UserDTO.currentUser?.avatarUrl != ""){
+=======
+        binding.UserName.text = UserDTO.currentUser?.username ?: "Username"
+        binding.tvName.text = UserDTO.currentUser?.username ?: "Chưa cập nhật"
+        binding.tvEmailSt.text = UserDTO.currentUser?.email ?: "Email"
+        val intent = intent
+        binding.tvPhone.text = intent.getStringExtra("phone")
+        if (UserDTO.currentUser?.avatarUrl == "") {
+            binding.ava.setImageResource(R.drawable.avt)
+        } else {
+//            Toast.makeText(this, UserDTO.currentUser?.avatarUrl, Toast.LENGTH_SHORT).show()
+>>>>>>> 1fb543880d7be2a23c4dcc3a1376427550402204
             binding.ava.setImageBitmap(UserDTO.userAvatar)
         }
     }

@@ -53,7 +53,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+<<<<<<< HEAD
                         android:src="@drawable/big_user"
+=======
+                        android:src="@drawable/avt"
+>>>>>>> 1fb543880d7be2a23c4dcc3a1376427550402204
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +72,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/amaranth"
-                        android:text="TextView"
+                        android:text="Username"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/ava"
@@ -81,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/amaranth"
-                        android:text="TextView"
+                        android:text="Email"
                         app:layout_constraintEnd_toEndOf="@+id/ava"
                         app:layout_constraintStart_toStartOf="@+id/ava"
                         app:layout_constraintTop_toBottomOf="@+id/tvUsername2" />
@@ -139,7 +143,7 @@
                         android:fontFamily="@font/amaranth"
                         android:inputType="text"
                         android:padding="16dp"
-                        android:text="Name"
+                        android:hint="Name"
                         android:textColor="#000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -156,24 +160,24 @@
                         android:fontFamily="@font/amaranth"
                         android:inputType="text"
                         android:padding="16dp"
-                        android:text="User email"
+                        android:hint="Email"
                         android:textColor="#000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
-                        android:id="@+id/edPass"
+                        android:id="@+id/edPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
-                        android:drawableStart="@drawable/password_icon"
+                        android:drawableStart="@drawable/baseline_phone_24"
                         android:drawablePadding="8dp"
                         android:ems="10"
                         android:fontFamily="@font/amaranth"
                         android:inputType="text"
                         android:padding="16dp"
-                        android:text="Name"
+                        android:hint="Phone number"
                         android:textColor="#000000"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
