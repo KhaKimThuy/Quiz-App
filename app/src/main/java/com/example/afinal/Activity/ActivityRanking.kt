@@ -23,7 +23,6 @@ class ActivityRanking : AppCompatActivity() {
         setContentView(binding.root)
 
         init()
-        loadUserRanking()
 
         binding.imageViewBack.setOnClickListener(View.OnClickListener {
             finish()
@@ -32,17 +31,31 @@ class ActivityRanking : AppCompatActivity() {
 
     private fun init() {
         userRanking = ArrayList<TopicPublic>()
-//        topicDAL.GetRankingOfTopic(this)
-        // fakeData()
         topicId = intent.getStringExtra("topicId").toString()
         Log.d("TAG", "Topid id in Ranking : " + topicId)
+        loadUserRanking()
+    }
+
+    override fun onResume() {
+        init()
+        Log.d("TAG", "OnResume")
+        super.onResume()
     }
 
     fun loadUserRanking() {
         var topNum = 0
         TopicDAL().GetRankingTable(topicId) {
             Log.d("TAG", "Rannking =====>  " + it.size)
-            if (it.size > 0) {
+
+            if (it.size > 3) {
+                binding.cardView.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+                topNum = 4
+            } else {
+                binding.cardView.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+
+
                 if (it.size == 1) {
                     binding.username1.text = it[0].username
                     binding.score1.text = it[0].highestScore.toString()
@@ -51,9 +64,7 @@ class ActivityRanking : AppCompatActivity() {
                         Picasso.get().load(url).into(binding.ava1)
                     }
                     topNum = 1
-                }
-
-                else if (it.size == 2) {
+                } else if (it.size == 2) {
                     binding.username1.text = it[0].username
                     binding.score1.text = it[0].highestScore.toString()
                     val url1 = it[0].avatarUrl
@@ -68,9 +79,7 @@ class ActivityRanking : AppCompatActivity() {
                         Picasso.get().load(url2).into(binding.ava2)
                     }
                     topNum = 2
-                }
-
-                else {
+                } else if (it.size == 3) {
                     binding.username1.text = it[0].username
                     binding.score1.text = it[0].highestScore.toString()
                     val url1 = it[0].avatarUrl
@@ -94,12 +103,13 @@ class ActivityRanking : AppCompatActivity() {
                     }
                     topNum = 3
                 }
-
-//                for (topIdx in 0..<topNum) {
-//                    Log.d("TAG", "topIdx remove : " + topIdx)
-//                    it.removeAt(topIdx)
-//                }
             }
+
+            for (topIdx in 0..<topNum) {
+                    Log.d("TAG", "topIdx remove : " + topIdx)
+                    it.removeAt(topIdx)
+            }
+
             binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             adapter = RankingAdapter(it, topNum)
             binding.recyclerView.adapter = adapter

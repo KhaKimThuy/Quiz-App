@@ -1,8 +1,13 @@
 package com.example.afinal.DAL
 
 import android.util.Log
+import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.Item
 import com.example.afinal.Domain.ItemRanking
+import com.example.afinal.Domain.RankingUser
+import com.example.afinal.Domain.Topic
+import com.google.firebase.firestore.DocumentReference
 
 class ItemDAL : MyDB() {
     fun AddItem(item : Item) {
@@ -109,7 +114,12 @@ class ItemDAL : MyDB() {
 
     fun DeleteFC(item: Item) {
         if (item.itemPK != "") {
-            val documentRef = MyDB().db.collection("item").document(item.itemPK)
+            var documentRef : DocumentReference
+            if (item is ItemRanking) {
+                documentRef = MyDB().db.collection("rankingItem").document(item.itemRankingPK)
+            } else {
+                documentRef = MyDB().db.collection("item").document(item.itemPK)
+            }
             documentRef.delete()
                 .addOnSuccessListener {
                     // File deleted successfully
@@ -135,4 +145,44 @@ class ItemDAL : MyDB() {
                 Log.w("TAG", "Fail to delete ranking item")
             }
     }
+
+    fun GetOutstandingItem(callback : (ArrayList<Item>) -> Unit) {
+        val documentRef = MyDB().db.collection("item")
+        val topicIds = TopicDTO.topicList.map { it.topicPK }
+
+        if (topicIds.size > 0) {
+            UserDTO.currentUser?.let {
+                TopicDAL().GetTopicOfUser(it.userPK) {
+                    TopicDTO.topicList.addAll(it)
+                    if (it.size>0) {
+                        val query = documentRef
+                            .whereIn("topicPK", topicIds)
+                            .whereEqualTo("isMarked", true)
+
+                        val itemList : ArrayList<Item> = ArrayList<Item>()
+
+                        // Get 10 latest public topic
+                        query.get()
+                            .addOnSuccessListener { querySnapshot ->
+                                if (querySnapshot.size() > 0) {
+                                    for (topic in querySnapshot) {
+                                        val topicObject = topic.toObject(Item::class.java)
+                                        topicObject.isMarked = true
+                                        itemList.add(topicObject)
+                                    }
+                                    callback(itemList)
+                                }
+                            }
+                            .addOnFailureListener { e ->
+                                Log.d("TAG", "Fail - The number of public topic " + e)
+                                callback(itemList)
+                            }
+                    }
+                    }
+                }
+            }
+
+
+    }
+
 }

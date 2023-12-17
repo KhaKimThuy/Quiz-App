@@ -11,13 +11,19 @@ import com.example.afinal.Domain.User
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityRegisterBinding
 
-
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val e = intent.getStringExtra("email")
+        val p = intent.getStringExtra("pass")
+
+        if (e != null && p != null) {
+            writeNewUser(e, p)
+        }
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -35,22 +41,22 @@ class RegisterActivity : AppCompatActivity() {
             val confirm = binding.edtPasswordConfirm.text.toString()
 
             if (email.isNullOrEmpty() || pass.isNullOrEmpty() && confirm.isNullOrEmpty()){
-                if (email.isEmpty())  binding.edtEmail.error = "Email is empty";
-                if (pass.isEmpty())  binding.edtPassword.error = "Password is empty";
-                if (confirm.isEmpty())  binding.edtPasswordConfirm.error = "Please, confirm password";
+                if (email.isEmpty())  binding.edtEmail.error = "Email không đươcj trống";
+                if (pass.isEmpty())  binding.edtPassword.error = "Mật khẩu không được trống";
+                if (confirm.isEmpty())  binding.edtPasswordConfirm.error = "Vui lòng xác nhận lại mật khẩu";
             }else{
                 if (!isValidEmail(email)){
-                    binding.edtEmail.error = "Email form is invalid";
+                    binding.edtEmail.error = "Email không hợp lệ";
                 }else{
                     if (pass == confirm){
                         if(pass.length < 8) {
-                            binding.edtPassword.error = "The password must be longer than 8 characters"
+                            binding.edtPassword.error = "Mật khẩu phải có ít nhất 8 kí tự"
                         }
                         else {
                             writeNewUser(email, pass)
                         }
                     }else{
-                        binding.edtPasswordConfirm.error = "Password is not matching";
+                        binding.edtPasswordConfirm.error = "Mật khẩu không khớp";
 //                    Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
                     }
                 }

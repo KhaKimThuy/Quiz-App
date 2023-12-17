@@ -7,7 +7,9 @@ import com.example.afinal.databinding.ActivityChangePasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import android.content.Intent
+import android.view.View
 import android.widget.Toast
+import com.example.afinal.DTO.UserDTO
 import com.google.firebase.auth.EmailAuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 
@@ -25,6 +27,10 @@ class ActivityChangePassword : AppCompatActivity() {
         binding.btnChangePw.setOnClickListener {
             changePassword()
         }
+
+        binding.imageViewBackf.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun changePassword() {
@@ -37,30 +43,30 @@ class ActivityChangePassword : AppCompatActivity() {
                 val credential = EmailAuthProvider.getCredential(user.email!!, oldPassword)
                 user?.reauthenticate(credential)?.addOnCompleteListener {
                     if(it.isSuccessful) {
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
                         user?.updatePassword(newPassword)?.addOnCompleteListener { task ->
                             if(task.isSuccessful) {
-                                Toast.makeText(this, "Password is changed successfully", Toast.LENGTH_SHORT).show()
+                                UserDTO.currentUser?.password = newPassword
+                                UserDTO.currentUser?.let { it1 -> UserDAL().UpdateUserInfo(it1) }
+                                Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show()
                                 auth.signOut()
-                                startActivity(Intent(this, ProfileActivity::class.java))
+                                startActivity(Intent(this, LoginActivity::class.java))
                                 finish()
                             }
 
                         }
                     }
                     else {
-                        binding.tvInvalid.setText("Current password is incorrect")
-                        Toast.makeText(this, "Current password is incorrect", Toast.LENGTH_SHORT).show()
+                        binding.tvInvalid.setText("Mật khẩu hiện tại không đúng")
+//                        Toast.makeText(this, "Current password is incorrect", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             else {
-                startActivity(Intent(this, ProfileActivity::class.java))
                 finish()
             }
         }
         else {
-            binding.tvInvalid.setText("Please enter complete information")
+            binding.tvInvalid.setText("Vui lòng điền đủ thông tin")
             Toast.makeText(this, "Enter information", Toast.LENGTH_SHORT).show()
         }
     }

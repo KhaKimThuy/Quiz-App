@@ -40,7 +40,7 @@ class SearchResultFragment : Fragment() {
         adapter = SearchTopicAdapter(dataList)
         binding.recyclerviewTopic.adapter = adapter;
         if (searchContent != null) {
-            // topicDAL.GetListPublicTopic(this, dataList, searchContent)
+//             TopicDAL.GetListPublicTopic(this, dataList, searchContent)
         }
         binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

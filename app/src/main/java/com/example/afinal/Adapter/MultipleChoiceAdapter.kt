@@ -47,22 +47,29 @@ class MultipleChoiceAdapter(
     private fun generateChoice (mainView : LinearLayout, answerIdx : Int, currentIdx : Int) {
 
         mainView.removeAllViews()
-        choiceIndices.clear()
+
+        if (choiceIndices.size > 0) {
+            choiceIndices.clear()
+        }
 
         choiceIndices.add(answerIdx)
         val random = Random()
 
         var limit = 0
 
-        limit = if (cardList.size < 4) { cardList.size } else { 4 }
+        limit = if (cardList.size < 4) { cardList.size - 1 } else { 3 }
+
 
         for (i in 0..< limit) {
             val randomIndex = random.nextInt(cardList.size)
-            if (randomIndex !in choiceIndices) {
+            if (!choiceIndices.contains(randomIndex) && randomIndex != answerIdx) {
                 choiceIndices.add(randomIndex)
             }
         }
+
         choiceIndices.shuffle()
+
+        Log.d("choice", "Choice = " + choiceIndices.size)
 
         for (i in choiceIndices) {
             val textView = TextView(activity.applicationContext)
@@ -99,7 +106,6 @@ class MultipleChoiceAdapter(
             })
         }
     }
-
 
     class MultipleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val mainView: LinearLayout = itemView.findViewById<LinearLayout>(R.id.mainView)

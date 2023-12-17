@@ -88,28 +88,11 @@ class EditItemTopicAdapter (
             del.setOnClickListener(View.OnClickListener {
                 ItemDAL().DeleteFC(itemList[adapterPosition])
                 itemList.removeAt(adapterPosition)
-                notifyDataSetChanged()
+                notifyItemRemoved(adapterPosition)
             })
         }
     }
 
-//    private fun showOptionsMenu(anchorView: View) {
-//        val popupMenu = PopupMenu(this, anchorView)
-//        val inflater = popupMenu.menuInflater
-//        inflater.inflate(R.menu.item_menu, popupMenu.menu)
-//
-//        popupMenu.setOnMenuItemClickListener { item ->
-//            when (item.itemId) {
-//                R.id.delItem -> {
-//                    // Handle edit action
-//                    itemList.remove()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//        popupMenu.show()
-//    }
 
 }
 

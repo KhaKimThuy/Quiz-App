@@ -93,21 +93,27 @@
                         android:id="@+id/tv_topicName"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Topic name"
                         android:textSize="24sp"
                         android:textStyle="bold" />
-
+                    <ImageView
+                        android:id="@+id/imageView_public"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/public_icon" />
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
                     <ImageView
                         android:id="@+id/saveTopic"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="end"
                         android:src="@drawable/save"
                         android:visibility="visible"
                         tools:gravity="clip_vertical" />
-
                 </LinearLayout>
 
                 <TextView

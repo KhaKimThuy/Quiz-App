@@ -101,6 +101,28 @@
             app:layout_constraintStart_toEndOf="@+id/textView_numTopic"
             app:layout_constraintTop_toTopOf="@+id/textView_numTopic" />
 
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mô tả"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvInvalidEmail" />
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mô tả học phần"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
         <ProgressBar
             android:id="@+id/progressBar2"
             style="?android:attr/progressBarStyle"
@@ -108,7 +130,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvInvalidEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDesc" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

@@ -1,14 +1,17 @@
 package com.example.afinal.Activity
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.afinal.Adapter.FCLearningAdapter
+import com.example.afinal.Adapter.MultipleChoiceAdapter
 import com.example.afinal.DAL.ItemDAL
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.R
@@ -35,7 +38,7 @@ class FlashCardStudyActivity : AppCompatActivity() {
 
         init()
 
-        loadFlashCards()
+        showOptionsDialog()
 
         binding.imgViewQuit.setOnClickListener(View.OnClickListener {
             onDestroy()
@@ -69,8 +72,6 @@ class FlashCardStudyActivity : AppCompatActivity() {
 
     private fun init() {
         binding.tvLoad.text = TopicDTO.numItems
-        binding.tvGet.text = "1"
-        binding.progressBar.progress += 1
 
         binding.progressBar.max = TopicDTO.numItems.toInt()
         val snapHelper = PagerSnapHelper()
@@ -117,6 +118,82 @@ class FlashCardStudyActivity : AppCompatActivity() {
         }
     }
 
+
+
+    private fun showOptionsDialog() {
+        val options = arrayOf("Học tất cả", "Chỉ học từ vựng nổi bật")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Chọn danh sách từ vựng")
+            .setItems(options) { dialogInterface: DialogInterface, optionIndex: Int ->
+                // Handle option selection
+                when (optionIndex) {
+                    0 -> {
+
+                        binding.tvLoad.text = TopicDTO.allItemList.size.toString()
+                        binding.progressBar.max = TopicDTO.allItemList.size
+                        TopicDTO.numItems = TopicDTO.allItemList.size.toString()
+
+
+                        adapter = FCLearningAdapter(this, TopicDTO.allItemList, object : FCLearningAdapter.onClickFCLearningListener {
+                            override fun onClickFCListener(
+                                itemView: FCLearningAdapter.FCViewHolder,
+                                position: Int
+                            ) {
+                                if (TopicDTO.allItemList[position].isMarked) {
+                                    TopicDTO.allItemList[position].isMarked = false
+                                    itemView.marker.setImageResource(R.drawable.empty_star)
+                                } else {
+                                    TopicDTO.allItemList[position].isMarked = true
+                                    itemView.marker.setImageResource(R.drawable.marked_star)
+                                }
+                                if (TopicDTO.currentTopic?.isPublic == true) {
+                                    ItemDAL().UpdateMarkedRankingItem(TopicDTO.allItemList[position])
+                                } else {
+                                    ItemDAL().UpdateMarkedItem(TopicDTO.allItemList[position])
+                                }
+                            }
+
+                        })
+                        Log.d("TAG", "Num item in Flashcard study : " + TopicDTO.allItemList.size)
+                        binding.recyclerView.adapter = adapter
+
+                    }
+                    1 -> {
+
+                        binding.tvLoad.text = TopicDTO.itemList.size.toString()
+                        binding.progressBar.max = TopicDTO.itemList.size
+                        TopicDTO.numItems = TopicDTO.itemList.size.toString()
+
+                        adapter = FCLearningAdapter(this, TopicDTO.itemList, object : FCLearningAdapter.onClickFCLearningListener {
+                            override fun onClickFCListener(
+                                itemView: FCLearningAdapter.FCViewHolder,
+                                position: Int
+                            ) {
+                                if (TopicDTO.itemList[position].isMarked) {
+                                    TopicDTO.itemList[position].isMarked = false
+                                    itemView.marker.setImageResource(R.drawable.empty_star)
+                                } else {
+                                    TopicDTO.itemList[position].isMarked = true
+                                    itemView.marker.setImageResource(R.drawable.marked_star)
+                                }
+                                if (TopicDTO.currentTopic?.isPublic == true) {
+                                    ItemDAL().UpdateMarkedRankingItem(TopicDTO.itemList[position])
+                                } else {
+                                    ItemDAL().UpdateMarkedItem(TopicDTO.itemList[position])
+                                }
+                            }
+
+                        })
+                        Log.d("TAG", "Num item in Flashcard study : " + TopicDTO.itemList.size)
+                        binding.recyclerView.adapter = adapter
+                    }
+                }
+                dialogInterface.dismiss()
+            }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     fun startAutoScroll() {
         currentPosition = layoutManager.findFirstVisibleItemPosition()
         autoScrollRunnable?.let { handler.postDelayed(it, delayDuration) }
@@ -137,7 +214,7 @@ class FlashCardStudyActivity : AppCompatActivity() {
     }
 
 
-    private fun loadFlashCards(){
+    private fun loadFlashCards() {
         //handler = Handler(Looper.myLooper()!!)
 
         adapter = FCLearningAdapter(this, TopicDTO.itemList, object : FCLearningAdapter.onClickFCLearningListener {
@@ -165,19 +242,6 @@ class FlashCardStudyActivity : AppCompatActivity() {
         Log.d("TAG", "Num item in Flashcard study : " + TopicDTO.itemList.size)
         binding.recyclerView.adapter = adapter
 
-
-//        // Cancel any existing event runnable
-//        eventRunnable?.let { handler.removeCallbacks(it) }
-//        // Schedule a new event runnable
-//        eventRunnable = Runnable {
-//            // Perform the desired event after the duration
-//            var nextIdx = position
-//            if (position < itemCount) {
-//                nextIdx = position + 1
-//            }
-//            activity.moveToNext(nextIdx)
-//        }
-//        handler.postDelayed(eventRunnable!!, delayDuration)
 
     }
 

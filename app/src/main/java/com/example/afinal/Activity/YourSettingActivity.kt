@@ -16,8 +16,7 @@ import com.example.afinal.databinding.ActivityYourSettingBinding
 
 class YourSettingActivity : AppCompatActivity() {
     private lateinit var binding : ActivityYourSettingBinding
-    private lateinit var db: MyDB
-    private lateinit var pk: String
+    private val EDIT_PROFILE = 222
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityYourSettingBinding.inflate(layoutInflater)
@@ -27,7 +26,7 @@ class YourSettingActivity : AppCompatActivity() {
 
         binding.btnEditProfile.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, EDIT_PROFILE)
         })
 
         binding.btnChangePassword.setOnClickListener(View.OnClickListener {
@@ -55,12 +54,19 @@ class YourSettingActivity : AppCompatActivity() {
     }
 
     private fun loadUserInfo() {
-        binding.UserName.text = UserDTO.currentUser?.email ?: "Username"
-        if (UserDTO.currentUser?.avatarUrl == "") {
-            binding.ava.setImageResource(R.drawable.avt)
-        } else {
-//            Toast.makeText(this, UserDTO.currentUser?.avatarUrl, Toast.LENGTH_SHORT).show()
+        binding.UserName.text = UserDTO.currentUser?.username ?: "No user"
+        if (UserDTO.currentUser?.avatarUrl != ""){
             binding.ava.setImageBitmap(UserDTO.userAvatar)
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == EDIT_PROFILE) {
+            if (resultCode == RESULT_OK) {
+                loadUserInfo()
+            }
+        }
+    }
+
 }

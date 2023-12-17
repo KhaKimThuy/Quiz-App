@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -19,9 +21,10 @@ import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.Item
-import com.example.afinal.Domain.ItemRanking
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityDetailTopicBinding
+import java.io.File
+import java.io.IOException
 
 
 class DetailTopicActivity : AppCompatActivity() {
@@ -31,12 +34,17 @@ class DetailTopicActivity : AppCompatActivity() {
     private var isSaved : Boolean = true
     private lateinit var topicFrom : String
     private val EDIT_TOPIC = 111
+    private var operation : String = ""
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTopicBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (intent.getStringExtra("operation") != null) {
+            operation = intent.getStringExtra("operation").toString()
+        }
 
         init ()
 
@@ -77,6 +85,9 @@ class DetailTopicActivity : AppCompatActivity() {
         }
 
         binding.imgBack.setOnClickListener(View.OnClickListener {
+            TopicDTO.allItemList.clear()
+            TopicDTO.itemList.clear()
+            TopicDTO.currentTopic = null
             finish()
         })
 
@@ -87,7 +98,7 @@ class DetailTopicActivity : AppCompatActivity() {
             binding.saveTopic.visibility = View.VISIBLE
             binding.saveTopic.setOnClickListener(View.OnClickListener {
                 if (TopicDTO.currentTopic != null) {
-                    TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.itemList) {
+                    TopicDAL().AddPublicTopic(TopicDTO.currentTopic!!, TopicDTO.allItemList) {
                         if (it) {
                             Toast.makeText(this, "Okkkk", Toast.LENGTH_SHORT).show()
                         } else {
@@ -106,7 +117,66 @@ class DetailTopicActivity : AppCompatActivity() {
         }
     }
 
+    private fun askFileName() {
+        val v = this.layoutInflater.inflate(R.layout.ask_filename_dialog, null)
+        val fileName = v.findViewById<EditText>(R.id.edt_fileName)
+        AlertDialog.Builder(this).setView(v)
+            .setPositiveButton("OK"){
+                    dialog,_->
+                exportFile(fileName.text.toString())
+                dialog.dismiss()
+            }
+            .setNegativeButton("HỦY"){
+                    dialog,_->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun <T> csvOf (
+        headers: List<String>,
+        data: List<T>,
+        itemBuilder: (T) -> List<String>
+    ) = buildString {
+        data.forEach { item ->
+            append(itemBuilder(item).joinToString(",") { "$it" })
+            append("\n")
+        }
+    }
+
+    private fun exportFile(fileName:String) {
+        if (fileName.isEmpty()) {
+            Toast.makeText(this, "Tên file không được trống", Toast.LENGTH_SHORT).show()
+        }else{
+            val csvContent = csvOf(
+                listOf("English", "Vietnamese"),
+                TopicDTO.allItemList
+            ) {
+                listOf(it.engLanguage.toString(), it.vnLanguage.toString())
+            }
+
+            val fileName = "$fileName.csv"
+            val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val file = File(downloadsDirectory, fileName)
+
+            try {
+                file.writeText(csvContent)
+                Toast.makeText(this, "Xuất file thành công", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Toast.makeText(this, "Lỗi xuất file", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun init () {
+        if (TopicDTO.currentTopic?.isPublic == true) {
+            binding.imageViewPublic.visibility = View.VISIBLE
+        } else {
+            binding.imageViewPublic.visibility = View.GONE
+        }
+
         isMine = intent.getBooleanExtra("isMine", false)
         isSaved = intent.getBooleanExtra("isSaved", true)
         topicFrom = intent.getStringExtra("from").toString()
@@ -146,10 +216,20 @@ class DetailTopicActivity : AppCompatActivity() {
                     deleteDialog()
                     true
                 }
+                R.id.export -> {
+                    askFileName()
+                    true
+                }
                 else -> false
             }
         }
         popupMenu.show()
+    }
+
+    override fun onStart() {
+        loadInfoTopic()
+        Log.d("tired", "dddddddd")
+        super.onStart()
     }
 
     @SuppressLint("SetTextI18n")

@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream
 
 class UserDAL : MyDB() {
 
-    fun SaveUserLocal(userId : String){
+    fun SaveUserLocal(userId : String) {
         // Save user information locally
         MyDB().db.collection("user").document(userId).get().addOnCompleteListener{
             val user = it.result.toObject(User::class.java)
@@ -80,11 +80,15 @@ class UserDAL : MyDB() {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(
                             activity,
-                            "Authentication successfully.",
+                            "Đăng ký tài khoản thành công",
                             Toast.LENGTH_SHORT,
                         ).show()
 
+
+
                         val intent = Intent(activity, LoginActivity::class.java)
+                        intent.putExtra("email", user.email)
+                        intent.putExtra("pass", user.password)
                         activity.startActivity(intent)
                     }
 
@@ -115,16 +119,18 @@ class UserDAL : MyDB() {
         MyDB().dbAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity) { task ->
                 if (task.isSuccessful) {
+
+                    val updateInfo = mapOf (
+                        "password" to password,
+                    )
+                    db.collection("user").document(dbAuth.currentUser?.uid.toString()).update(updateInfo)
+
                     val intent = Intent(activity, MainActivity2::class.java)
                     activity.startActivity(intent)
                     activity.finish()
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(
-                        activity,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    activity.binding.edtPassword.error = "Sai mật khẩu"
                 }
             }
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.afinal.DAL.MyDB
 import com.example.afinal.DAL.TopicDAL
 import com.example.afinal.DTO.TopicDTO
+import com.example.afinal.DTO.UserDTO
 import com.example.afinal.Domain.Topic
 import com.example.afinal.Domain.TopicRanking
 
@@ -24,6 +25,16 @@ class TopicViewModel : ViewModel() {
             TopicDTO.topicList.clear()
             TopicDTO.topicList.addAll(it)
             listTopicLiveData.value = TopicDTO.topicList
+        }
+    }
+
+    fun refresh() {
+        UserDTO.currentUser?.let {
+            TopicDAL().GetTopicOfUser(it.userPK) {
+                TopicDTO.topicList.clear()
+                TopicDTO.topicList.addAll(it)
+                listTopicLiveData.value = TopicDTO.topicList
+            }
         }
     }
 

@@ -30,6 +30,10 @@ class AddTopicToFolderActivity : AppCompatActivity() {
         binding.checkOk.setOnClickListener(View.OnClickListener {
             addTopicToFolder()
         })
+
+        binding.imgBack.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun init () {

@@ -37,18 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvNumRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/state_item_bg"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp"
-        android:text="Trạng thái"
-        app:layout_constraintBottom_toBottomOf="@+id/tvState"
-        app:layout_constraintStart_toEndOf="@+id/tvState"
-        app:layout_constraintTop_toTopOf="@+id/tvState" />
-
     <com.wajahatkarim3.easyflipview.EasyFlipView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

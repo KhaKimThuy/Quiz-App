@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.afinal.Adapter.SliderAdapter
+import com.example.afinal.DAL.MyDB
+import com.example.afinal.DAL.UserDAL
 import com.example.afinal.R
 import com.example.afinal.databinding.ActivityStartBinding
 import com.example.afinal.databinding.FirstStartBinding
@@ -20,6 +22,8 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        checkUser()
 
         sliderView = findViewById(R.id.imageSlider)
 
@@ -40,11 +44,25 @@ class StartActivity : AppCompatActivity() {
         binding.btnOrLogin.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         })
 
         binding.btnRegiterFree.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            finish()
         })
+    }
+
+    private fun checkUser() {
+        super.onStart()
+        var userId = MyDB().dbAuth.currentUser?.uid
+        if (userId != null) {
+            // Save user information locally
+            UserDAL().SaveUserLocal(userId)
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

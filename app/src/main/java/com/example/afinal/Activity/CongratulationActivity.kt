@@ -21,7 +21,7 @@ class CongratulationActivity : AppCompatActivity() {
         var s1 = 0
         var s2 = 0
         var s3 = 0
-        for (i in TopicDTO.itemList) {
+        for (i in TopicDTO.allItemList) {
             if (i.state == "Đã thành thạo") {
                 s1 += 1
             }

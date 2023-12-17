@@ -64,7 +64,7 @@ class MultiChoiceStudyActivity : AppCompatActivity() {
     private fun showOptionsDialog() {
         val options = arrayOf("Học tất cả", "Chỉ học từ vựng nổi bật")
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose an option")
+        builder.setTitle("Chọn danh sách từ vựng")
             .setItems(options) { dialogInterface: DialogInterface, optionIndex: Int ->
                 // Handle option selection
                 when (optionIndex) {

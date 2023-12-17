@@ -78,7 +78,6 @@ class DetailFolderActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        binding.emptyFolder.visibility = View.GONE
         binding.recyclerViewTopic.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         loadFolder()
     }
@@ -88,6 +87,12 @@ class DetailFolderActivity : AppCompatActivity() {
             FolderDTO.topicList.clear()
             FolderDAL().GetTopicOfFolder(FolderDTO.currentFolder!!) {
                 binding.textViewNumTopic.text = FolderDTO.topicList.size.toString()
+
+                if (FolderDTO.topicList.size == 0) {
+                    binding.emptyFolder.visibility = View.VISIBLE
+                }
+
+                binding.tvDesc.text =  FolderDTO.currentFolder!!.folderDesc
                 binding.emptyFolder.visibility = View.GONE
                 adapter = TopicAdapter(FolderDTO.topicList, object : TopicAdapter.IClickTopicListener {
 
@@ -183,6 +188,7 @@ class DetailFolderActivity : AppCompatActivity() {
             .setMessage("Bạn chắc chắn muốn xóa thư mục này vĩnh viễn?")
             .setPositiveButton("Xóa") { dialog, which ->
                 FolderDTO.currentFolder?.let { FolderDAL().DeleteFolder(it) }
+                finish()
             }
             .setNegativeButton("Hủy", null)
             .show()
@@ -195,7 +201,9 @@ class DetailFolderActivity : AppCompatActivity() {
                 if (FolderDTO.topicList.size > 0) {
                     binding.textViewNumTopic.text = FolderDTO.topicList.size.toString()
                     binding.emptyFolder.visibility = View.GONE
-                    adapter.notifyDataSetChanged()
+//                    adapter.notifyDataSetChanged()
+
+                    loadFolder()
                 }
             }
         }

@@ -80,17 +80,28 @@ class FragmentTopic : Fragment() {
         snapHelper.attachToRecyclerView(binding.recyclerViewTopicList)
     }
 
+    override fun onStart() {
+        Log.d("State", "onStart")
+        topicViewModel.refresh()
+        super.onStart()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.d("fragmentHome", "onActivityResult")
+
         if (requestCode == DETAIL_TOPIC_CODE) {
             val operation = data?.getStringExtra("operation")
-            Log.d("fragmentHome", "onActivityResult")
             if (operation == "delete") {
                 TopicDTO.currentTopic?.let { topicViewModel.removeTopic(it) }
                 // Refresh current topic value
                 TopicDTO.itemList.clear()
                 TopicDTO.currentTopic = null
                 Log.d("fragmentHome", "After - Topic list size : " + TopicDTO.topicList.size)
+            }
+            else if (operation == "add") {
+                topicViewModel.refresh()
+                Log.d("fragmentHome", "Add : " + TopicDTO.topicList.size)
             }
         }
     }

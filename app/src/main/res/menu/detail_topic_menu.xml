@@ -9,4 +9,8 @@
         android:id="@+id/delete"
         android:title="Xóa học phần"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/export"
+        android:title="Xuất danh sách từ vựng"
+        app:showAsAction="never"/>
 </menu>

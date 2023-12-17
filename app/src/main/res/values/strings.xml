@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cloud FireStore</string>
+    <string name="app_name">Quizlet</string>
     <string name="free_register">Đăng ký miễn phí</string>
     <string name="or_login">Hoặc đăng nhập</string>
     <string name="provisions">Bằng việc đăng ký, tôi chấp thuận Điều khoản dịch vụ và Chính sách quyền riêng tư của Quizlet</string>

@@ -26,7 +26,6 @@ open class EditProfileActivity : AppCompatActivity() {
     private lateinit var passwordUser : String
 
     private var avatarChange = false
-    private var newAvatarUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +69,7 @@ open class EditProfileActivity : AppCompatActivity() {
                 uploadAvatar()
             }
 
-            Toast.makeText(applicationContext, "Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(applicationContext, "Đã chỉnh sửa", Toast.LENGTH_SHORT).show();
 
             val intent = Intent()
             setResult(RESULT_OK, intent)
@@ -143,6 +142,9 @@ open class EditProfileActivity : AppCompatActivity() {
         binding.edEmail.setText(emailUser)
         binding.edName.setText(usernameUser)
         binding.edPass.setText(passwordUser)
+
+        binding.tvUsername2.text = usernameUser
+        binding.tvPosition2.text = emailUser
 
     }
 }

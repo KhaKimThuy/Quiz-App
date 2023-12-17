@@ -3,6 +3,7 @@ package com.example.afinal.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +15,6 @@ import com.example.afinal.databinding.ActivityOustandingVocabularyBinding
 
 class OustandingVocabularyActivity : AppCompatActivity() {
 
-    private lateinit var handler: Handler
     private lateinit var adapter: OustandingVocabularyAdapter
     lateinit var binding: ActivityOustandingVocabularyBinding
 
@@ -30,22 +30,26 @@ class OustandingVocabularyActivity : AppCompatActivity() {
         binding.imgBack.setOnClickListener {
             finish()
         }
+
     }
 
     private fun init() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.listVocal)
 
-        binding.listVocal.layoutManager = object : LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false) {
-            override fun canScrollHorizontally(): Boolean {
-                return false
-            }
-        }
+        binding.listVocal.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun loadFlashCards() {
-        handler = Handler(Looper.myLooper()!!)
-        adapter = OustandingVocabularyAdapter(TopicDTO.itemList, this)
-        binding.listVocal.adapter = adapter
+        ItemDAL().GetOutstandingItem {
+            Log.d("Out", "Size = " + it.size)
+            if (it.size > 0) {
+                binding.empty.visibility = View.GONE
+                adapter = OustandingVocabularyAdapter(it, this)
+                binding.listVocal.adapter = adapter
+            } else {
+                binding.empty.visibility = View.VISIBLE
+            }
+        }
     }
 }

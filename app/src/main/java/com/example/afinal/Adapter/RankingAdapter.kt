@@ -22,7 +22,7 @@ class RankingAdapter(private var rankingList: ArrayList<RankingUser>, var topNum
     }
 
     override fun onBindViewHolder(holder: RankingViewholder, position: Int) {
-        holder.rank.text = (position + topNum + 1).toString()
+        holder.rank.text = (position + topNum).toString()
 
         holder.score.text = rankingList[position].highestScore.toString()
 

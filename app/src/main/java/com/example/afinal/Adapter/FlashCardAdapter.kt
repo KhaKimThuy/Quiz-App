@@ -82,7 +82,7 @@ class FlashCardAdapter (private val itemList: ArrayList<Item>,
         holder.eng_lang.text = itemList[position].engLanguage
         holder.vn_lang.text = itemList[position].vnLanguage
         holder.state.text = itemList[position].state
-        holder.numRights.text = itemList[position].numRights.toString()
+//        holder.numRights.text = itemList[position].numRights.toString()
 
         Log.d("TAG", "Item mark : " + itemList[position].isMarked)
         if (itemList[position].isMarked) {
@@ -107,7 +107,7 @@ class FlashCardAdapter (private val itemList: ArrayList<Item>,
         val speaker = itemView.findViewById<ImageView>(R.id.imageView_speaker)
         val marker = itemView.findViewById<ImageView>(R.id.imageView_marker)
 
-        val numRights = itemView.findViewById<TextView>(R.id.tvNumRight)
+//        val numRights = itemView.findViewById<TextView>(R.id.tvNumRight)
 
         init {
             if (learning) {
@@ -117,7 +117,7 @@ class FlashCardAdapter (private val itemList: ArrayList<Item>,
                 speaker.visibility = View.GONE
                 marker.visibility = View.GONE
                 state.visibility = View.GONE
-                numRights.visibility = View.GONE
+//                numRights.visibility = View.GONE
             }
         }
     }

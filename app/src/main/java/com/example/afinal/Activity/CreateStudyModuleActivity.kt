@@ -10,15 +10,18 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.afinal.Adapter.AddItemTopicAdapter
 import com.example.afinal.DAL.TopicDAL
+import com.example.afinal.DTO.TopicDTO
 import com.example.afinal.Domain.Item
 import com.example.afinal.Domain.Topic
 import com.example.afinal.ViewModel.TopicViewModel
 import com.example.afinal.databinding.ActivityCreateStudyModuleBinding
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -76,6 +79,8 @@ class CreateStudyModuleActivity : AppCompatActivity() {
 
     private fun loadCSVFile(uri: Uri) {
         try {
+            val fileName = File(uri.path).name
+            binding.edtTopicName.setText(fileName)
             itemList.clear()
             val inputStream: InputStream? = contentResolver.openInputStream(uri)
             val reader = BufferedReader(InputStreamReader(inputStream))
@@ -93,7 +98,7 @@ class CreateStudyModuleActivity : AppCompatActivity() {
             inputStream?.close() // Close the inputStream when done
         } catch (e: IOException) {
             e.printStackTrace()
-            Toast.makeText(this, "Import file error", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Lỗi nhập file", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -133,7 +138,20 @@ class CreateStudyModuleActivity : AppCompatActivity() {
         topic.isPublic = binding.switchIsPublic.isChecked
 
         // Add topic
-        TopicDAL().AddTopic(topic, itemList, this)
+        TopicDAL().AddTopic(topic, itemList) {
+
+            binding.progressBar3.visibility = View.GONE
+            Toast.makeText(this, "Tạo học phần thành công", Toast.LENGTH_SHORT).show()
+
+            // Save topic locally
+            TopicDTO.currentTopic = topic
+            TopicDTO.numItems = TopicDTO.itemList.size.toString()
+
+            val intent = Intent(this, DetailTopicActivity::class.java)
+            intent.putExtra("operation", "add")
+            startActivity(intent)
+            finish()
+        }
         topicViewModel.addTopic(topic)
     }
 

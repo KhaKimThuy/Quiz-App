@@ -3,6 +3,7 @@ package com.example.afinal.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,10 @@ class ActivityForgotPassword : AppCompatActivity() {
         binding.btnConfimRe.setOnClickListener {
             compareEmail(binding.edtEmailRe)
         }
+
+        binding.imageViewBackf.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun compareEmail(email: EditText) {

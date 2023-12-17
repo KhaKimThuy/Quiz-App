@@ -25,7 +25,7 @@ class FragmentFolder : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewFolder.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        loadFolder()
+//        loadFolder()
     }
 
     private fun loadFolder(){
@@ -34,5 +34,10 @@ class FragmentFolder : Fragment() {
             adapter = FolderAdapter(it, requireActivity())
             binding.recyclerViewFolder.adapter = adapter
         }
+    }
+
+    override fun onStart() {
+        loadFolder()
+        super.onStart()
     }
 }
