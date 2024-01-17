@@ -1,4 +1,4 @@
 # FinalAndroidApp
-* Check workload
+* Watch demo of this app at:
   
-https://docs.google.com/spreadsheets/d/1-7dRNO6KyAIbPo-n9ItNrYCz7GUDYRx9tZdJ6eQUSbE/edit?usp=sharing
+https://drive.google.com/file/d/14RuRRgvslKZfoanaudW0Gt5Yvtk7PXG-/view?usp=sharing
