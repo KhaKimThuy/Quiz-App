@@ -6,6 +6,6 @@ This application is my school project built in Kotlin language and used Firebase
 
 ## Demo
 
-
-
+ [🎥 Video demo](https://drive.google.com/file/d/14RuRRgvslKZfoanaudW0Gt5Yvtk7PXG-/view?usp=drive_link)
+ 
 <img width="297" alt="demo" src="https://github.com/KhaKimThuy/FinalAndroidApp/assets/109899051/744ef20a-1286-4c7d-b1b9-a57ac1a84c77">
